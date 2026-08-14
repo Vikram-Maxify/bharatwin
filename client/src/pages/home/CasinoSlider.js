@@ -1,20 +1,20 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
+import { useCallback, useEffect, useState } from "react";
 // import { BiCategory } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import JilliPopup from '../../components/JilliPopup';
-import { gameListByGameTypeAndProvider } from '../../store/reducer/spribeGameReducer';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import JilliPopup from "../../components/JilliPopup";
+import { gameListByGameTypeAndProvider } from "../../store/reducer/spribeGameReducer";
 
 const CasinoSlider = () => {
   const dispatch = useDispatch();
   const [gameId, setGameId] = useState(null);
   const [gameList, setGameList] = useState([]);
-  const gameType = 'CasinoLive';
+  const gameType = "CasinoLive";
 
   const handleJilliOpen = (game_uid) => {
     setGameId(game_uid);
@@ -24,36 +24,36 @@ const CasinoSlider = () => {
     debounce(() => {
       dispatch(
         gameListByGameTypeAndProvider({
-          provider: 'evolutionlive',
+          provider: "evolutionlive",
           game_type: gameType,
           page: 1,
           size: 9,
-        })
+        }),
       ).then((res) => {
         if (res?.payload?.data?.data) {
           setGameList(res.payload.data.data);
         } else {
           setGameList([
             {
-              icon: 'https://i.ibb.co/RkNF2SJZ/casino1.png',
-              game_name: 'Mock Game 1',
-              game_uid: 'mock1',
+              icon: "https://i.ibb.co/RkNF2SJZ/casino1.png",
+              game_name: "Mock Game 1",
+              game_uid: "mock1",
             },
             {
-              icon: 'https://i.ibb.co/Txs7HFv3/casino2.png',
-              game_name: 'Mock Game 2',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/Txs7HFv3/casino2.png",
+              game_name: "Mock Game 2",
+              game_uid: "mock2",
             },
             {
-              icon: 'https://i.ibb.co/Txs7HFv3/casino2.png',
-              game_name: 'Mock Game 2',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/Txs7HFv3/casino2.png",
+              game_name: "Mock Game 2",
+              game_uid: "mock2",
             },
           ]);
         }
       });
     }, 300),
-    [dispatch]
+    [dispatch],
   );
 
   useEffect(() => {
@@ -69,7 +69,11 @@ const CasinoSlider = () => {
         <div className="flex justify-between items-center mb-4">
           <p className="mt-2 flex items-center text-gray-200 gap-2 text-base font-semibold">
             <span>
-              <img src="https://i.ibb.co/Myb0CYQW/casino.png" className="size-8" alt="Casino Icon" />
+              <img
+                src="https://i.ibb.co/rR8JY3Ys/Chat-GPT-Image-Aug-14-2026-03-17-05-PM.png"
+                className="size-8"
+                alt="Casino Icon"
+              />
             </span>
             Casino Live
           </p>
@@ -83,14 +87,34 @@ const CasinoSlider = () => {
             </Link>
 
             <button className="casino-prev rounded-md blue-linear text-black p-1 transition">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
             <button className="casino-next rounded-md blue-linear text-black p-1 transition">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
@@ -100,8 +124,8 @@ const CasinoSlider = () => {
           <Swiper
             modules={[Navigation, Autoplay]}
             navigation={{
-              nextEl: '.casino-next',
-              prevEl: '.casino-prev',
+              nextEl: ".casino-next",
+              prevEl: ".casino-prev",
             }}
             autoplay={{ delay: 3000 }}
             spaceBetween={12}

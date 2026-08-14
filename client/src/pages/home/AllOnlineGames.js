@@ -1,19 +1,14 @@
-
-
-import React, { useState, useEffect, useRef,  } from "react";
-import { Link, useLocation, useNavigate} from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 import { useDispatch } from "react-redux";
-import {
-  gameListByGameTypeAndProvider,
-
-} from "../../store/reducer/spribeGameReducer";
+import CustomeNavbar from "../../components/CustomeNavbar";
 import JilliPopup from "../../components/JilliPopup";
 import RechargePopup from "../../components/RechargePopup";
+import { gameListByGameTypeAndProvider } from "../../store/reducer/spribeGameReducer";
 import { rechargeList2 } from "../../store/reducer/userReducer";
-import CustomeNavbar from "../../components/CustomeNavbar";
-import LotterSection from './newgame/LotterSection';
+import LotterSection from "./newgame/LotterSection";
 
 const Container = styled.div`
   width: 100%;
@@ -50,7 +45,7 @@ const Item = styled.div`
     props.active
       ? "var(--Gradient-1, linear-gradient(93deg, var(--mediam-blue) 7.38%, var(--bgblue) 94.48%))"
       : "#201d2b"};
-  padding:11px 12px
+  padding: 11px 12px;
 `;
 
 const Span = styled.span`
@@ -58,39 +53,31 @@ const Span = styled.span`
   color: white;
 `;
 
-
-
-
-
-
-
-const cosinoData=[
+const cosinoData = [
   {
-    img:"https://i.ibb.co/RkNF2SJZ/casino1.png",
-    id:"8ef39602e589bf9f32fc351b1cbb338b"
+    img: "https://i.ibb.co/RkNF2SJZ/casino1.png",
+    id: "8ef39602e589bf9f32fc351b1cbb338b",
   },
   {
-    img:"https://i.ibb.co/Txs7HFv3/casino2.png",
-    id:"8ef39602e589bf9f32fc351b1cbb338b"
+    img: "https://i.ibb.co/Txs7HFv3/casino2.png",
+    id: "8ef39602e589bf9f32fc351b1cbb338b",
   },
   {
-    img:"https://i.ibb.co/KjwjzGzk/casino3.png",
-    id:"5cb6aa4e2ce1c775c568561401ffdfca"
+    img: "https://i.ibb.co/KjwjzGzk/casino3.png",
+    id: "5cb6aa4e2ce1c775c568561401ffdfca",
   },
   {
-    img:"https://i.ibb.co/dsd9Kxmv/casino4.png",
-    id:"b4af506243cafae52908e8fa266f8ff6"
+    img: "https://i.ibb.co/dsd9Kxmv/casino4.png",
+    id: "b4af506243cafae52908e8fa266f8ff6",
   },
   {
-    img:"https://i.ibb.co/LwnrsZb/casino5.png",
-    id:"e3951a5bf624e822a22cba1cbe619df5"
+    img: "https://i.ibb.co/LwnrsZb/casino5.png",
+    id: "e3951a5bf624e822a22cba1cbe619df5",
   },
-]
-
+];
 
 const AllOnlineGames = () => {
-
-   const [gameId, setGameId] = useState();
+  const [gameId, setGameId] = useState();
 
   const dispatch = useDispatch();
   const location = useLocation();
@@ -100,94 +87,113 @@ const AllOnlineGames = () => {
   const [tab, setTabs] = useState("Slots");
   const [gameList, setGameList] = useState([]);
   const [gameType, setGameType] = useState("Slot Game");
-  const [provider,setProvider]=useState("jili")
-const [repopup,setRepopup]=useState(false)
-  
-const navigate=useNavigate()
+  const [provider, setProvider] = useState("jili");
+  const [repopup, setRepopup] = useState(false);
+
+  const navigate = useNavigate();
 
   //   8273142996
   const items = [
-    { name: "Lottery", icon:  "https://i.ibb.co/tMdpYCYc/wingo.png",id:"Lottery",type:""},
-    { name: "Slots", icon: "https://i.ibb.co/N67k0LKm/slots.png",id:"Slot Game",type:"jili" },
+    {
+      name: "Lottery",
+      icon: "https://i.ibb.co/tMdpYCYc/wingo.png",
+      id: "Lottery",
+      type: "",
+    },
+    {
+      name: "Slots",
+      icon: "https://i.ibb.co/N67k0LKm/slots.png",
+      id: "Slot Game",
+      type: "jili",
+    },
     {
       name: "Mini games",
-      icon: "https://i.ibb.co/nsGSDBST/minigame.png",id:"CasinoTable",type:"spribe"
+      icon: "https://i.ibb.co/nsGSDBST/minigame.png",
+      id: "CasinoTable",
+      type: "spribe",
     },
-    { name: "Fishing", icon: "https://i.ibb.co/B2XH234P/fishing.png",id:"Fish Game",type:"jili" },
+    {
+      name: "Fishing",
+      icon: "https://i.ibb.co/B2XH234P/fishing.png",
+      id: "Fish Game",
+      type: "jili",
+    },
     {
       name: "Casino",
-      icon: "https://i.ibb.co/Myb0CYQW/casino.png",id:"CasinoLive",type:"evolutionlive"
+      icon: "https://i.ibb.co/rR8JY3Ys/Chat-GPT-Image-Aug-14-2026-03-17-05-PM.png",
+      id: "CasinoLive",
+      type: "evolutionlive",
     },
     {
       name: "PVC",
-      icon:"https://i.ibb.co/MyT7ztgh/rummy.png",id:"Ca",type:"ev"
+      icon: "https://i.ibb.co/MyT7ztgh/rummy.png",
+      id: "Ca",
+      type: "ev",
     },
     {
       name: "Sports",
-      icon: "https://i.ibb.co/KxLBBcsH/sports.png",id:"Ca",type:"ev"
+      icon: "https://i.ibb.co/KxLBBcsH/sports.png",
+      id: "Ca",
+      type: "ev",
     },
   ];
 
   useEffect(() => {
-    dispatch(gameListByGameTypeAndProvider({provider:provider, game_type: gameType, page:1, size:20 })).then(
-      (res) => {
-        if (res?.payload?.data?.data) {
-          setGameList(res.payload.data.data);
-        }
+    dispatch(
+      gameListByGameTypeAndProvider({
+        provider: provider,
+        game_type: gameType,
+        page: 1,
+        size: 20,
+      }),
+    ).then((res) => {
+      if (res?.payload?.data?.data) {
+        setGameList(res.payload.data.data);
       }
-    );
+    });
   }, [dispatch, gameType]);
 
-
-
   const containerRef = useRef(null);
-const itemRefs = useRef([]);
+  const itemRefs = useRef([]);
 
-const handleClick = (index) => {
+  const handleClick = (index) => {
     setTabs(items[index].name);
     setGameType(items[index].id);
-    setProvider(items[index].type)
+    setProvider(items[index].type);
 
-  const container = containerRef.current;
-  const item = itemRefs.current[index];
+    const container = containerRef.current;
+    const item = itemRefs.current[index];
 
-  if (container && item) {
-    const containerRect = container.getBoundingClientRect();
-    const itemRect = item.getBoundingClientRect();
+    if (container && item) {
+      const containerRect = container.getBoundingClientRect();
+      const itemRect = item.getBoundingClientRect();
 
-    const scrollLeft =
-      item.offsetLeft -
-      container.offsetWidth / 2 +
-      item.offsetWidth / 2;
+      const scrollLeft =
+        item.offsetLeft - container.offsetWidth / 2 + item.offsetWidth / 2;
 
-    container.scrollTo({
-      left: scrollLeft,
-      behavior: "smooth",
-    });
-  }
-};
+      container.scrollTo({
+        left: scrollLeft,
+        behavior: "smooth",
+      });
+    }
+  };
 
+  useEffect(() => {
+    if (name) {
+      setTabs(name);
+      const index = items.find((item) => item.name === name);
 
-  
-  useEffect(() => {   
-    if(name){
-      setTabs(name)
-         const index = items.find((item) => item.name === name);
-    
-             setGameType(index.id);
-    setProvider(index.type)
+      setGameType(index.id);
+      setProvider(index.type);
     }
   }, []);
 
   useEffect(() => {
-  
-     
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
   }, [tab]);
 
   const handleJilliOpen = (data) => {
     setGameId(data);
-   
   };
 
   const handleWingo = (path) => {
@@ -201,30 +207,31 @@ const handleClick = (index) => {
   };
   return (
     <>
-          <RechargePopup repopup={repopup} setRepopup={setRepopup} />
-       {gameId && <JilliPopup gameId={gameId} />}
+      <RechargePopup repopup={repopup} setRepopup={setRepopup} />
+      {gameId && <JilliPopup gameId={gameId} />}
 
-        <CustomeNavbar name="Game"/>
+      <CustomeNavbar name="Game" />
 
       <Container ref={containerRef} className="scroll-none">
-  <Picker>
-    {items.map((item, index) => (
-      <Item
-        key={index}
-        ref={(el) => (itemRefs.current[index] = el)}
-        active={item.name === tab}
-        onClick={() => handleClick(index)}
-        className="rounded-md"
-      >
-        <Span><img src={item.icon} alt={item.name} className="w-7" /></Span>
-        <p className="flex fs-sm">{item.name}</p>
-      </Item>
-    ))}
-  </Picker>
-</Container>
+        <Picker>
+          {items.map((item, index) => (
+            <Item
+              key={index}
+              ref={(el) => (itemRefs.current[index] = el)}
+              active={item.name === tab}
+              onClick={() => handleClick(index)}
+              className="rounded-md"
+            >
+              <Span>
+                <img src={item.icon} alt={item.name} className="w-7" />
+              </Span>
+              <p className="flex fs-sm">{item.name}</p>
+            </Item>
+          ))}
+        </Picker>
+      </Container>
 
-
-   {/* {tab === "Lottery" && (
+      {/* {tab === "Lottery" && (
       <div className="container-section mt-5" >
           <div className="flex flex-col gap-2 ">
             {gameData.map((game) => (
@@ -261,15 +268,13 @@ const handleClick = (index) => {
         </div>
    )} */}
 
-   {tab === "Lottery" && 
-    
-    <div className="p-2">
+      {tab === "Lottery" && (
+        <div className="p-2">
+          <LotterSection />
+        </div>
+      )}
 
- <LotterSection/>
-    </div>
-   }
-
-        <div className="container-section">
+      <div className="container-section">
         {/* jilli game */}
         {tab === "Slots" && (
           <div className="grid grid-cols-12 gap-3 mt-3">
@@ -343,50 +348,51 @@ const handleClick = (index) => {
         {/* Slots game */}
         {tab === "PVC" && (
           <div className="grid grid-cols-12 gap-3 mt-3">
-            {["https://i.ibb.co/ZQcyY3X/vendorlogo-20240620145952prhc.png","https://i.ibb.co/hRpgZ6N9/vendorlogo-20240620145936heyd.png"]?.map((item, index) => (
-                <div className="col-span-4" key={index}>
-                  <img
-                    src={item}
-                    alt={`Image ${index + 1}`}
-                    className="w-full h-[150px] cursor-pointer rounded-lg"
-                    loading="lazy"
-                  
-                  />
-                </div>
-              ))}
+            {[
+              "https://i.ibb.co/ZQcyY3X/vendorlogo-20240620145952prhc.png",
+              "https://i.ibb.co/hRpgZ6N9/vendorlogo-20240620145936heyd.png",
+            ]?.map((item, index) => (
+              <div className="col-span-4" key={index}>
+                <img
+                  src={item}
+                  alt={`Image ${index + 1}`}
+                  className="w-full h-[150px] cursor-pointer rounded-lg"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
         )}
         {/* Slots game */}
         {tab === "Sports" && (
           <div className="grid grid-cols-12 gap-3 mt-3">
-            {["https://i.ibb.co/4gDkSFQh/img1.png","https://i.ibb.co/pvmfQSRy/img2.png"]?.map((item, index) => (
-                <div className="col-span-4" key={index}>
-                  <img
-                    src={item}
-                    alt={`Image ${index + 1}`}
-                    className="w-full h-[150px] cursor-pointer rounded-lg"
-                    loading="lazy"
-                  
-                  />
-                </div>
-              ))}
+            {[
+              "https://i.ibb.co/4gDkSFQh/img1.png",
+              "https://i.ibb.co/pvmfQSRy/img2.png",
+            ]?.map((item, index) => (
+              <div className="col-span-4" key={index}>
+                <img
+                  src={item}
+                  alt={`Image ${index + 1}`}
+                  className="w-full h-[150px] cursor-pointer rounded-lg"
+                  loading="lazy"
+                />
+              </div>
+            ))}
           </div>
         )}
       </div>
-
     </>
   );
 };
 
 export default AllOnlineGames;
 
-
 const gameData = [
   {
     id: 1,
     name: "Win Go",
-    image:
-      "https://i.ibb.co/7xzW3FWt/wingo.png",
+    image: "https://i.ibb.co/7xzW3FWt/wingo.png",
     description1: "Guess Number",
     description2: "Green/Red/Violet to win",
     link: "/wingo",
@@ -394,8 +400,7 @@ const gameData = [
   {
     id: 2,
     name: "K3",
-    image:
-      "https://i.ibb.co/RksPMscQ/k3.png",
+    image: "https://i.ibb.co/RksPMscQ/k3.png",
     description1: "Guess Number",
     description2: "Big/Small/Odd/Even",
     link: "/k3",
@@ -403,8 +408,7 @@ const gameData = [
   {
     id: 3,
     name: "5D",
-    image:
-      "https://i.ibb.co/bj9PQtCK/5d.png",
+    image: "https://i.ibb.co/bj9PQtCK/5d.png",
     description1: "Guess Number",
     description2: "Big/Small/Odd/Even",
     link: "/5d",
@@ -412,12 +416,9 @@ const gameData = [
   {
     id: 4,
     name: "Trx Win Go",
-    image:
-      "https://i.ibb.co/Df41Vh4p/4.png",
+    image: "https://i.ibb.co/Df41Vh4p/4.png",
     description1: "Guess Number",
     description2: "Green/Red/Violet to win",
     link: "/trx",
   },
 ];
-
-

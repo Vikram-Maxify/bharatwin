@@ -1,20 +1,20 @@
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
+import { useCallback, useEffect, useRef, useState } from "react";
 // import { BiCategory } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import JilliPopup from '../../components/JilliPopup';
-import { gameListByGameTypeAndProvider } from '../../store/reducer/spribeGameReducer';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import JilliPopup from "../../components/JilliPopup";
+import { gameListByGameTypeAndProvider } from "../../store/reducer/spribeGameReducer";
 
 const SlotSlider = () => {
   const dispatch = useDispatch();
   const [gameId, setGameId] = useState();
   const [gameList, setGameList] = useState([]);
-  const [gameType, setGameType] = useState('Slot Game');
+  const [gameType, setGameType] = useState("Slot Game");
 
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -27,36 +27,36 @@ const SlotSlider = () => {
     debounce(() => {
       dispatch(
         gameListByGameTypeAndProvider({
-          provider: 'jili',
+          provider: "jili",
           game_type: gameType,
           page: 1,
           size: 9,
-        })
+        }),
       ).then((res) => {
         if (res?.payload?.data?.data) {
           setGameList(res.payload.data.data);
         } else {
           setGameList([
             {
-              icon: 'https://i.ibb.co/wZLh27n3/2.png',
-              game_name: 'Mock Game 1',
-              game_uid: 'mock1',
+              icon: "https://i.ibb.co/wZLh27n3/2.png",
+              game_name: "Mock Game 1",
+              game_uid: "mock1",
             },
             {
-              icon: 'https://i.ibb.co/20SFCY96/3.png',
-              game_name: 'Mock Game 2',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/20SFCY96/3.png",
+              game_name: "Mock Game 2",
+              game_uid: "mock2",
             },
             {
-              icon: 'https://i.ibb.co/Q7NkWTSz/5.png',
-              game_name: 'Mock Game 2',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/Q7NkWTSz/5.png",
+              game_name: "Mock Game 2",
+              game_uid: "mock2",
             },
           ]);
         }
       });
     }, 300),
-    [dispatch, gameType]
+    [dispatch, gameType],
   );
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const SlotSlider = () => {
           <p className="mt-2 flex text-gray-200 items-center gap-2 text-base font-semibold ">
             <span>
               <img
-                src="https://i.ibb.co/N67k0LKm/slots.png"
+                src="https://i.ibb.co/7Nn3hdyq/Chat-GPT-Image-Aug-14-2026-03-05-38-PM.png"
                 className="size-8"
                 alt="icon"
               />

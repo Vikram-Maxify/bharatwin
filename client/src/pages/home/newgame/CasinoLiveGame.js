@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
 import debounce from "lodash/debounce";
+import { useCallback, useEffect, useState } from "react";
 import { gameListByGameTypeAndProvider } from "../../../store/reducer/spribeGameReducer";
 
 import { BiCategory } from "react-icons/bi";
 import { useDispatch } from "react-redux";
-import JilliPopup from "../../../components/JilliPopup";
 import { Link } from "react-router-dom";
+import JilliPopup from "../../../components/JilliPopup";
 
 const casinoData = [
   {
@@ -77,7 +77,7 @@ const CasinoLiveGame = () => {
             <p className="mt-2 flex items-center gap-2 text-base font-semibold ">
               <span>
                 <img
-                  src="https://i.ibb.co/Myb0CYQW/casino.png"
+                  src="https://i.ibb.co/rR8JY3Ys/Chat-GPT-Image-Aug-14-2026-03-17-05-PM.png"
                   className="size-8"
                   alt="icon"
                 />

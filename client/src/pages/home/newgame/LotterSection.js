@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { rechargeList2 } from "../../../store/reducer/userReducer";
-import RechargePopup from "../../../components/RechargePopup";
 import JilliPopup from "../../../components/JilliPopup";
+import RechargePopup from "../../../components/RechargePopup";
 
 const LotterSection = () => {
   const navigate = useNavigate();
@@ -74,7 +73,7 @@ const LotterSection = () => {
         <p className="mt-2 flex items-center gap-2 text-base text-gray-200 font-semibold">
           <span>
             <img
-              src="https://i.ibb.co/tMdpYCYc/wingo.png"
+              src="https://i.ibb.co/mCS1hw9t/L-d9b599f044f44fc10475.png"
               className="size-8"
               alt="icon"
             />
