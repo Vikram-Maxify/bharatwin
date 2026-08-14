@@ -23,15 +23,11 @@ import { BsFire } from "react-icons/bs";
 import Apkdownload from "./Apkdownload";
 import SlotComponents from "./lottery/SlotComponents";
 import PlatformDetails from "./lottery/PlatformDetails";
-import BasicTools from "./lottery/BasicTools";
-import { totalCommission } from "../../store/reducer/promotionReducer";
 import Popup2 from "../../components/Popup2"; // Assuming Popup2 exists in this path
 import EarningChart from "./EarningChart";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-import vipimg from "../../assets/NewImg/1.png";
-import wheelimg from "../../assets/NewImg/2.png";
 
 const Home = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -396,9 +392,9 @@ const Home = () => {
                   ₹{" "}
                   {userInfo?.money_user
                     ? Number(userInfo?.money_user).toLocaleString("en-IN", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })
                     : "0.00"}
                 </p>
               </div>
@@ -436,22 +432,6 @@ const Home = () => {
 
       {mainLoader && <MainLoader />}
 
-      <div className="flex items-center  w-full p-5 ">
-        <img
-          onClick={() => navigate("/WheelSpin")}
-          src="https://i.ibb.co/3G8cRJs/2.png"
-          alt="Turntable"
-          className="w-1/2 h-full object-contain"
-        />
-
-        <img
-          onClick={() => navigate("/vip")}
-          src="https://i.ibb.co/LDJCqnjs/1.png"
-          alt="VIP"
-          className="w-1/2 h-full pl-2 object-contain"
-        />
-      </div>
-
       {/* Banner */}
       <div className="container-section">
         <div className="home-slider-banner">
@@ -465,7 +445,7 @@ const Home = () => {
             modules={[Autoplay]}
             className="mySwiper h-[184px] rounded-xl overflow-hidden"
           >
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((num) => (
+            {[3, 7, 8, 9, 10].map((num) => (
               <SwiperSlide key={num}>
                 <div className="w-full">
                   <img

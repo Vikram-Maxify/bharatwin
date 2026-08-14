@@ -242,11 +242,10 @@ const SlotComponents = () => {
               key={index}
               ref={(el) => (itemRefs.current[category.id] = el)}
               onClick={() => handleCategoryClick(category.id)}
-              className={`whitespace-nowrap w-full flex-col px-1 rounded text-sm flex items-center gap-1 ${
-                activeCategory === category.id
+              className={`whitespace-nowrap w-full flex-col px-1 rounded text-sm flex items-center gap-1 ${activeCategory === category.id
                   ? "opacity-100 text-[#00BFB1]"
                   : "opacity-100 text-gray-500"
-              }`}
+                }`}
             >
               <div className="w-20 h-[70px] relative flex justify-center items-center">
                 <img
@@ -360,11 +359,10 @@ const SlotComponents = () => {
                         key={index}
                         data-id={category.id}
                         onClick={() => handleSlotCategoryClick(category.id)}
-                        className={`flex flex-col items-center whitespace-nowrap py-2 px-1 rounded ${
-                          activeSlotCategory === category.id
+                        className={`flex flex-col items-center whitespace-nowrap py-2 px-1 rounded ${activeSlotCategory === category.id
                             ? "blue-linear2 text-white shadow-lg"
                             : "nav-bg text-gray-600 border-gray-300"
-                        }`}
+                          }`}
                       >
                         <div className="w-20 flex flex-col justify-center items-center">
                           <img
@@ -432,7 +430,7 @@ const SlotComponents = () => {
           </>
         )}
       </div>
-       <RechargePopup repopup={repopup} setRepopup={setRepopup} />
+      <RechargePopup repopup={repopup} setRepopup={setRepopup} />
     </div>
   );
 };
