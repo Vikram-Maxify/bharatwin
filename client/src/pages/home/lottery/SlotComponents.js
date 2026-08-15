@@ -1,52 +1,42 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Black Icons
-import blackIcon1 from "../../../assets/NewImg/slotsicons/black/JILI ICON.png";
 import blackIcon2 from "../../../assets/NewImg/slotsicons/black/CQ9.png";
-import blackIcon3 from "../../../assets/NewImg/slotsicons/black/JDB ICON.png";
-import blackIcon4 from "../../../assets/NewImg/slotsicons/black/mg fish icon.png";
 import blackIcon5 from "../../../assets/NewImg/slotsicons/black/evo_electronic icon.png";
-import blackIcon6 from "../../../assets/NewImg/slotsicons/black/G9 ICON.png";
-import blackIcon7 from "../../../assets/NewImg/slotsicons/black/PG.png";
+import blackIcon3 from "../../../assets/NewImg/slotsicons/black/JDB ICON.png";
+import blackIcon1 from "../../../assets/NewImg/slotsicons/black/JILI ICON.png";
 
 // White Icons
-import whiteIcon1 from "../../../assets/NewImg/slotsicons/white/JILI ICON WHITE.png";
 import whiteIcon2 from "../../../assets/NewImg/slotsicons/white/CQ9 WHITE.png";
-import whiteIcon3 from "../../../assets/NewImg/slotsicons/white/JDB ICON WHITE.png";
-import whiteIcon4 from "../../../assets/NewImg/slotsicons/white/mg video WHITE.png";
 import whiteIcon5 from "../../../assets/NewImg/slotsicons/white/EVO ELECTRONIC WHITE ICON.png";
-import whiteIcon6 from "../../../assets/NewImg/slotsicons/white/G9 WHITE ICON.png";
-import whiteIcon7 from "../../../assets/NewImg/slotsicons/white/pg white icon.png";
+import whiteIcon3 from "../../../assets/NewImg/slotsicons/white/JDB ICON WHITE.png";
+import whiteIcon1 from "../../../assets/NewImg/slotsicons/white/JILI ICON WHITE.png";
 
 // import ch1 from "../../../assets/NewImg/c1.png"
 // import ch2 from "../../../assets/NewImg/c2.png"
 
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import JilliPopup from "../../../components/JilliPopup";
+import RechargePopup from "../../../components/RechargePopup";
+import { notification } from "../../../store/reducer/activityReducer";
+import CasinoSlider from "../CasinoSlider";
+import Fishgameslider from "../Fishgameslider";
+import MiniGames from "../MiniGames";
+import CasinoLiveGame from "../newgame/CasinoLiveGame";
+import CasinoSection from "../newgame/CasinoSection";
+import Cq9Game from "../newgame/Cq9Game";
+import EVOGame from "../newgame/EVOGame";
+import FishingGame from "../newgame/FishingGame";
+import JDBGame from "../newgame/JDBGame";
+import JilliGame from "../newgame/JilliGame";
+import LotterSection from "../newgame/LotterSection";
+import MiniGamesPage from "../newgame/MiniGamesPage";
+import OriginalGame from "../newgame/OriginalGame";
+import SuperJackportGame from "../newgame/SuperJackportGame";
+import SlotSlider from "../SlotSlider";
 import PVCSection from "./PVCSection";
 import SportsComponent from "./SportsComponent";
-import CasinoSection from "../newgame/CasinoSection";
-import { useDispatch, useSelector } from "react-redux";
-import { notification } from "../../../store/reducer/activityReducer";
-import LotterSection from "../newgame/LotterSection";
-import JilliGame from "../newgame/JilliGame";
-import Cq9Game from "../newgame/Cq9Game";
-import JDBGame from "../newgame/JDBGame";
-import MGGame from "../newgame/MGGame";
-import EVOGame from "../newgame/EVOGame";
-import G9Game from "../newgame/G9Game";
-import PGGame from "../newgame/PGGame";
-import MGfishGame from "../newgame/MGfishGame";
-import OriginalGame from "../newgame/OriginalGame";
-import FishingGame from "../newgame/FishingGame";
-import CasinoLiveGame from "../newgame/CasinoLiveGame";
-import SuperJackportGame from "../newgame/SuperJackportGame";
-import MiniGamesPage from "../newgame/MiniGamesPage";
-import SlotSlider from "../SlotSlider";
-import Fishgameslider from "../Fishgameslider";
-import CasinoSlider from "../CasinoSlider";
-import MiniGames from "../MiniGames";
-import JilliPopup from "../../../components/JilliPopup";
-import { useNavigate } from "react-router-dom";
-import RechargePopup from "../../../components/RechargePopup";
 
 const lottery = "https://i.ibb.co/mCS1hw9t/L-d9b599f044f44fc10475.png";
 
@@ -71,8 +61,10 @@ const slotCategories = [
   },
   {
     name: "Slots",
-    blackIcon: "https://i.ibb.co/N67k0LKm/slots.png",
-    whiteIcon: "https://i.ibb.co/N67k0LKm/slots.png",
+    blackIcon:
+      "https://i.ibb.co/7Nn3hdyq/Chat-GPT-Image-Aug-14-2026-03-05-38-PM.png",
+    whiteIcon:
+      "https://i.ibb.co/7Nn3hdyq/Chat-GPT-Image-Aug-14-2026-03-05-38-PM.png",
     id: "slot",
   },
   {
@@ -83,8 +75,10 @@ const slotCategories = [
   },
   {
     name: "Casino",
-    blackIcon: "https://i.ibb.co/Myb0CYQW/casino.png",
-    whiteIcon: "https://i.ibb.co/Myb0CYQW/casino.png",
+    blackIcon:
+      "https://i.ibb.co/rR8JY3Ys/Chat-GPT-Image-Aug-14-2026-03-17-05-PM.png",
+    whiteIcon:
+      "https://i.ibb.co/rR8JY3Ys/Chat-GPT-Image-Aug-14-2026-03-17-05-PM.png",
     id: "casino",
   },
   {
@@ -242,10 +236,11 @@ const SlotComponents = () => {
               key={index}
               ref={(el) => (itemRefs.current[category.id] = el)}
               onClick={() => handleCategoryClick(category.id)}
-              className={`whitespace-nowrap w-full flex-col px-1 rounded text-sm flex items-center gap-1 ${activeCategory === category.id
+              className={`whitespace-nowrap w-full flex-col px-1 rounded text-sm flex items-center gap-1 ${
+                activeCategory === category.id
                   ? "opacity-100 text-[#00BFB1]"
                   : "opacity-100 text-gray-500"
-                }`}
+              }`}
             >
               <div className="w-20 h-[70px] relative flex justify-center items-center">
                 <img
@@ -341,7 +336,7 @@ const SlotComponents = () => {
                   <p className="mt-2 flex items-center gap-2 text-base font-semibold">
                     <span>
                       <img
-                        src="https://i.ibb.co/N67k0LKm/slots.png"
+                        src="https://i.ibb.co/7Nn3hdyq/Chat-GPT-Image-Aug-14-2026-03-05-38-PM.png"
                         className="size-8"
                         alt="icon"
                       />
@@ -359,10 +354,11 @@ const SlotComponents = () => {
                         key={index}
                         data-id={category.id}
                         onClick={() => handleSlotCategoryClick(category.id)}
-                        className={`flex flex-col items-center whitespace-nowrap py-2 px-1 rounded ${activeSlotCategory === category.id
+                        className={`flex flex-col items-center whitespace-nowrap py-2 px-1 rounded ${
+                          activeSlotCategory === category.id
                             ? "blue-linear2 text-white shadow-lg"
                             : "nav-bg text-gray-600 border-gray-300"
-                          }`}
+                        }`}
                       >
                         <div className="w-20 flex flex-col justify-center items-center">
                           <img

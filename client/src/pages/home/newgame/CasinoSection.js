@@ -1,23 +1,21 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
-
+import { useCallback, useEffect, useRef, useState } from "react";
 
 // White icon imports
-import whiteIcon1 from "../../../assets/NewImg/slotsicons/white/evo video icon.png";
 import whiteIcon2 from "../../../assets/NewImg/slotsicons/white/DG ICON WHITE.png";
+import whiteIcon1 from "../../../assets/NewImg/slotsicons/white/evo video icon.png";
 import whiteIcon3 from "../../../assets/NewImg/slotsicons/white/sexy video WHITE.png";
 
-
 // Black icon imports
-import blackIcon1 from "../../../assets/NewImg/slotsicons/black/evo video grey icon.png";
-import blackIcon2 from "../../../assets/NewImg/slotsicons/black/DG ICON.png";
-import blackIcon3 from "../../../assets/NewImg/slotsicons/black/sexy video.png";
 import { BiCategory } from "react-icons/bi";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import blackIcon2 from "../../../assets/NewImg/slotsicons/black/DG ICON.png";
+import blackIcon1 from "../../../assets/NewImg/slotsicons/black/evo video grey icon.png";
+import blackIcon3 from "../../../assets/NewImg/slotsicons/black/sexy video.png";
 
-import debounce  from "lodash/debounce";
-import { gameListByGameTypeAndProvider } from "../../../store/reducer/spribeGameReducer";
+import debounce from "lodash/debounce";
 import JilliPopup from "../../../components/JilliPopup";
+import { gameListByGameTypeAndProvider } from "../../../store/reducer/spribeGameReducer";
 
 const slotCategories = [
   {
@@ -25,17 +23,24 @@ const slotCategories = [
     whiteIcon: whiteIcon1,
     blackIcon: blackIcon1,
     id: "jili",
-    index:2,
-    game:"CasinoLive",
+    index: 2,
+    game: "CasinoLive",
   },
-  { name: "DG", whiteIcon: whiteIcon2, blackIcon: blackIcon2, id: "cq9",game:"CasinoLive & Slot",index:3 },
+  {
+    name: "DG",
+    whiteIcon: whiteIcon2,
+    blackIcon: blackIcon2,
+    id: "cq9",
+    game: "CasinoLive & Slot",
+    index: 3,
+  },
   {
     name: "SEXY_Video",
     whiteIcon: whiteIcon3,
     blackIcon: blackIcon3,
     id: "jdb",
-    game:"Live Casino",
-    index:4
+    game: "Live Casino",
+    index: 4,
   },
   // { name: "MG_Video", whiteIcon: whiteIcon4, blackIcon: blackIcon4, id: "mg" },
 ];
@@ -45,60 +50,59 @@ const CasinoSection = () => {
 
   const categoryRef = useRef();
 
-
   const dispatch = useDispatch();
 
   const [gameId, setGameId] = useState();
-  const [gameList,setGameList]=useState([]);
-const [page,setPage]=useState(2)
+  const [gameList, setGameList] = useState([]);
+  const [page, setPage] = useState(2);
 
-    const [gameType, setGameType] = useState("CasinoLive");
-
+  const [gameType, setGameType] = useState("CasinoLive");
 
   const handleJilliOpen = (data) => {
     setGameId(data);
-   };
-  
-
-
-  const handleCategoryClick = (category,game,index) => {
-   setActiveCategory(category);
-
-    setPage(index)
-
   };
 
-    const fetchGameList = useCallback(
+  const handleCategoryClick = (category, game, index) => {
+    setActiveCategory(category);
+
+    setPage(index);
+  };
+
+  const fetchGameList = useCallback(
     debounce(() => {
-      dispatch(gameListByGameTypeAndProvider({ provider: "evolutionlive",game_type:gameType, page:page, size:8 })).then(
-        (res) => {
-          if (res?.payload?.data?.data) {
-            setGameList(res.payload.data.data);
-          }
+      dispatch(
+        gameListByGameTypeAndProvider({
+          provider: "evolutionlive",
+          game_type: gameType,
+          page: page,
+          size: 8,
+        }),
+      ).then((res) => {
+        if (res?.payload?.data?.data) {
+          setGameList(res.payload.data.data);
         }
-      );
+      });
     }, 300),
-    [dispatch, gameType,page]
+    [dispatch, gameType, page],
   );
-
-
-  
 
   useEffect(() => {
     fetchGameList();
     return () => fetchGameList.cancel();
   }, [fetchGameList]);
 
-
   return (
     <div className=" mt-5  overflow-hidden w-full">
-     {gameId && <JilliPopup gameId={gameId} />}
+      {gameId && <JilliPopup gameId={gameId} />}
 
-     
       <div className="mb-4">
         <p className="mt-2 flex items-center gap-2 text-base font-semibold ">
           <span>
-            <img src="https://i.ibb.co/Myb0CYQW/casino.png" className="size-8" alt="icon" />
+            <img
+              src="https://i.ibb.co/rR8JY3Ys/Chat-GPT-Image-Aug-14-2026-03-17-05-PM.png"
+              className="size-8"
+              alt="icon"
+            />
           </span>
           Casino Live
         </p>
@@ -116,7 +120,9 @@ const [page,setPage]=useState(2)
             <button
               key={index}
               data-id={category.id}
-              onClick={() => handleCategoryClick(category.id,category.game,category.index)}
+              onClick={() =>
+                handleCategoryClick(category.id, category.game, category.index)
+              }
               className={`flex flex-col items-center whitespace-nowrap px-3 py-1 flex-1 rounded ${
                 activeCategory === category.id
                   ? "blue-linear2  text-white shadow-lg"
@@ -146,28 +152,25 @@ const [page,setPage]=useState(2)
         </div>
       </div>
 
-      <div
-        className="games-grid mt-6 grid grid-cols-3 gap-2 px-1"
-      >
-        {gameList&& gameList?.map((game, index) => (
-          <div
-            key={index}
-            className=" rounded-lg shadow-sm hover:shadow-md  h-[200px] transition-shadow "
-          >
-            <img
-            data-origin={game.icon}
-              src={game.icon}
-              alt={`Game ${game.game_name}`}
-              className="w-full h-full rounded-md mb-2 object-fill"
-              onClick={() => 
-                handleJilliOpen(game.game_uid)
-              }
-            />
-          </div>
-        ))}
+      <div className="games-grid mt-6 grid grid-cols-3 gap-2 px-1">
+        {gameList &&
+          gameList?.map((game, index) => (
+            <div
+              key={index}
+              className=" rounded-lg shadow-sm hover:shadow-md  h-[200px] transition-shadow "
+            >
+              <img
+                data-origin={game.icon}
+                src={game.icon}
+                alt={`Game ${game.game_name}`}
+                className="w-full h-full rounded-md mb-2 object-fill"
+                onClick={() => handleJilliOpen(game.game_uid)}
+              />
+            </div>
+          ))}
         {/* Custom card at index six */}
         <Link
-         to={"/home/AllOnlineGames?game=Casino"}
+          to={"/home/AllOnlineGames?game=Casino"}
           className="rounded-lg more-game overflow-hidden flex flex-col justify-between items-center h-[200px]"
         >
           <div className="flex flex-col items-center justify-center py-6">
@@ -179,8 +182,6 @@ const [page,setPage]=useState(2)
           </div>
         </Link>
       </div>
-
-        
     </div>
   );
 };
