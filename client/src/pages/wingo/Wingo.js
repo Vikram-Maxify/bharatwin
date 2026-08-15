@@ -36,7 +36,7 @@ import Audio1 from "../../assets/audio/di1.mp3";
 import Audio2 from "../../assets/audio/di2.mp3";
 import { PiCopySimpleBold } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-import {  userDetail } from "../../store/reducer/authReducer";
+import { userDetail } from "../../store/reducer/authReducer";
 import CopyCopmponent from "../../components/CopyCopmponent";
 import { wingoHistory, wingoPeriodList } from "../../store/reducer/gameReducer";
 import { wingoBet } from "../../store/reducer/betReducer";
@@ -79,7 +79,7 @@ const Wingo = () => {
   const [gameHistory, setGameHistory] = useState("ghistory")
   const [openPopup, setOpenPopup] = useState(false)
   const [openTime, setOpenTime] = useState(false)
-  
+
   const [openHowtoPlay, setHowtoPlay] = useState(false)
   const [details, setDetails] = useState(null)
   const [refershPopup, setRefeshPopup] = useState(false)
@@ -100,8 +100,8 @@ const Wingo = () => {
   const [resultPopup, setResultPopup] = useState(false)
   const [copyPopup, setCopyPopup] = useState(false)
   const calledRef = useRef(false);
-const location = useLocation();
-const queryParams = new URLSearchParams(location.search);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
   const Game = queryParams.get("Game");
 
   const [selectBet, setSelectBet] = useState("")
@@ -130,12 +130,12 @@ const queryParams = new URLSearchParams(location.search);
 
     setPageto(10)
     debouncedDispatch(dispatch, data, pageno, pageto);
- navigate(`/wingo?Game=${data}`);
+    navigate(`/wingo?Game=${data}`);
 
   }
 
 
-  
+
 
 
   const [isChecked, setIsChecked] = useState(true);
@@ -163,8 +163,8 @@ const queryParams = new URLSearchParams(location.search);
   useEffect(() => {
     // const wingominutes = localStorage?.getItem('wingominute');
     // if (wingominutes !== null) {
-      setActiveTime(Number(Game))
-      setTypeid1(Number(Game))
+    setActiveTime(Number(Game))
+    setTypeid1(Number(Game))
     // }
 
     if (typeid1 !== null) {
@@ -277,10 +277,11 @@ const queryParams = new URLSearchParams(location.search);
   };
 
   const handleBet = async () => {
+    setOpenPopup(false)
     dispatch(wingoBet({ typeid1, selectBet, balance, multiplier })).then((res) => {
       setBetAlert(true)
       dispatch(userDetail())
-      setOpenPopup(false)
+      // setOpenPopup(false)
       setMessage(res.payload.message)
       setBalance(1)
       setMultiplier(1)
@@ -299,7 +300,7 @@ const queryParams = new URLSearchParams(location.search);
   }
 
   useEffect(() => {
-  
+
     debouncedDispatch(dispatch, Number(Game), pageno, pageto);
   }, [dispatch])
 
@@ -455,7 +456,7 @@ const queryParams = new URLSearchParams(location.search);
 
 
 
-// const socket = useRef(null);
+  // const socket = useRef(null);
   const isConnectedRef = useRef(false);
 
   const setSocketListeners = (typeid) => {
@@ -576,32 +577,32 @@ const queryParams = new URLSearchParams(location.search);
 
 
 
-// Add a function to get the appropriate content based on activeTime
- const getHowToPlayContent = () => {
-    switch(activeTime) {
+  // Add a function to get the appropriate content based on activeTime
+  const getHowToPlayContent = () => {
+    switch (activeTime) {
       case 10: // 30s
         return (
           <>
             <p className="font-bold">
-              30 seconds 1 issue, 25 seconds to order, 5 seconds waiting for the draw. 
+              30 seconds 1 issue, 25 seconds to order, 5 seconds waiting for the draw.
               It opens all day. The total number of trade is 2880 issues.
             </p>
             <p className="font-bold">
               If you spend 100 to trade, after deducting 2 service fee, your contract amount is 98:
             </p>
             <p>
-              1. Select green: if the result shows 1,3,7,9 you will get (98*2)=196; 
+              1. Select green: if the result shows 1,3,7,9 you will get (98*2)=196;
               If the result shows 5, you will get (98*1.5) 147
             </p>
             <p>
-              2. Select red: if the result shows 2,4,6,8 you will get (98*2)=196; 
+              2. Select red: if the result shows 2,4,6,8 you will get (98*2)=196;
               If the result shows 0, you will get (98*1.5) 147
             </p>
             <p>
               3. Select violet: if the result shows 0 or 5, you will get (98*4.5) 441
             </p>
             <p>
-              4. Select number: if the result is the same as the number you selected, 
+              4. Select number: if the result is the same as the number you selected,
               you will get (98*9)=882
             </p>
             <p>
@@ -616,25 +617,25 @@ const queryParams = new URLSearchParams(location.search);
         return (
           <>
             <p className="font-bold">
-              1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the draw. 
+              1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the draw.
               It opens all day. The total number of trades is 1440 issues.
             </p>
             <p className="font-bold">
               If you spend 100 to trade, after deducting a 2 service fee, your contract amount is 98:
             </p>
             <p>
-              1. Select green: If the result shows 1, 3, 7, 9, you will get (98 * 2) 196; 
+              1. Select green: If the result shows 1, 3, 7, 9, you will get (98 * 2) 196;
               If the result shows 5, you will get (98 * 1.5) 147.
             </p>
             <p>
-              2. Select red: If the result shows 2, 4, 6, 8, you will get (98 * 2) 196; 
+              2. Select red: If the result shows 2, 4, 6, 8, you will get (98 * 2) 196;
               If the result shows 0, you will get (98 * 1.5) 147.
             </p>
             <p>
               3. Select violet: If the result shows 0 or 5, you will get (98 * 4.5) 441.
             </p>
             <p>
-              4. Select number: If the result is the same as the number you selected, 
+              4. Select number: If the result is the same as the number you selected,
               you will get (98 * 9) 882.
             </p>
             <p>
@@ -649,25 +650,25 @@ const queryParams = new URLSearchParams(location.search);
         return (
           <>
             <p className="font-bold">
-              3 minutes 1 issue, 2 minutes and 45 seconds to order, 15 seconds waiting for the draw. 
+              3 minutes 1 issue, 2 minutes and 45 seconds to order, 15 seconds waiting for the draw.
               It opens all day. The total number of trade is 480 issues.
             </p>
             <p className="font-bold">
               If you spend 100 to trade, after deducting 2 service fee, your contract amount is 98:
             </p>
             <p>
-              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 * 2) 196; 
+              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 * 2) 196;
               If the result shows 5, you will get (98 * 1.5) 147
             </p>
             <p>
-              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 * 2) 196; 
+              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 * 2) 196;
               If the result shows 0, you will get (98 * 1.5) 147
             </p>
             <p>
               3. Select violet: if the result shows 0 or 5, you will get (98 * 4.5) 441
             </p>
             <p>
-              4. Select number: if the result is the same as the number you selected, 
+              4. Select number: if the result is the same as the number you selected,
               you will get (98 * 9) 882
             </p>
             <p>
@@ -682,25 +683,25 @@ const queryParams = new URLSearchParams(location.search);
         return (
           <>
             <p className="font-bold">
-              5 minutes 1 issue, 4 minutes and 45 seconds to order, 15 seconds waiting for the draw. 
+              5 minutes 1 issue, 4 minutes and 45 seconds to order, 15 seconds waiting for the draw.
               It opens all day. The total number of trade is 288 issues.
             </p>
             <p className="font-bold">
               If you spend 100 to trade, after deducting 2 service fee, your contract amount is 98:
             </p>
             <p>
-              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 * 2) 196; 
+              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 * 2) 196;
               If the result shows 5, you will get (98 * 1.5) 147
             </p>
             <p>
-              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 * 2) 196; 
+              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 * 2) 196;
               If the result shows 0, you will get (98 * 1.5) 147
             </p>
             <p>
               3. Select violet: if the result shows 0 or 5, you will get (98 * 4.5) 441
             </p>
             <p>
-              4. Select number: if the result is the same as the number you selected, 
+              4. Select number: if the result is the same as the number you selected,
               you will get (98 * 9) 882
             </p>
             <p>
@@ -727,169 +728,161 @@ const queryParams = new URLSearchParams(location.search);
     <>
 
 
-     
 
-    <ServiceRotate/>
-      {!userInfo&& <Loader/>}
+
+      <ServiceRotate />
+      {!userInfo && <Loader />}
       <HeaderInfo
         handleRefersh={handleRefersh}
         money={Number(userInfo?.money_user).toFixed(2)}
-          handleVoice={handleVoice}
+        handleVoice={handleVoice}
         activeVoice={activeVoice}
       />
 
       <div className="container-section relative mt-[-79px]">
         {/* time tabs */}
         {/* Time tabs */}
-      <div className="grid grid-cols-12 bg-popup-nav rounded-xl">
-        <div
-          className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${
-            activeTime == "10" ? "blue-linear2" : ""
-          }`}
-          onClick={() => handleWingoMinut(10)}
-        >
-          <img
-            src={activeTime == "10" ? TimeActiveImg : TimeImg}
-            alt="30 seconds"
-            className={`w-10 ${activeTime=="10"?"hue-rotate-45":""}`}
-          />
-          <p
-            className={`text-center fs-sm font-sans leading-4 ${
-              activeTime == "10" ? "text-black" : "gray-text"
-            }`}
+        <div className="grid grid-cols-12 bg-popup-nav rounded-xl">
+          <div
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${activeTime == "10" ? "blue-linear2" : ""
+              }`}
+            onClick={() => handleWingoMinut(10)}
           >
-            Win Go <br /> 30s
-          </p>
-        </div>
+            <img
+              src={activeTime == "10" ? TimeActiveImg : TimeImg}
+              alt="30 seconds"
+              className={`w-10 ${activeTime == "10" ? "hue-rotate-45" : ""}`}
+            />
+            <p
+              className={`text-center fs-sm font-sans leading-4 ${activeTime == "10" ? "text-black" : "gray-text"
+                }`}
+            >
+              Win Go <br /> 30s
+            </p>
+          </div>
 
-        <div
-          className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 ${
-            activeTime == "1" ? "blue-linear2" : ""
-          } rounded-xl`}
-          onClick={() => handleWingoMinut(1)}
-        >
-          <img
-            src={activeTime == "1" ? TimeActiveImg : TimeImg}
-            alt="1 minute"
-            className={`w-10 ${activeTime=="1"?"hue-rotate-45":""}`}
-          />
-          <p
-            className={`text-center fs-sm font-sans leading-4 ${
-              activeTime == "1" ? "text-black" : "gray-text"
-            }`}
+          <div
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 ${activeTime == "1" ? "blue-linear2" : ""
+              } rounded-xl`}
+            onClick={() => handleWingoMinut(1)}
           >
-            Win Go <br /> 1Min
-          </p>
-        </div>
+            <img
+              src={activeTime == "1" ? TimeActiveImg : TimeImg}
+              alt="1 minute"
+              className={`w-10 ${activeTime == "1" ? "hue-rotate-45" : ""}`}
+            />
+            <p
+              className={`text-center fs-sm font-sans leading-4 ${activeTime == "1" ? "text-black" : "gray-text"
+                }`}
+            >
+              Win Go <br /> 1Min
+            </p>
+          </div>
 
-        <div
-          className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${
-            activeTime == "3" ? "blue-linear2" : ""
-          }`}
-          onClick={() => handleWingoMinut(3)}
-        >
-          <img
-            src={activeTime == "3" ? TimeActiveImg : TimeImg}
-            alt="3 minutes"
-            className={`w-10 ${activeTime=="3"?"hue-rotate-45":""}`}
-          />
-          <p
-            className={`text-center fs-sm font-sans leading-4 ${
-              activeTime == "3" ? "text-black" : "gray-text"
-            }`}
+          <div
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${activeTime == "3" ? "blue-linear2" : ""
+              }`}
+            onClick={() => handleWingoMinut(3)}
           >
-            Win Go <br /> 3Min
-          </p>
-        </div>
+            <img
+              src={activeTime == "3" ? TimeActiveImg : TimeImg}
+              alt="3 minutes"
+              className={`w-10 ${activeTime == "3" ? "hue-rotate-45" : ""}`}
+            />
+            <p
+              className={`text-center fs-sm font-sans leading-4 ${activeTime == "3" ? "text-black" : "gray-text"
+                }`}
+            >
+              Win Go <br /> 3Min
+            </p>
+          </div>
 
-        <div
-          className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${
-            activeTime == "5" ? "blue-linear2" : ""
-          }`}
-          onClick={() => handleWingoMinut(5)}
-        >
-          <img
-            src={activeTime == "5" ? TimeActiveImg : TimeImg}
-            alt="5 minutes"
-            className={`w-10 ${activeTime=="5"?"hue-rotate-45":""}`}
-          />
-          <p
-            className={`text-center fs-sm font-sans leading-4 ${
-              activeTime == "5" ? "text-black" : "gray-text"
-            }`}
+          <div
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${activeTime == "5" ? "blue-linear2" : ""
+              }`}
+            onClick={() => handleWingoMinut(5)}
           >
-            Win Go <br /> 5Min
-          </p>
+            <img
+              src={activeTime == "5" ? TimeActiveImg : TimeImg}
+              alt="5 minutes"
+              className={`w-10 ${activeTime == "5" ? "hue-rotate-45" : ""}`}
+            />
+            <p
+              className={`text-center fs-sm font-sans leading-4 ${activeTime == "5" ? "text-black" : "gray-text"
+                }`}
+            >
+              Win Go <br /> 5Min
+            </p>
+          </div>
         </div>
-      </div>
 
         {/* wingo time period */}
         {/* Wingo time period */}
-      <div className="wingo-period-bg flex justify-between mt-4 rounded-lg p-2">
-        <div>
-          <button
-            className="border border-black flex items-center justify-center text-black rounded-full px-4 py-[1px]"
-            onClick={() => setHowtoPlay(true)}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="svg-white"
-              width="20"
-              height="20"
-              viewBox="0 0 36 36"
-              fill="#fff"
+        <div className="wingo-period-bg flex justify-between mt-4 rounded-lg p-2">
+          <div>
+            <button
+              className="border border-black flex items-center justify-center text-black rounded-full px-4 py-[1px]"
+              onClick={() => setHowtoPlay(true)}
             >
-              <path
-                d="M23.67 3H12.33C6.66 3 5.25 4.515 5.25 10.56V27.45C5.25 31.44 7.44 32.385 10.095 29.535L10.11 29.52C11.34 28.215 13.215 28.32 14.28 29.745L15.795 31.77C17.01 33.375 18.975 33.375 20.19 31.77L21.705 29.745C22.785 28.305 24.66 28.2 25.89 29.52C28.56 32.37 30.735 31.425 30.735 27.435V10.56C30.75 4.515 29.34 3 23.67 3ZM11.67 18C10.845 18 10.17 17.325 10.17 16.5C10.17 15.675 10.845 15 11.67 15C12.495 15 13.17 15.675 13.17 16.5C13.17 17.325 12.495 18 11.67 18ZM11.67 12C10.845 12 10.17 11.325 10.17 10.5C10.17 9.675 10.845 9 11.67 9C12.495 9 13.17 9.675 13.17 10.5C13.17 11.325 12.495 12 11.67 12ZM24.345 17.625H16.095C15.48 17.625 14.97 17.115 14.97 16.5C14.97 15.885 15.48 15.375 16.095 15.375H24.345C24.96 15.375 25.47 15.885 25.47 16.5C25.47 17.115 24.96 17.625 24.345 17.625ZM24.345 11.625H16.095C15.48 11.625 14.97 11.115 14.97 10.5C14.97 9.885 15.48 9.375 16.095 9.375H24.345C24.96 9.375 25.47 9.885 25.47 10.5C25.47 11.115 24.96 11.625 24.345 11.625Z"
-                fill="currentColor"
-              ></path>
-            </svg>
-            <span className="fs-sm">How to play</span>
-          </button>
-          <p className="fs-sm ms-1 mb-3 mt-1 text-black">
-            Win Go {activeTime == "10" ? "30s" : activeTime + "Min"}
-          </p>
-          <div className="flex items-center">
-            {Array.isArray(wingoPeriodListData?.data?.gameslist) &&
-              wingoPeriodListData.data.gameslist
-                .slice(0, 5)
-                .map((item, i) => (
-                  <div key={i}>
-                    <img
-                      src={ImgData[item.amount]}
-                      alt={`Image ${i}`}
-                      className="w-[1.6rem] mx-1"
-                    />
-                  </div>
-                ))}
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="svg-white"
+                width="20"
+                height="20"
+                viewBox="0 0 36 36"
+                fill="#fff"
+              >
+                <path
+                  d="M23.67 3H12.33C6.66 3 5.25 4.515 5.25 10.56V27.45C5.25 31.44 7.44 32.385 10.095 29.535L10.11 29.52C11.34 28.215 13.215 28.32 14.28 29.745L15.795 31.77C17.01 33.375 18.975 33.375 20.19 31.77L21.705 29.745C22.785 28.305 24.66 28.2 25.89 29.52C28.56 32.37 30.735 31.425 30.735 27.435V10.56C30.75 4.515 29.34 3 23.67 3ZM11.67 18C10.845 18 10.17 17.325 10.17 16.5C10.17 15.675 10.845 15 11.67 15C12.495 15 13.17 15.675 13.17 16.5C13.17 17.325 12.495 18 11.67 18ZM11.67 12C10.845 12 10.17 11.325 10.17 10.5C10.17 9.675 10.845 9 11.67 9C12.495 9 13.17 9.675 13.17 10.5C13.17 11.325 12.495 12 11.67 12ZM24.345 17.625H16.095C15.48 17.625 14.97 17.115 14.97 16.5C14.97 15.885 15.48 15.375 16.095 15.375H24.345C24.96 15.375 25.47 15.885 25.47 16.5C25.47 17.115 24.96 17.625 24.345 17.625ZM24.345 11.625H16.095C15.48 11.625 14.97 11.115 14.97 10.5C14.97 9.885 15.48 9.375 16.095 9.375H24.345C24.96 9.375 25.47 9.885 25.47 10.5C25.47 11.115 24.96 11.625 24.345 11.625Z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+              <span className="fs-sm">How to play</span>
+            </button>
+            <p className="fs-sm ms-1 mb-3 mt-1 text-black">
+              Win Go {activeTime == "10" ? "30s" : activeTime + "Min"}
+            </p>
+            <div className="flex items-center">
+              {Array.isArray(wingoPeriodListData?.data?.gameslist) &&
+                wingoPeriodListData.data.gameslist
+                  .slice(0, 5)
+                  .map((item, i) => (
+                    <div key={i}>
+                      <img
+                        src={ImgData[item.amount]}
+                        alt={`Image ${i}`}
+                        className="w-[1.6rem] mx-1"
+                      />
+                    </div>
+                  ))}
+            </div>
           </div>
-        </div>
 
-        {/* Period */}
-        <div className="flex flex-col items-end">
-          <p className="text-sm font-bold text-black">Time remaining</p>
-          <div className="flex items-center mt-1">
-            <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
-              {minutetime1}
-            </span>
-            <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
-              {minutetime2}
-            </span>
-            <span className="nav-bg px-1 text-lg mx-[1px] font-semibold text-whites">
-              :
-            </span>
-            <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
-              {secondtime1}
-            </span>
-            <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
-              {secondtime2}
-            </span>
+          {/* Period */}
+          <div className="flex flex-col items-end">
+            <p className="text-sm font-bold text-black">Time remaining</p>
+            <div className="flex items-center mt-1">
+              <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
+                {minutetime1}
+              </span>
+              <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
+                {minutetime2}
+              </span>
+              <span className="nav-bg px-1 text-lg mx-[1px] font-semibold text-whites">
+                :
+              </span>
+              <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
+                {secondtime1}
+              </span>
+              <span className="nav-bg text-lg mx-[1px] font-semibold w-5 text-center text-whites">
+                {secondtime2}
+              </span>
+            </div>
+            <h5 className="heading-h5 text-base font-bold mt-2 text-black">
+              {wingoPeriodListData?.period}
+            </h5>
           </div>
-          <h5 className="heading-h5 text-base font-bold mt-2 text-black">
-            {wingoPeriodListData?.period}
-          </h5>
         </div>
-      </div>
 
 
         {/* bet period section */}
@@ -918,19 +911,19 @@ const queryParams = new URLSearchParams(location.search);
             </div>
 
             <div className="bgs-body mt-2 p-2 rounded-lg">
-  <div className="grid grid-cols-10 gap-3 p-1">
-    {ImgData.map((item, i) => (
-      <div
-        key={i}
-        className={`col-span-2 flex justify-center items-center  rounded ${animate ? "animate-up-down" : ""}`}
-        onClick={() => selectBetHandle(i)}
-        style={{ animationDelay: `${i * 0.3}s` }}
-      >
-        <img src={item} alt={`Image ${i}`} className="w-14" />
-      </div>
-    ))}
-  </div>
-</div>
+              <div className="grid grid-cols-10 gap-3 p-1">
+                {ImgData.map((item, i) => (
+                  <div
+                    key={i}
+                    className={`col-span-2 flex justify-center items-center  rounded ${animate ? "animate-up-down" : ""}`}
+                    onClick={() => selectBetHandle(i)}
+                    style={{ animationDelay: `${i * 0.3}s` }}
+                  >
+                    <img src={item} alt={`Image ${i}`} className="w-14" />
+                  </div>
+                ))}
+              </div>
+            </div>
 
 
             <div className="flex items-center  justify-between mt-2">
@@ -943,9 +936,8 @@ const queryParams = new URLSearchParams(location.search);
               <div className="flex items-center ">
                 {xData.map((item, i) => (
                   <button
-                    className={`bgs-body text-whites text-sm mr-1 px-[6px] py-[5px] rounded-md ${
-                      activeX === i ? "bgs-green text-white" : ""
-                    }`}
+                    className={`bgs-body text-whites text-sm mr-1 px-[6px] py-[5px] rounded-md ${activeX === i ? "bgs-green text-white" : ""
+                      }`}
                     key={i}
                     onClick={() => {
                       setActiveX(i);
@@ -991,11 +983,10 @@ const queryParams = new URLSearchParams(location.search);
         <div className="grid mt-5 grid-cols-12 gap-3">
           <div className="col-span-4 ">
             <button
-              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${
-                gameHistory == "ghistory"
-                  ? " text-base blue-linear text-black font-medium "
-                  : "nav-bg text-sm text-whites"
-              }`}
+              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${gameHistory == "ghistory"
+                ? " text-base blue-linear text-black font-medium "
+                : "nav-bg text-sm text-whites"
+                }`}
               onClick={() => setGameHistory("ghistory")}
             >
               Game history
@@ -1003,11 +994,10 @@ const queryParams = new URLSearchParams(location.search);
           </div>
           <div className="col-span-4 ">
             <button
-              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${
-                gameHistory == "chart"
-                  ? "text-base blue-linear text-black font-medium "
-                  : "nav-bg text-sm whites"
-              }`}
+              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${gameHistory == "chart"
+                ? "text-base blue-linear text-black font-medium "
+                : "nav-bg text-sm whites"
+                }`}
               onClick={() => {
                 setGameHistory("chart");
                 chartFunction();
@@ -1018,11 +1008,10 @@ const queryParams = new URLSearchParams(location.search);
           </div>
           <div className="col-span-4 ">
             <button
-              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${
-                gameHistory == "mhistory"
-                  ? " text-base blue-linear text-black font-medium "
-                  : "nav-bg text-sm text-whites"
-              }`}
+              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${gameHistory == "mhistory"
+                ? " text-base blue-linear text-black font-medium "
+                : "nav-bg text-sm text-whites"
+                }`}
               onClick={() => setGameHistory("mhistory")}
             >
               My history
@@ -1058,18 +1047,17 @@ const queryParams = new URLSearchParams(location.search);
                   </div>
                   <div className="col-span-2 pl-4 text-center justify-center  items-center">
                     <span
-                      className={`text-2xl gray-50 font-bold color-red-200 ${
-                        item.amount === 0
-                          ? "color-red-voilet"
-                          : item.amount === 5
+                      className={`text-2xl gray-50 font-bold color-red-200 ${item.amount === 0
+                        ? "color-red-voilet"
+                        : item.amount === 5
                           ? "color-green-voilet"
                           : item.amount === 1 ||
                             item.amount === 3 ||
                             item.amount === 7 ||
                             item.amount === 9
-                          ? "color-green"
-                          : "color-red-200"
-                      }`}
+                            ? "color-green"
+                            : "color-red-200"
+                        }`}
                     >
                       {item.amount}
                     </span>
@@ -1084,24 +1072,22 @@ const queryParams = new URLSearchParams(location.search);
                       {item.amount === 0 || item.amount === 5 ? (
                         <span className="flex justify-center items-center">
                           <FaCircle
-                            className={`${
-                              item.amount === 0
-                                ? "color-red-200 "
-                                : "color-green"
-                            }`}
+                            className={`${item.amount === 0
+                              ? "color-red-200 "
+                              : "color-green"
+                              }`}
                           />
                           <FaCircle className={`ms-2 color-violet`} />
                         </span>
                       ) : (
                         <FaCircle
-                          className={`${
-                            item.amount === 1 ||
+                          className={`${item.amount === 1 ||
                             item.amount === 3 ||
                             item.amount === 7 ||
                             item.amount === 9
-                              ? "color-green"
-                              : "color-red-200"
-                          } `}
+                            ? "color-green"
+                            : "color-red-200"
+                            } `}
                         />
                       )}
                     </span>
@@ -1110,9 +1096,8 @@ const queryParams = new URLSearchParams(location.search);
               ))}
             <div className="nav-bg p-6 flex items-center justify-center mt-5">
               <button
-                className={`rounded-md p-2 mr-4 ${
-                  pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-popup-nav"
-                } `}
+                className={`rounded-md p-2 mr-4 ${pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-popup-nav"
+                  } `}
                 disabled={pageto / 10 > 1 ? false : true}
                 onClick={handleDecrease}
               >
@@ -1125,11 +1110,10 @@ const queryParams = new URLSearchParams(location.search);
                 {pageto / 10}/{wingoPeriodListData?.page}
               </span>
               <button
-                className={`rounded-md p-2 ms-4 ${
-                  wingoPeriodListData?.page
-                    ? "bg-color-l2 text-black"
-                    : "bg-popup-nav text-whites"
-                } `}
+                className={`rounded-md p-2 ms-4 ${wingoPeriodListData?.page
+                  ? "bg-color-l2 text-black"
+                  : "bg-popup-nav text-whites"
+                  } `}
                 disabled={
                   wingoPeriodListData?.page > pageto / 10 ? false : true
                 }
@@ -1237,74 +1221,64 @@ const queryParams = new URLSearchParams(location.search);
                           </div>
                           <div className="sec ">
                             <span
-                              className={`${
-                                item.amount === 0 ? "active bg-red-voilet" : ""
-                              } `}
+                              className={`${item.amount === 0 ? "active bg-red-voilet" : ""
+                                } `}
                             >
                               0
                             </span>
                             <span
-                              className={`${
-                                item.amount === 1 ? "active bgs-green" : ""
-                              }`}
+                              className={`${item.amount === 1 ? "active bgs-green" : ""
+                                }`}
                             >
                               1
                             </span>
                             <span
-                              className={`${
-                                item.amount === 2 ? "active bgs-red-200" : ""
-                              }`}
+                              className={`${item.amount === 2 ? "active bgs-red-200" : ""
+                                }`}
                             >
                               2
                             </span>
                             <span
-                              className={`${
-                                item.amount === 3 ? "active bgs-green" : ""
-                              }`}
+                              className={`${item.amount === 3 ? "active bgs-green" : ""
+                                }`}
                             >
                               3
                             </span>
                             <span
-                              className={`${
-                                item.amount === 4 ? "active bgs-red-200" : ""
-                              }`}
+                              className={`${item.amount === 4 ? "active bgs-red-200" : ""
+                                }`}
                             >
                               4
                             </span>
                             <span
-                              className={`${
-                                item.amount === 5
-                                  ? "active  bg-green-voilet"
-                                  : ""
-                              }`}
+                              className={`${item.amount === 5
+                                ? "active  bg-green-voilet"
+                                : ""
+                                }`}
                             >
                               5
                             </span>
                             <span
-                              className={`${
-                                item.amount === 6 ? "active bgs-red-200" : ""
-                              }`}
+                              className={`${item.amount === 6 ? "active bgs-red-200" : ""
+                                }`}
                             >
                               6
                             </span>
                             <span
-                              className={`${
-                                item.amount === 7 ? "active bgs-green" : ""
-                              }`}
+                              className={`${item.amount === 7 ? "active bgs-green" : ""
+                                }`}
                             >
                               7
                             </span>
                             <span
-                              className={`${
-                                item.amount === 8 ? "active bgs-red-200" : ""
-                              }`}
+                              className={`${item.amount === 8 ? "active bgs-red-200" : ""
+                                }`}
                             >
                               8
                             </span>
                             <span
-                              className={`${
-                                item.amount === 9 ? "active bgs-green" : ""
-                              }`}
+                              className={`${item.amount === 9 ? "active bgs-green" : ""
+                                }`}
                             >
                               9
                             </span>
@@ -1323,9 +1297,8 @@ const queryParams = new URLSearchParams(location.search);
 
             <div className="nav-bg p-6 flex items-center justify-center mt-5">
               <button
-                className={`rounded-md p-2 mr-4 ${
-                  pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-text-whites"
-                } `}
+                className={`rounded-md p-2 mr-4 ${pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-text-whites"
+                  } `}
                 disabled={pageto / 10 > 1 ? false : true}
                 onClick={handleDecrease}
               >
@@ -1338,11 +1311,10 @@ const queryParams = new URLSearchParams(location.search);
                 {pageto / 10}/{wingoPeriodListData?.page}
               </span>
               <button
-                className={`rounded-md p-2 ms-4 ${
-                  wingoPeriodListData?.page
-                    ? "bg-color-l2 text-black"
-                    : "bg-text-whites"
-                } `}
+                className={`rounded-md p-2 ms-4 ${wingoPeriodListData?.page
+                  ? "bg-color-l2 text-black"
+                  : "bg-text-whites"
+                  } `}
                 disabled={
                   wingoPeriodListData?.page > pageto / 10 ? false : true
                 }
@@ -1380,41 +1352,40 @@ const queryParams = new URLSearchParams(location.search);
                     <div className="flex items-center">
                       <div
                         className={`flex justify-center h-9 w-9 items-center fs-sm rounded-lg mr-2 
-                     ${
-                       item.bet == "x"
-                         ? "bgs-green"
-                         : item.bet == "d"
-                         ? "bgs-red-200"
-                         : item.bet == "t"
-                         ? "bgs-violet"
-                         : item.bet == "l"
-                         ? "color-yellow-bg-200"
-                         : item.bet == "n"
-                         ? "bgs-blue-500"
-                         : item.bet == "0"
-                         ? "bg-red-voilet"
-                         : item.bet == "5"
-                         ? "bg-green-voilet"
-                         : item.bet == 1 ||
-                           item.bet == 3 ||
-                           item.bet == 7 ||
-                           item.bet == 9
-                         ? "bgs-green"
-                         : "bgs-red-200"
-                     }
+                     ${item.bet == "x"
+                            ? "bgs-green"
+                            : item.bet == "d"
+                              ? "bgs-red-200"
+                              : item.bet == "t"
+                                ? "bgs-violet"
+                                : item.bet == "l"
+                                  ? "color-yellow-bg-200"
+                                  : item.bet == "n"
+                                    ? "bgs-blue-500"
+                                    : item.bet == "0"
+                                      ? "bg-red-voilet"
+                                      : item.bet == "5"
+                                        ? "bg-green-voilet"
+                                        : item.bet == 1 ||
+                                          item.bet == 3 ||
+                                          item.bet == 7 ||
+                                          item.bet == 9
+                                          ? "bgs-green"
+                                          : "bgs-red-200"
+                          }
                       `}
                       >
                         {item.bet == "x"
                           ? "" //Green
                           : item.bet == "t"
-                          ? "Voilet"
-                          : item.bet == "l"
-                          ? "Big"
-                          : item.bet == "n"
-                          ? "Small"
-                          : item.bet == "d"
-                          ? ""  //Red
-                          : item.bet}
+                            ? "Voilet"
+                            : item.bet == "l"
+                              ? "Big"
+                              : item.bet == "n"
+                                ? "Small"
+                                : item.bet == "d"
+                                  ? ""  //Red
+                                  : item.bet}
                       </div>
                       <div>
                         <h3 className="heading-h3  text-whites text-base">
@@ -1427,37 +1398,34 @@ const queryParams = new URLSearchParams(location.search);
                     {item.status !== 0 && (
                       <div className="flex flex-col items-end">
                         <div
-                          className={`border  px-5 py-[2px] rounded-md fs-sm  ${
-                            item.status === 1
-                              ? "color-green border-color-green"
-                              : "color-red-200 border-color-red"
-                          }`}
+                          className={`border  px-5 py-[2px] rounded-md fs-sm  ${item.status === 1
+                            ? "color-green border-color-green"
+                            : "color-red-200 border-color-red"
+                            }`}
                         >
                           {item.status === 1 ? "Succeed" : " Failed"}
                         </div>
-                        
+
                         <p
-                          className={`color-red-200 fs-sm mt-2 ${
-                            item.status === 1 ? "color-green " : "color-red-200"
-                          }`}
+                          className={`color-red-200 fs-sm mt-2 ${item.status === 1 ? "color-green " : "color-red-200"
+                            }`}
                         >
                           {item.status === 1
                             ? "+₹" + Number(item.get).toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
                             : "-₹" + Number(item.money).toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
                         </p>
                       </div>
                     )}
                   </div>
                   <div
-                    className={`mt-3 history-details ${
-                      details === i ? "active mb-5" : ""
-                    }`}
+                    className={`mt-3 history-details ${details === i ? "active mb-5" : ""
+                      }`}
                   >
                     <h2 className="heading-h2 gray-50 text-lg">Details</h2>
                     <div className="flex bg-popup-nav items-center justify-between text-sm p-1 mb-2 rounded-md">
@@ -1487,9 +1455,9 @@ const queryParams = new URLSearchParams(location.search);
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className="text-whites ">Amount after tax</span>
                       <span className="color-red-200 ">₹{Number(item.money).toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}</span>
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      })}</span>
                     </div>
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className="text-whites ">Tax</span>
@@ -1500,21 +1468,20 @@ const queryParams = new URLSearchParams(location.search);
                       {item.status !== 0 && (
                         <div className=" flex text-center justify-center  items-center">
                           <span
-                            className={`color-red-200 text-base  ${
-                              item.result === 0
-                                ? "color-red-voilet"
-                                : item.result === 5
+                            className={`color-red-200 text-base  ${item.result === 0
+                              ? "color-red-voilet"
+                              : item.result === 5
                                 ? "color-green-voilet"
                                 : item.result === 1 ||
                                   item.result === 3 ||
                                   item.result === 7 ||
                                   item.result === 9 ||
                                   item.result == "x"
-                                ? "color-green"
-                                : item.result == "t"
-                                ? "color-voilet"
-                                : "color-red-200"
-                            }`}
+                                  ? "color-green"
+                                  : item.result == "t"
+                                    ? "color-voilet"
+                                    : "color-red-200"
+                              }`}
                           >
                             {item.result}
                           </span>
@@ -1528,47 +1495,45 @@ const queryParams = new URLSearchParams(location.search);
                         {item.bet == "x"
                           ? "Green"
                           : item.bet == "t"
-                          ? "Voilet"
-                          : item.bet == "l"
-                          ? "Big"
-                          : item.bet == "n"
-                          ? "Small"
-                          : item.bet == "d"
-                          ? "Red"
-                          : item.bet}
+                            ? "Voilet"
+                            : item.bet == "l"
+                              ? "Big"
+                              : item.bet == "n"
+                                ? "Small"
+                                : item.bet == "d"
+                                  ? "Red"
+                                  : item.bet}
                       </span>
                     </div>
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className=" text-whites ">Status</span>
                       {item.status !== 0 && (
                         <span
-                          className={` color-red-200 ${
-                            item.status == 1 ? "color-green" : "color-red-200"
-                          }`}
+                          className={` color-red-200 ${item.status == 1 ? "color-green" : "color-red-200"
+                            }`}
                         >
                           {" "}
                           {item.status === 1 ? "Succeed" : " Failed"}
                         </span>
                       )}
-                     
+
                     </div>
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className=" text-whites ">Win/loss</span>
                       {item.status !== 0 && (
                         <span
-                          className={` ${
-                            item.status === 1 ? "color-green " : "color-red-200"
-                          }`}
+                          className={` ${item.status === 1 ? "color-green " : "color-red-200"
+                            }`}
                         >
                           {item.status === 1
                             ? "+₹" + Number(item.get).toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })
                             : "-₹" + Number(item.money).toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            })}
                         </span>
                       )}
                     </div>
@@ -1581,9 +1546,8 @@ const queryParams = new URLSearchParams(location.search);
               ))}
             <div className="nav-bg p-6 flex items-center justify-center mt-5">
               <button
-                className={`rounded-md p-2 mr-4 ${
-                  pageto / 10 >= 2 ? "bg-popup-nav text-black" : "bg-popup-nav"
-                } `}
+                className={`rounded-md p-2 mr-4 ${pageto / 10 >= 2 ? "bg-popup-nav text-black" : "bg-popup-nav"
+                  } `}
                 disabled={pageto / 10 > 1 ? false : true}
                 onClick={handleDecrease}
               >
@@ -1596,9 +1560,8 @@ const queryParams = new URLSearchParams(location.search);
                 {pageto / 10}/{historyPage}
               </span>
               <button
-                className={`rounded-md p-2 ms-4 ${
-                  historyPage ? "bg-popup-nav text-black" : "bg-popup-nav"
-                } `}
+                className={`rounded-md p-2 ms-4 ${historyPage ? "bg-popup-nav text-black" : "bg-popup-nav"
+                  } `}
                 disabled={historyPage > pageto / 10 ? false : true}
                 onClick={handleIncrease}
               >
@@ -1616,34 +1579,32 @@ const queryParams = new URLSearchParams(location.search);
 
       {/* popups */}
       <div
-        className={`nav-bg z-[12] items-center transition ease-in-out delay-150 justify-center fixed bottom-0 rounded-t-2xl filter-section w-[24.7rem] ${
-          openPopup ? "flex" : "hidden"
-        }`}
+        className={`nav-bg z-[12] items-center transition ease-in-out delay-150 justify-center fixed bottom-0 rounded-t-2xl filter-section w-[24.7rem] ${openPopup ? "flex" : "hidden"
+          }`}
       >
         <div className=" rounded-t-2xl  overflow-hidden w-full ">
           <div
-            className={`text-center p-2 pb-6 mb-5 popup-select-effect    ${
-              selectBet == "x"
-                ? "bgs-green"
-                : selectBet == "d"
+            className={`text-center p-2 pb-6 mb-5 popup-select-effect    ${selectBet == "x"
+              ? "bgs-green"
+              : selectBet == "d"
                 ? "bgs-red-200"
                 : selectBet == "t"
-                ? "bgs-violet"
-                : selectBet == "l"
-                ? "color-yellow-bg-200"
-                : selectBet == "n"
-                ? "bgs-blue-500"
-                : selectBet == "0"
-                ? "bg-red-voilet"
-                : selectBet == "5"
-                ? "bg-green-voilet"
-                : selectBet == 1 ||
-                  selectBet == 3 ||
-                  selectBet == 7 ||
-                  selectBet == 9
-                ? "bgs-green"
-                : "bgs-red-200"
-            }`}
+                  ? "bgs-violet"
+                  : selectBet == "l"
+                    ? "color-yellow-bg-200"
+                    : selectBet == "n"
+                      ? "bgs-blue-500"
+                      : selectBet == "0"
+                        ? "bg-red-voilet"
+                        : selectBet == "5"
+                          ? "bg-green-voilet"
+                          : selectBet == 1 ||
+                            selectBet == 3 ||
+                            selectBet == 7 ||
+                            selectBet == 9
+                            ? "bgs-green"
+                            : "bgs-red-200"
+              }`}
           >
             <h2 className="text-md font-semibold">
               Win Go {activeTime == "10" ? "30s" : activeTime + "Min"}
@@ -1654,14 +1615,14 @@ const queryParams = new URLSearchParams(location.search);
                 {selectBet == "x"
                   ? "Green"
                   : selectBet == "t"
-                  ? "Voilet"
-                  : selectBet == "l"
-                  ? "Big"
-                  : selectBet == "n"
-                  ? "Small"
-                  : selectBet == "d"
-                  ? "Red"
-                  : selectBet}
+                    ? "Voilet"
+                    : selectBet == "l"
+                      ? "Big"
+                      : selectBet == "n"
+                        ? "Small"
+                        : selectBet == "d"
+                          ? "Red"
+                          : selectBet}
               </span>
             </button>
           </div>
@@ -1673,27 +1634,26 @@ const queryParams = new URLSearchParams(location.search);
                   <button
                     key={value}
                     onClick={() => setBalance(value)}
-                    className={`text-whites text-base mx-1 px-2 py-[3px]  rounded-md ${
-                      balance === value
-                        ? selectBet == "x"
-                          ? "bgs-green text-black"
-                          : selectBet == "d"
+                    className={`text-whites text-base mx-1 px-2 py-[3px]  rounded-md ${balance === value
+                      ? selectBet == "x"
+                        ? "bgs-green text-black"
+                        : selectBet == "d"
                           ? "bgs-red-200 text-black"
                           : selectBet == "t"
-                          ? "bgs-violet text-black"
-                          : selectBet == "l"
-                          ? "color-yellow-bg-200 text-black"
-                          : selectBet == "n"
-                          ? "bgs-blue-500 text-black"
-                          : selectBet == 1 ||
-                            selectBet == 3 ||
-                            selectBet == 5 ||
-                            selectBet == 7 ||
-                            selectBet == 9
-                          ? "bgs-green text-black"
-                          : "bgs-red-200 text-black"
-                        : "bg-popup-nav "
-                    }`}
+                            ? "bgs-violet text-black"
+                            : selectBet == "l"
+                              ? "color-yellow-bg-200 text-black"
+                              : selectBet == "n"
+                                ? "bgs-blue-500 text-black"
+                                : selectBet == 1 ||
+                                  selectBet == 3 ||
+                                  selectBet == 5 ||
+                                  selectBet == 7 ||
+                                  selectBet == 9
+                                  ? "bgs-green text-black"
+                                  : "bgs-red-200 text-black"
+                      : "bg-popup-nav "
+                      }`}
                   >
                     {value}
                   </button>
@@ -1708,24 +1668,23 @@ const queryParams = new URLSearchParams(location.search);
                     setMultiplier(multiplier > 1 ? multiplier - 1 : 1)
                   }
                   className={` text-lg p-[3px] font-bold mx-1 text-black flex items-center justify-center rounded-md 
-                    ${
-                      selectBet == "x"
-                        ? "bgs-green"
-                        : selectBet == "d"
+                    ${selectBet == "x"
+                      ? "bgs-green"
+                      : selectBet == "d"
                         ? "bgs-red-200"
                         : selectBet == "t"
-                        ? "bgs-violet"
-                        : selectBet == "l"
-                        ? "color-yellow-bg-200"
-                        : selectBet == "n"
-                        ? "bgs-blue-500"
-                        : selectBet == 1 ||
-                          selectBet == 3 ||
-                          selectBet == 5 ||
-                          selectBet == 7 ||
-                          selectBet == 9
-                        ? "bgs-green"
-                        : "bgs-red-200"
+                          ? "bgs-violet"
+                          : selectBet == "l"
+                            ? "color-yellow-bg-200"
+                            : selectBet == "n"
+                              ? "bgs-blue-500"
+                              : selectBet == 1 ||
+                                selectBet == 3 ||
+                                selectBet == 5 ||
+                                selectBet == 7 ||
+                                selectBet == 9
+                                ? "bgs-green"
+                                : "bgs-red-200"
                     }
                     `}
                 >
@@ -1742,24 +1701,23 @@ const queryParams = new URLSearchParams(location.search);
                 <button
                   onClick={() => setMultiplier(multiplier + 1)}
                   className={` text-lg  p-[3px] font-bold mx-1 text-black flex items-center justify-center rounded-md  
-                    ${
-                      selectBet == "x"
-                        ? "bgs-green"
-                        : selectBet == "d"
+                    ${selectBet == "x"
+                      ? "bgs-green"
+                      : selectBet == "d"
                         ? "bgs-red-200"
                         : selectBet == "t"
-                        ? "bgs-violet"
-                        : selectBet == "l"
-                        ? "color-yellow-bg-200"
-                        : selectBet == "n"
-                        ? "bgs-blue-500"
-                        : selectBet == 1 ||
-                          selectBet == 3 ||
-                          selectBet == 5 ||
-                          selectBet == 7 ||
-                          selectBet == 9
-                        ? "bgs-green"
-                        : "bgs-red-200"
+                          ? "bgs-violet"
+                          : selectBet == "l"
+                            ? "color-yellow-bg-200"
+                            : selectBet == "n"
+                              ? "bgs-blue-500"
+                              : selectBet == 1 ||
+                                selectBet == 3 ||
+                                selectBet == 5 ||
+                                selectBet == 7 ||
+                                selectBet == 9
+                                ? "bgs-green"
+                                : "bgs-red-200"
                     }
                     `}
                 >
@@ -1771,27 +1729,26 @@ const queryParams = new URLSearchParams(location.search);
             <div className=" items-center flex justify-end mb-5 ">
               {xData.map((item, i) => (
                 <button
-                  className={`text-base mx-1 px-2 py-[3px]  rounded-md ${
-                    activeX === i
-                      ? selectBet == "x"
-                        ? "bgs-green text-black"
-                        : selectBet == "d"
+                  className={`text-base mx-1 px-2 py-[3px]  rounded-md ${activeX === i
+                    ? selectBet == "x"
+                      ? "bgs-green text-black"
+                      : selectBet == "d"
                         ? "bgs-red-200 text-black"
                         : selectBet == "t"
-                        ? "bgs-violet text-black"
-                        : selectBet == "l"
-                        ? "color-yellow-bg-200 text-black"
-                        : selectBet == "n"
-                        ? "bgs-blue-500 text-black"
-                        : selectBet == 1 ||
-                          selectBet == 3 ||
-                          selectBet == 7 ||
-                          selectBet == 5 ||
-                          selectBet == 9
-                        ? "bgs-green text-black"
-                        : "bgs-red-200 text-black"
-                      : "bg-popup-nav text-whites"
-                  }`}
+                          ? "bgs-violet text-black"
+                          : selectBet == "l"
+                            ? "color-yellow-bg-200 text-black"
+                            : selectBet == "n"
+                              ? "bgs-blue-500 text-black"
+                              : selectBet == 1 ||
+                                selectBet == 3 ||
+                                selectBet == 7 ||
+                                selectBet == 5 ||
+                                selectBet == 9
+                                ? "bgs-green text-black"
+                                : "bgs-red-200 text-black"
+                    : "bg-popup-nav text-whites"
+                    }`}
                   key={i}
                   onClick={() => {
                     setActiveX(i);
@@ -1813,9 +1770,8 @@ const queryParams = new URLSearchParams(location.search);
                 />
                 <div className="w-6 h-6 rounded-full border-2 border-black flex items-center justify-center peer-checked:bg-cyan-400">
                   <svg
-                    className={`w-4 h-4 text-black ${
-                      isChecked ? "block" : "hidden"
-                    }`}
+                    className={`w-4 h-4 text-black ${isChecked ? "block" : "hidden"
+                      }`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -1845,25 +1801,24 @@ const queryParams = new URLSearchParams(location.search);
             </button>
             <button
               className={` w-[60%] p-2 text-sm font-medium
-              ${
-                selectBet == "x"
+              ${selectBet == "x"
                   ? "bgs-green"
                   : selectBet == "d"
-                  ? "bgs-red-200"
-                  : selectBet == "t"
-                  ? "bgs-violet"
-                  : selectBet == "l"
-                  ? "color-yellow-bg-200"
-                  : selectBet == "n"
-                  ? "bgs-blue-500"
-                  : selectBet == 1 ||
-                    selectBet == 3 ||
-                    selectBet == 5 ||
-                    selectBet == 7 ||
-                    selectBet == 9
-                  ? "bgs-green"
-                  : "bgs-red-200"
-              }
+                    ? "bgs-red-200"
+                    : selectBet == "t"
+                      ? "bgs-violet"
+                      : selectBet == "l"
+                        ? "color-yellow-bg-200"
+                        : selectBet == "n"
+                          ? "bgs-blue-500"
+                          : selectBet == 1 ||
+                            selectBet == 3 ||
+                            selectBet == 5 ||
+                            selectBet == 7 ||
+                            selectBet == 9
+                            ? "bgs-green"
+                            : "bgs-red-200"
+                }
               `}
               disabled={loader ? true : false}
               onClick={handleBet}
@@ -1875,7 +1830,7 @@ const queryParams = new URLSearchParams(location.search);
       </div>
 
       <div className={openHowtoPlay ? "overlay-section block" : "hidden"}></div>
-      
+
 
       <div
         className={resultPopup ? "overlay-section block" : "hidden"}
@@ -1895,53 +1850,48 @@ const queryParams = new URLSearchParams(location.search);
             style={{ position: "absolute", top: "38%" }}
           >
             <p
-              className={` text-[2rem] text-center font-bold ${
-                winResult ? "text-white" : "color-slate-500"
-              }`}
+              className={` text-[2rem] text-center font-bold ${winResult ? "text-white" : "color-slate-500"
+                }`}
             >
               {winResult ? "Congratulations" : "Sorry"}
             </p>
 
             <div className="flex justify-center items-center mt-8">
               <span
-                className={`text-sm  mr-1 ${
-                  winResult ? "text-white" : "color-slate-500"
-                }`}
+                className={`text-sm  mr-1 ${winResult ? "text-white" : "color-slate-500"
+                  }`}
               >
                 Lottery Result:
               </span>
               <span
-                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${
-                  winResult
-                    ? "color-yellow-bg-200"
-                    : "bgs-slate-500 border border-white"
-                }`}
+                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${winResult
+                  ? "color-yellow-bg-200"
+                  : "bgs-slate-500 border border-white"
+                  }`}
               >
                 {wingoHistoryData?.gameslist[0]?.result == "0"
                   ? "Violet"
                   : wingoHistoryData?.gameslist[0]?.result == "5"
-                  ? "Violet"
-                  : wingoHistoryData?.gameslist[0]?.result % 2 == 0
-                  ? "Red"
-                  : "Green"}
+                    ? "Violet"
+                    : wingoHistoryData?.gameslist[0]?.result % 2 == 0
+                      ? "Red"
+                      : "Green"}
               </span>
 
               <span
-                className={`text-sm w-7 h-7 text-center mx-2  text-white rounded-full flex justify-center items-center ${
-                  winResult
-                    ? "color-yellow-bg-200"
-                    : "bgs-slate-500 border border-white"
-                }`}
+                className={`text-sm w-7 h-7 text-center mx-2  text-white rounded-full flex justify-center items-center ${winResult
+                  ? "color-yellow-bg-200"
+                  : "bgs-slate-500 border border-white"
+                  }`}
               >
                 {Array.isArray(wingoHistoryData?.gameslist) &&
                   wingoHistoryData?.gameslist[0]?.result}
               </span>
               <span
-                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${
-                  winResult
-                    ? "color-yellow-bg-200"
-                    : "bgs-slate-500 border border-white"
-                }`}
+                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${winResult
+                  ? "color-yellow-bg-200"
+                  : "bgs-slate-500 border border-white"
+                  }`}
               >
                 {wingoHistoryData?.gameslist[0]?.result > 4 ? "Big" : "Small"}
               </span>
@@ -1953,10 +1903,10 @@ const queryParams = new URLSearchParams(location.search);
                   <p className="text-[1.5rem] relative top-[-3px] font-bold">
                     ₹
                     {Array.isArray(wingoHistoryData?.gameslist) &&
-                       Number(wingoHistoryData?.gameslist[0]?.get).toLocaleString("en-IN", {
+                      Number(wingoHistoryData?.gameslist[0]?.get).toLocaleString("en-IN", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
-                        })}
+                      })}
                   </p>
                 </div>
               ) : (
@@ -1966,9 +1916,8 @@ const queryParams = new URLSearchParams(location.search);
               )}
             </div>
             <p
-              className={`text-[10px] text-black text-center font-semibold ${
-                winResult ? "mt-1" : "mt-3"
-              }`}
+              className={`text-[10px] text-black text-center font-semibold ${winResult ? "mt-1" : "mt-3"
+                }`}
             >
               Period: Wingo {activeTime == "10" ? "30s" : activeTime + "Min"}
               {Array.isArray(wingoPeriodListData?.data?.gameslist) &&
@@ -1976,14 +1925,12 @@ const queryParams = new URLSearchParams(location.search);
             </p>
 
             <p
-              className={`fs-sm mt-14 cursor-pointer flex items-center  ${
-                winResult ? "ml-[0px]" : "ml-[-10px] color-slate-500"
-              }`}
+              className={`fs-sm mt-14 cursor-pointer flex items-center  ${winResult ? "ml-[0px]" : "ml-[-10px] color-slate-500"
+                }`}
             >
               <span
-                className={`w-5 mr-2 flex h-5 border border-white rounded-full ${
-                  winResult ? "" : ""
-                }`}
+                className={`w-5 mr-2 flex h-5 border border-white rounded-full ${winResult ? "" : ""
+                  }`}
               ></span>{" "}
               3 Seconds auto close
             </p>
@@ -1997,8 +1944,8 @@ const queryParams = new URLSearchParams(location.search);
         </div>
       )}
 
-      
-{openHowtoPlay && (
+
+      {openHowtoPlay && (
         <>
           <div className="fixed top-32 nav-bg w-[270px] flex flex-col justify-center items-center m-auto left-0 right-0 rounded-t-2xl rounded-b-2xl z-30">
             <div className="blue-linear w-full text-center text-black text-xl py-2 rounded-t-2xl">

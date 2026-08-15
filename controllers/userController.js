@@ -3132,14 +3132,14 @@ const withdrawal3 = async (req, res) => {
     let userInfo = user[0];
     user_phone = userInfo.phone;
 
-    if (userInfo.enableWithdraw === 0) {
-      info = JSON.stringify({ reason: "enableWithdraw_blocked" });
-      return res.status(200).json({
-        message:
-          "Withdrawals are currently disabled. Please contact customer support.",
-        status: false,
-      });
-    }
+    // if (userInfo.enableWithdraw === 0) {
+    //   info = JSON.stringify({ reason: "enableWithdraw_blocked" });
+    //   return res.status(200).json({
+    //     message:
+    //       "Withdrawals are currently disabled. Please contact customer support.",
+    //     status: false,
+    //   });
+    // }
 
     const date = new Date();
     let id_time =
@@ -3669,7 +3669,7 @@ const listRecharge2 = async (req, res) => {
     );
     return res.status(200).json({
       message: "Receive success",
-      data2:recharge2,
+      data2: recharge2,
       status: true,
       timeStamp: timeNow,
     });
@@ -5825,7 +5825,7 @@ const userProblemGet = async (req, res) => {
       success: true,
       data: datas[0],
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const adminProblemGet = async (req, res) => {
@@ -5857,7 +5857,7 @@ const adminProblemGet = async (req, res) => {
       success: true,
       data: datas[0],
     });
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const adminProblemSubmit = async (req, res) => {
@@ -5902,7 +5902,7 @@ const adminProblemSubmit = async (req, res) => {
         success: true,
       });
     }
-  } catch (error) {}
+  } catch (error) { }
 };
 
 const getpromotiondata = async (req, res) => {

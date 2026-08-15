@@ -37,13 +37,13 @@ import { RxCross1 } from "react-icons/rx";
 const AR = "https://i.ibb.co/DPSRWVbF/pay-Name-Icon.png"
 
 const Withdraw = () => {
-  const {  userInfo, loader } = useSelector((state) => state.auth);
+  const { userInfo, loader } = useSelector((state) => state.auth);
   const { addBankData } = useSelector((state) => state.user);
   const { withdrawHistoryData } = useSelector((state) => state.user);
- 
-console.log("withdrawHistoryData",withdrawHistoryData);
 
-  
+  console.log("withdrawHistoryData", withdrawHistoryData);
+
+
 
   const navigate = useNavigate();
   const [successMessage, setSuccessMessage] = useState("");
@@ -75,7 +75,7 @@ console.log("withdrawHistoryData",withdrawHistoryData);
         const itemDate = new Date(item.today).toISOString().split("T")[0];
         return itemDate === today;
       });
-// console.log("first",successfulToday)
+      // console.log("first",successfulToday)
       const remaining = 3 - successfulToday.length;
       setRemainingWithdrawals(remaining);
     }
@@ -89,38 +89,38 @@ console.log("withdrawHistoryData",withdrawHistoryData);
     }, 1500);
   };
 
- 
 
-const withdrawSubmit = () => {
-  // Check if bet amount is zero
-  // if (Number(userInfo?.recharge) > 0) {
-  //   setInsufficientTurnover(true);
-  //   setTimeout(() => setInsufficientTurnover(false), 3000);
-  //   return;
-  // }
 
-  dispatch(
-    withdrawal({ money: amount, password: password, type: activeTab })
-  ).then((res) => {
-    setSuccessMessage(res.payload.message);
-    setBetAlert(true);
-    if (res.payload.status) {
-      setOpenPopup(false);
-      setShowPopup(true);
-      // Add navigation to withdrawal history after successful withdrawal
-      setTimeout(() => {
-        navigate("/wallet/WithdrawalHistory");
-      }, 2000);
-    }
-  });
-  dispatch(userDetail());
-  setTimeout(() => {
-    setBetAlert(false);
-  }, 2000);
-  setTimeout(() => {
-    setSuccessMessage("");
-  }, 3000);
-};
+  const withdrawSubmit = () => {
+    // Check if bet amount is zero
+    // if (Number(userInfo?.recharge) > 0) {
+    //   setInsufficientTurnover(true);
+    //   setTimeout(() => setInsufficientTurnover(false), 3000);
+    //   return;
+    // }
+
+    dispatch(
+      withdrawal({ money: amount, password: password, type: activeTab })
+    ).then((res) => {
+      setSuccessMessage(res.payload.message);
+      setBetAlert(true);
+      if (res.payload.status) {
+        setOpenPopup(false);
+        setShowPopup(true);
+        // Add navigation to withdrawal history after successful withdrawal
+        setTimeout(() => {
+          navigate("/wallet/WithdrawalHistory");
+        }, 2000);
+      }
+    });
+    dispatch(userDetail());
+    setTimeout(() => {
+      setBetAlert(false);
+    }, 2000);
+    setTimeout(() => {
+      setSuccessMessage("");
+    }, 3000);
+  };
 
   useEffect(() => {
     dispatch(getBank());
@@ -143,7 +143,7 @@ const withdrawSubmit = () => {
     return `****${suffix}`;
   }
 
- const [showComingSoon, setShowComingSoon] = useState(false);
+  const [showComingSoon, setShowComingSoon] = useState(false);
 
   useEffect(() => {
     if (activeTab === "ARPay") {
@@ -151,11 +151,11 @@ const withdrawSubmit = () => {
     } else {
       setShowComingSoon(false);
     }
-    
+
   }, [activeTab]);
 
 
-  const handleClose=()=>{
+  const handleClose = () => {
     setShowPopup(false)
     navigate("/wallet/WithdrawalHistory")
   }
@@ -163,7 +163,7 @@ const withdrawSubmit = () => {
   return (
     <>
       <CustomeNavbar name="Withdraw" details="Withdraw history" link="/wallet/WithdrawalHistory" />
-      <ServiceRotate/>
+      <ServiceRotate />
       <div className="container-section rounded mt-3">
         <div className="total-img rounded p-4">
           <div className="flex items-center">
@@ -174,8 +174,8 @@ const withdrawSubmit = () => {
             <h3 className="heaing-h3 text-xl font-bold">
               ₹ {userInfo?.money_user
                 ? Number(userInfo?.money_user).toLocaleString("en-IN", {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
                 })
                 : "0.00"}
             </h3>
@@ -221,58 +221,58 @@ const withdrawSubmit = () => {
 
         {activeTab === "ARPay" && (<Marquee className="text-white">Comming soon <Marquee className="text-red-400">Comming soon</Marquee></Marquee>)}
         {showComingSoon && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="relative blue-linear rounded-2xl p-6 w-[90%] max-w-sm shadow-lg text-center ">
-            {/* Cut icon top right */}
-            <button
-              onClick={() => setShowComingSoon(false)}
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
-            >
-              <IoMdClose size={24} />
-            </button>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+            <div className="relative blue-linear rounded-2xl p-6 w-[90%] max-w-sm shadow-lg text-center ">
+              {/* Cut icon top right */}
+              <button
+                onClick={() => setShowComingSoon(false)}
+                className="absolute top-3 right-3 text-gray-500 hover:text-red-500"
+              >
+                <IoMdClose size={24} />
+              </button>
 
-            <h2 className="text-xl font-bold text-[#FF3366] mb-2">🚧 Coming Soon 🚧</h2>
-            <p className="text-sm text-gray-700 mb-3">The ARPay feature is under development. Stay tuned!</p>
+              <h2 className="text-xl font-bold text-[#FF3366] mb-2">🚧 Coming Soon 🚧</h2>
+              <p className="text-sm text-gray-700 mb-3">The ARPay feature is under development. Stay tuned!</p>
 
-            {/* Marquee for animation */}
-            <div className=" rounded-md overflow-hidden mb-4">
-              <Marquee speed={50} gradient={false} className="text-pink-600 font-semibold text-sm py-1">
-                💡 ARPay is launching soon! 💡 Get ready for an awesome experience!
-              </Marquee>
+              {/* Marquee for animation */}
+              <div className=" rounded-md overflow-hidden mb-4">
+                <Marquee speed={50} gradient={false} className="text-pink-600 font-semibold text-sm py-1">
+                  💡 ARPay is launching soon! 💡 Get ready for an awesome experience!
+                </Marquee>
+              </div>
+
+              {/* Cancel Button */}
+              <button
+                onClick={() => setShowComingSoon(false)}
+                className="px-4 py-1 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-md hover:from-pink-600 hover:to-red-600"
+              >
+                Conform
+              </button>
             </div>
-
-            {/* Cancel Button */}
-            <button
-              onClick={() => setShowComingSoon(false)}
-              className="px-4 py-1 bg-gradient-to-r from-pink-500 to-red-500 text-white rounded-md hover:from-pink-600 hover:to-red-600"
-            >
-              Conform
-            </button>
           </div>
-        </div>
-      )}
+        )}
 
         <div className="mt-4">
           {activeTab === "BANK CARD" && (
             <>
               {addBankData?.stk?.length >= 3 ? (
                 <Link to="/wallet/Withdraw/bankaccount">
-                <div className="nav-bg p-4 rounded-md text-center flex items-center">
-                  <div className="flex items-center flex-col mr-3  w-[30%]">
-                    <svg data-v-80a607a5 className="svg-icon icon-1"><use xlinkHref="#icon-1" /></svg>
-                    <p className="text-sm text-whites mt-2 flex">
-                      {addBankData?.name_bank.substring(0, 10)}...
-                    </p>
-                  </div>
+                  <div className="nav-bg p-4 rounded-md text-center flex items-center">
+                    <div className="flex items-center flex-col mr-3  w-[30%]">
+                      <svg data-v-80a607a5 className="svg-icon icon-1"><use xlinkHref="#icon-1" /></svg>
+                      <p className="text-sm text-whites mt-2 flex">
+                        {addBankData?.name_bank.substring(0, 10)}...
+                      </p>
+                    </div>
 
-                  <div className="border-l flex justify-between  items-center pl-5 w-[70%]">
-                    <p className="text-sm text-whites mt-1">{accountNumber(addBankData?.stk)}</p>
+                    <div className="border-l flex justify-between  items-center pl-5 w-[70%]">
+                      <p className="text-sm text-whites mt-1">{accountNumber(addBankData?.stk)}</p>
 
-                    <div>
-                      <MdOutlineArrowForwardIos className="text-xl text-whites" />
+                      <div>
+                        <MdOutlineArrowForwardIos className="text-xl text-whites" />
+                      </div>
                     </div>
                   </div>
-                </div>
                 </Link>
               ) : (
                 <div
@@ -298,26 +298,26 @@ const withdrawSubmit = () => {
               <div className="nav-bg mt-2 p-3 rounded-t-md pb-10">
                 <div className="bgs-body flex items-center px-5 py-1 rounded-full">
                   <span className="color-blue text-lg font-bold">₹</span>
-                {console.log("ddd",amount)}
-         <form autoComplete="off">
-  <input
-    type="number"
-    name="amount_no_autofill_123"             // Random name prevents browser detection
-    autoComplete="off"                        // Turns off autocomplete
-    inputMode="numeric"                       // Numeric keyboard on mobile
-    autoCorrect="off"
-    spellCheck="false"
-    className="w-full bgs-body p-2 ps-6 flex items-center focus:outline-none color-blue placeholder:text-sm placeholder:text-[var(--bgblue)]"
-    placeholder="Please enter the amount"
-    value={amount}
-    onChange={(e) => setAmount(e.target.value)}
-    onFocus={(e) => {
-      const val = e.target.value;
-      e.target.value = '';
-      e.target.value = val;
-    }}
-  />
-</form>
+                  {console.log("ddd", amount)}
+                  <form autoComplete="off">
+                    <input
+                      type="number"
+                      name="amount_no_autofill_123"             // Random name prevents browser detection
+                      autoComplete="off"                        // Turns off autocomplete
+                      inputMode="numeric"                       // Numeric keyboard on mobile
+                      autoCorrect="off"
+                      spellCheck="false"
+                      className="w-full bgs-body p-2 ps-6 flex items-center focus:outline-none color-blue placeholder:text-sm placeholder:text-[var(--bgblue)]"
+                      placeholder="Please enter the amount"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      onFocus={(e) => {
+                        const val = e.target.value;
+                        e.target.value = '';
+                        e.target.value = val;
+                      }}
+                    />
+                  </form>
 
 
 
@@ -356,17 +356,17 @@ const withdrawSubmit = () => {
                     Withdrawable amount received{" "}
                   </p>
                   <span className="color-yellow-200 text-base font-bold">
-                    ₹{Number(amount).toFixed(2)=="NaN"?"0.00":Number(amount).toFixed(2)}
-                   
+                    ₹{Number(amount).toFixed(2) == "NaN" ? "0.00" : Number(amount).toFixed(2)}
+
                   </span>
                 </div>
                 <button
                   className="blue-linear  w-full rounded-full p-2 mt-4 text-black"
-                  onClick={() =>  setOpenPopup(true)}
+                  onClick={() => setOpenPopup(true)}
                 >
                   Withdraw
                 </button>
-                
+
               </div>
             </>
           )}
@@ -376,11 +376,11 @@ const withdrawSubmit = () => {
               {addBankData?.sdt?.length >= 3 ? (
                 <div className="nav-bg p-2 rounded-md text-center flex items-center">
                   <div className="flex items-center flex-col mr-3  w-[30%]">
-                 <div className="flex ">
-                   <img src={USDt1Img} alt="" className="w-6 mr-2" />
-                   <p>TRC</p>
-                 </div>
-                   <p className="text-sm text-whites flex">
+                    <div className="flex ">
+                      <img src={USDt1Img} alt="" className="w-6 mr-2" />
+                      <p>TRC</p>
+                    </div>
+                    <p className="text-sm text-whites flex">
                       {formateUSDT(addBankData?.sdt)}
                     </p>
 
@@ -390,8 +390,8 @@ const withdrawSubmit = () => {
                   </div>
 
                   <div className="flex justify-end  items-center pl-5 w-[70%]">
-                      <MdOutlineArrowForwardIos className="text-xl text-whites" />
-                                           <div>
+                    <MdOutlineArrowForwardIos className="text-xl text-whites" />
+                    <div>
                     </div>
                   </div>
                 </div>
@@ -478,7 +478,7 @@ const withdrawSubmit = () => {
                 >
                   Withdraw
                 </button>
-                
+
               </div>
             </>
           )}
@@ -508,13 +508,13 @@ const withdrawSubmit = () => {
               <span>
                 <FaSquare className="rotate-45 text-[7px] color-blue mr-2 mt-[2px]" />
               </span>
-              
-<p className="fs-sm text-whites leading-[18px]">
-      Inday Remaining Withdrawal Times{" "}
-      <span className="color-red-200">
-        {remainingWithdrawals !== null ? remainingWithdrawals : "Loading..."}
-      </span>
-    </p>
+
+              <p className="fs-sm text-whites leading-[18px]">
+                Inday Remaining Withdrawal Times{" "}
+                <span className="color-red-200">
+                  {remainingWithdrawals !== null ? remainingWithdrawals : "Loading..."}
+                </span>
+              </p>
 
             </li>
             <li className=" flex mt-2">
@@ -552,74 +552,73 @@ const withdrawSubmit = () => {
       </div>
 
       <div>
-        <WithdrawHistoryLite/>
+        <WithdrawHistoryLite />
       </div>
 
       <div className={openPopup ? "overlay-section block" : "hidden"}></div>
       <div className={showPopup ? "overlay-section block" : "hidden"}></div>
 
       <div
-  className={`nav-bg z-[12] items-center transition ease-in-out delay-150 justify-center fixed bottom-0 rounded-t-md filter-section w-[25rem] ${
-    openPopup ? "flex" : "hidden"
-  }`}
->
-  <div className="rounded-t-lg overflow-hidden w-full">
-    <div className="container-section mb-5 mt-4 px-2">
-      <div className="flex items-center justify-between border-b border-gray-600 pb-3">
-        <h3 className="heading-h3 flex items-center font-sans ms-1 gray-5">
-          <BsShieldFillCheck className="color-blue-500 text-xl mr-2" />
-          Security verification
-        </h3>
-        <RxCross1
-          className="cursor-pointer text-xl"
-          onClick={() => setOpenPopup(false)}
-        />
-      </div>
+        className={`nav-bg z-[12] items-center transition ease-in-out delay-150 justify-center fixed bottom-0 rounded-t-md filter-section w-[25rem] ${openPopup ? "flex" : "hidden"
+          }`}
+      >
+        <div className="rounded-t-lg overflow-hidden w-full">
+          <div className="container-section mb-5 mt-4 px-2">
+            <div className="flex items-center justify-between border-b border-gray-600 pb-3">
+              <h3 className="heading-h3 flex items-center font-sans ms-1 gray-5">
+                <BsShieldFillCheck className="color-blue-500 text-xl mr-2" />
+                Security verification
+              </h3>
+              <RxCross1
+                className="cursor-pointer text-xl"
+                onClick={() => setOpenPopup(false)}
+              />
+            </div>
 
-      <div className="mt-4 rounded-full">
-        <div className="flex items-center">
-          <span>
-            <TbLockFilled className="color-blue-500 text-2xl" />
-          </span>
-          <label htmlFor="" className="font-sans ms-1 gray-50 mb-2">
-            Password
-          </label>
-        </div>
-        <div className="mt-3 flex justify-between relative mb-3">
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            className="w-full bg-popup-nav border border-slate-900 rounded-lg p-2 py-3 focus:border-slate-700 ps-6 flex items-center focus:border focus:outline-none placeholder:text-sm placeholder:text-slate-500"
-            placeholder=" Password"
-          />
-          <span
-            onClick={toggleShowPassword}
-            className="absolute right-4 text-lg top-4 gray-50 cursor-pointer"
-          >
-            {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
-          </span>
-        </div>
-      </div>
+            <div className="mt-4 rounded-full">
+              <div className="flex items-center">
+                <span>
+                  <TbLockFilled className="color-blue-500 text-2xl" />
+                </span>
+                <label htmlFor="" className="font-sans ms-1 gray-50 mb-2">
+                  Password
+                </label>
+              </div>
+              <div className="mt-3 flex justify-between relative mb-3">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  name="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
+                  className="w-full bg-popup-nav border border-slate-900 rounded-lg p-2 py-3 focus:border-slate-700 ps-6 flex items-center focus:border focus:outline-none placeholder:text-sm placeholder:text-slate-500"
+                  placeholder=" Password"
+                />
+                <span
+                  onClick={toggleShowPassword}
+                  className="absolute right-4 text-lg top-4 gray-50 cursor-pointer"
+                >
+                  {showPassword ? <IoEyeOutline /> : <IoEyeOffOutline />}
+                </span>
+              </div>
+            </div>
 
-      <p className="text-sm color-red-200 py-2">
-        Please secure your balance, please enter your password
-      </p>
-      <div className="flex items-center justify-between">
-<Link to="/forgot" className="text-white text-base">
-        Forget Password?
-      </Link>
-      <Link to={userInfo?.telegram} className="gray-50 text-sm">
-        Customer care service
-      </Link>
-      </div>
-     
-    </div>
+            <p className="text-sm color-red-200 py-2">
+              Please secure your balance, please enter your password
+            </p>
+            <div className="flex items-center justify-between">
+              <Link to="/forgot" className="text-white text-base">
+                Forget Password?
+              </Link>
+              <Link to={userInfo?.telegram} className="gray-50 text-sm">
+                Customer care service
+              </Link>
+            </div>
 
-    {/* Buttons */}
-   
-    <div className="flex ">
+          </div>
+
+          {/* Buttons */}
+
+          <div className="flex ">
             <button
               className=" w-[50%]  border-2 border-[#22D0D2] p-2 "
               onClick={() => setOpenPopup(false)}
@@ -632,43 +631,43 @@ const withdrawSubmit = () => {
               `}
               disabled={loader ? true : false}
               onClick={() => {
-          withdrawSubmit();        // your function
-          setOpenPopup(false);     // auto close popup
-        }}
+                withdrawSubmit();        // your function
+                setOpenPopup(false);     // auto close popup
+              }}
             >
               Confirm Withdrawal
             </button>
           </div>
-  </div>
-</div>
+        </div>
+      </div>
 
-      
+
 
       {showPopup && (
-  <div className="fixed inset-0 flex z-20 items-center justify-center bg-black bg-opacity-50">
-    <div className="bg-gray-800 p-6 px-8 rounded-lg text-center relative">
-      <img src="https://i.ibb.co/4RsybQgG/popup-img-01.png" alt="" className="w-32 flex justify-center items-center m-auto absolute -top-6 left-0 right-0" />
-      <h2 className="text-white font-semibold text-xl mt-4 pt-10">
-        Withdrawal request successful
-      </h2>
-      <p className="text-sm gray-50 pt-2">
-        We will complete the withdrawal with 3 hours
-      </p>
-      <p className="text-sm gray-50">Please wait petiently...</p>
-      <div className="mt-6 gap-3 flex flex-col">
-        <button
-          onClick={() => {
-            setShowPopup(false);
-            navigate("/wallet/WithdrawalHistory");
-          }}
-          className="px-4 py-2 blue-linear font-medium text-black rounded-full"
-        >
-          Confirm
-        </button>
-      </div>
-    </div>
-  </div>
-)}
+        <div className="fixed inset-0 flex z-20 items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-gray-800 p-6 px-8 rounded-lg text-center relative">
+            <img src="https://i.ibb.co/4RsybQgG/popup-img-01.png" alt="" className="w-32 flex justify-center items-center m-auto absolute -top-6 left-0 right-0" />
+            <h2 className="text-white font-semibold text-xl mt-4 pt-10">
+              Withdrawal request successful
+            </h2>
+            <p className="text-sm gray-50 pt-2">
+              We will complete the withdrawal with 3 hours
+            </p>
+            <p className="text-sm gray-50">Please wait petiently...</p>
+            <div className="mt-6 gap-3 flex flex-col">
+              <button
+                onClick={() => {
+                  setShowPopup(false);
+                  navigate("/wallet/WithdrawalHistory");
+                }}
+                className="px-4 py-2 blue-linear font-medium text-black rounded-full"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className={`place-bet-popup ${betAlert ? "active" : ""}`}>
         <div className="text-sm">{successMessage} </div>
