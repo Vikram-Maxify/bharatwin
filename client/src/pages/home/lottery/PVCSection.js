@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 // Image Imports
@@ -7,20 +7,18 @@ import { Link, useNavigate } from "react-router-dom";
 
 // import { BiCategory } from "react-icons/bi";
 import JilliPopup from "../../../components/JilliPopup";
-const WingoImg ="https://i.ibb.co/hRpgZ6N9/vendorlogo-20240620145936heyd.png";
+const WingoImg = "https://i.ibb.co/hRpgZ6N9/vendorlogo-20240620145936heyd.png";
 const K3Img = "https://i.ibb.co/ZQcyY3X/vendorlogo-20240620145952prhc.png";
 // const Arrowleft= "https://i.ibb.co/JjPV1sK6/button-2.png";
 // const Arrowright= "https://i.ibb.co/93vC5KsZ/button-1.png";
 const PVCSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0); // Track the current slide
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const [gameId, setGameId] = useState();
 
   const handleJilliOpen = (data) => {
     setGameId(data);
-
   };
- 
 
   const slides = [
     [
@@ -42,22 +40,25 @@ const PVCSection = () => {
     setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-
   return (
     <div>
-       {gameId && <JilliPopup gameId={gameId} />}
+      {gameId && <JilliPopup gameId={gameId} />}
       <div className=" mt-2 overflow-hidden relative">
         <div className="lottery-game-section">
           {/* Header Section */}
           <div className="flex justify-between items-center">
             <div className="mb-4">
               <div className="flex items-center gap-2">
-               <p className="mt-2 flex items-center text-gray-200 gap-2 text-base font-semibold ">
-          <span>
-            <img src="https://i.ibb.co/MyT7ztgh/rummy.png" className="size-8" alt="icon" />
-          </span>
-          Rummy
-        </p>
+                <p className="mt-2 flex items-center text-gray-200 gap-2 text-base font-semibold ">
+                  <span>
+                    <img
+                      src="https://i.ibb.co/7Nn3hdyq/Chat-GPT-Image-Aug-14-2026-03-05-38-PM.png"
+                      className="size-8"
+                      alt="icon"
+                    />
+                  </span>
+                  Rummy
+                </p>
                 <button className="text-blue text-xs bg-[#201D2B] rounded items-center p-1">
                   More 3
                 </button>
@@ -69,46 +70,45 @@ const PVCSection = () => {
 
             {/* Slider Controls */}
             <div className="flex items-center gap-2">
-  <Link
-    to="/home/AllOnlineGames?game=PVC"
-    className="text-[12px] text-black font-bold blue-linear px-1.5 py-1 rounded-md"
-  >
-    Detail
-  </Link>
+              <Link
+                to="/home/AllOnlineGames?game=PVC"
+                className="text-[12px] text-black font-bold blue-linear px-1.5 py-1 rounded-md"
+              >
+                Detail
+              </Link>
 
-  <button className="popular-prev rounded-md blue-linear text-black p-1  transition">
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M15 19l-7-7 7-7"
-      />
-    </svg>
-  </button>
+              <button className="popular-prev rounded-md blue-linear text-black p-1  transition">
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
 
-  <button className="popular-next rounded-md blue-linear text-black p-1  transition">
-    <svg
-      className="h-4 w-4"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M9 5l7 7-7 7"
-      />
-    </svg>
-  </button>
-</div>
-
+              <button className="popular-next rounded-md blue-linear text-black p-1  transition">
+                <svg
+                  className="h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 5l7 7-7 7"
+                  />
+                </svg>
+              </button>
+            </div>
           </div>
 
           {/* Manual Slider Section */}
@@ -135,7 +135,6 @@ const PVCSection = () => {
                           onClick={() => {
                             index === 0 && handleJilliOpen(229);
                             index === 1 && handleJilliOpen(51);
-                          
                           }}
                         />
                       ) : (
@@ -167,8 +166,6 @@ const PVCSection = () => {
           </div>
         </div>
       </div>
-
- 
     </div>
   );
 };

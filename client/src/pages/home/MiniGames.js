@@ -1,10 +1,10 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import debounce from 'lodash/debounce';
-import { BiCategory } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import JilliPopup from '../../components/JilliPopup';
-import { gameListByGameTypeAndProvider } from '../../store/reducer/spribeGameReducer';
+import debounce from "lodash/debounce";
+import { useCallback, useEffect, useState } from "react";
+import { BiCategory } from "react-icons/bi";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import JilliPopup from "../../components/JilliPopup";
+import { gameListByGameTypeAndProvider } from "../../store/reducer/spribeGameReducer";
 
 const MiniGames = () => {
   const dispatch = useDispatch();
@@ -27,14 +27,14 @@ const MiniGames = () => {
           game_type: gameType,
           page: 1,
           size: 9,
-        })
+        }),
       ).then((res) => {
         if (res?.payload?.data?.data) {
           setGameList(res.payload.data.data);
         }
       });
     }, 300),
-    [dispatch, gameType]
+    [dispatch, gameType],
   );
 
   useEffect(() => {
@@ -49,11 +49,14 @@ const MiniGames = () => {
       <div className="mb-8 mt-5">
         <p className="mt-2 flex items-center gap-2 text-base font-semibold ">
           <span>
-            <img src="https://i.ibb.co/nsGSDBST/minigame.png" className="size-8" alt="icon" />
+            <img
+              src="	https://i.ibb.co/wFZqXRnG/MINI-GAME.png"
+              className="size-8"
+              alt="icon"
+            />
           </span>
           Mini Games
         </p>
-        
 
         <div className="games-grid mt-1 grid grid-cols-3 gap-2 px-1">
           {gameList.map((game, index) => (

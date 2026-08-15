@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 import JilliPopup from "../../../components/JilliPopup";
 
@@ -20,8 +20,6 @@ const SportsComponent = () => {
     setGameId(id);
   };
 
-  
-
   return (
     <div className="container mx-auto text-white">
       {gameId && <JilliPopup gameId={gameId} />}
@@ -33,7 +31,7 @@ const SportsComponent = () => {
             <p className="mt-2 flex items-center gap-2 text-base font-semibold">
               <span>
                 <img
-                  src="https://i.ibb.co/KxLBBcsH/sports.png"
+                  src="https://i.ibb.co/C34fRZTP/sports.png"
                   className="size-8"
                   alt="icon"
                 />
@@ -48,16 +46,11 @@ const SportsComponent = () => {
             Latest sports events, rich gameplay
           </p>
         </div>
-
-       
       </div>
 
       {/* Slider Section */}
       <div className="overflow-hidden mt-1">
-        <div
-          className="flex transition-transform duration-500"
-          
-        >
+        <div className="flex transition-transform duration-500">
           {slides.map((slide, index) => (
             <div key={index} className="grid grid-cols-12 gap-2 min-w-full">
               {slide.map((sport, idx) => (

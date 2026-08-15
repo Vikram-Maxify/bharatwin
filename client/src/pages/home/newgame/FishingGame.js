@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
 import debounce from "lodash/debounce";
+import { useCallback, useEffect, useState } from "react";
 import { gameListByGameTypeAndProvider } from "../../../store/reducer/spribeGameReducer";
 
 import { BiCategory } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import JilliPopup from "../../../components/JilliPopup";
 import { Link, useNavigate } from "react-router-dom";
+import JilliPopup from "../../../components/JilliPopup";
 import RechargePopup from "../../../components/RechargePopup";
 
 const FishingGame = () => {
@@ -15,14 +15,14 @@ const FishingGame = () => {
   const [gameList, setGameList] = useState([]);
   const [soon, setSoon] = useState(false);
   const [repopup, setRepopup] = useState(false);
- const navigate = useNavigate();
+  const navigate = useNavigate();
   const { userInfo } = useSelector((state) => state.auth);
   const { rechargeList2Data } = useSelector((state) => state.user);
   const [gameType, setGameType] = useState("Fish Game");
 
   const handleCheck = (path) => {
     //  Only show popup for "bike"
-    
+
     if (path === "bike") {
       setSoon(true);
       return;
@@ -74,7 +74,7 @@ const FishingGame = () => {
           <p className="mt-2 flex items-center gap-2 text-base font-semibold ">
             <span>
               <img
-                src="https://i.ibb.co/B2XH234P/fishing.png"
+                src="https://i.ibb.co/JRnd4dfz/f.png"
                 className="size-8"
                 alt="icon"
               />
@@ -88,7 +88,7 @@ const FishingGame = () => {
       <p className="   text-whites text-[10px] mt-1">
         Classic arcade gameplay, super cool visual enjoyment
       </p>
- <RechargePopup repopup={repopup} setRepopup={setRepopup} />
+      <RechargePopup repopup={repopup} setRepopup={setRepopup} />
       {/* Game Grid */}
       <div className="slider-container mt-4">
         <div className="grid grid-cols-3 gap-2 sm:grid-cols-3">

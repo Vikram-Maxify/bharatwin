@@ -96,25 +96,25 @@ const AllOnlineGames = () => {
   const items = [
     {
       name: "Lottery",
-      icon: "https://i.ibb.co/tMdpYCYc/wingo.png",
+      icon: "https://i.ibb.co/mCS1hw9t/L-d9b599f044f44fc10475.png",
       id: "Lottery",
       type: "",
     },
     {
       name: "Slots",
-      icon: "https://i.ibb.co/N67k0LKm/slots.png",
+      icon: "	https://i.ibb.co/35SV9gdz/SUPER-JACKPOT.png",
       id: "Slot Game",
       type: "jili",
     },
     {
       name: "Mini games",
-      icon: "https://i.ibb.co/nsGSDBST/minigame.png",
+      icon: "	https://i.ibb.co/wFZqXRnG/MINI-GAME.png",
       id: "CasinoTable",
       type: "spribe",
     },
     {
       name: "Fishing",
-      icon: "https://i.ibb.co/B2XH234P/fishing.png",
+      icon: "https://i.ibb.co/JRnd4dfz/f.png",
       id: "Fish Game",
       type: "jili",
     },
@@ -126,13 +126,13 @@ const AllOnlineGames = () => {
     },
     {
       name: "PVC",
-      icon: "https://i.ibb.co/MyT7ztgh/rummy.png",
+      icon: "https://i.ibb.co/7Nn3hdyq/Chat-GPT-Image-Aug-14-2026-03-05-38-PM.png",
       id: "Ca",
       type: "ev",
     },
     {
       name: "Sports",
-      icon: "https://i.ibb.co/KxLBBcsH/sports.png",
+      icon: "https://i.ibb.co/C34fRZTP/sports.png",
       id: "Ca",
       type: "ev",
     },

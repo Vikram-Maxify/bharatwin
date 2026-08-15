@@ -1,11 +1,11 @@
-import React, { useState, useCallback, useEffect } from "react";
 import debounce from "lodash/debounce";
+import { useCallback, useEffect, useState } from "react";
 import { gameListByProvider } from "../../../store/reducer/spribeGameReducer";
 
 import { BiCategory } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import JilliPopup from "../../../components/JilliPopup";
 import { Link, useNavigate } from "react-router-dom";
+import JilliPopup from "../../../components/JilliPopup";
 import RechargePopup from "../../../components/RechargePopup";
 
 const OriginalGame = () => {
@@ -68,7 +68,7 @@ const OriginalGame = () => {
           <p className="mt-2 flex items-center gap-2 text-base font-semibold ">
             <span>
               <img
-                src="https://i.ibb.co/1GNw5ScD/original.png"
+                src="https://i.ibb.co/wFZqXRnG/MINI-GAME.png"
                 className="size-8"
                 alt="icon"
               />

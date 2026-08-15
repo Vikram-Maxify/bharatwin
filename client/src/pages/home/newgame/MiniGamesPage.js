@@ -1,23 +1,22 @@
-
-import React, { useState, useCallback, useEffect, useRef } from 'react';
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
+import { useCallback, useEffect, useRef, useState } from "react";
 // import { BiCategory } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import JilliPopup from '../../../components/JilliPopup';
-import { gameListByGameTypeAndProvider } from '../../../store/reducer/spribeGameReducer';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import JilliPopup from "../../../components/JilliPopup";
+import { gameListByGameTypeAndProvider } from "../../../store/reducer/spribeGameReducer";
 
 const MiniGamesPage = () => {
   const dispatch = useDispatch();
   const [gameId, setGameId] = useState();
   const [gameList, setGameList] = useState([]);
-  const [gameType, setGameType] = useState('CasinoTable');
+  const [gameType, setGameType] = useState("CasinoTable");
 
-   const prevRef = useRef(null);
+  const prevRef = useRef(null);
   const nextRef = useRef(null);
 
   const handleJilliOpen = (data) => {
@@ -28,11 +27,11 @@ const MiniGamesPage = () => {
     debounce(() => {
       dispatch(
         gameListByGameTypeAndProvider({
-          provider: 'spribe',
+          provider: "spribe",
           game_type: gameType,
           page: 1,
           size: 9,
-        })
+        }),
       ).then((res) => {
         if (res?.payload?.data?.data) {
           setGameList(res.payload.data.data);
@@ -40,25 +39,25 @@ const MiniGamesPage = () => {
           // fallback mock data
           setGameList([
             {
-              icon: 'https://i.ibb.co/HTCgHCrp/22001.jpg',
-              game_name: 'Mock Game 1',
-              game_uid: 'mock1',
+              icon: "https://i.ibb.co/HTCgHCrp/22001.jpg",
+              game_name: "Mock Game 1",
+              game_uid: "mock1",
             },
             {
-              icon: 'https://i.ibb.co/qM6JZvK5/801.png',
-              game_name: 'Mock Game 2',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/qM6JZvK5/801.png",
+              game_name: "Mock Game 2",
+              game_uid: "mock2",
             },
             {
-              icon: 'https://i.ibb.co/pTQBRdv/4.png',
-              game_name: 'Mock Game 3',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/pTQBRdv/4.png",
+              game_name: "Mock Game 3",
+              game_uid: "mock2",
             },
           ]);
         }
       });
     }, 300),
-    [dispatch, gameType]
+    [dispatch, gameType],
   );
 
   useEffect(() => {
@@ -74,7 +73,11 @@ const MiniGamesPage = () => {
         <div className="flex justify-between items-center mb-4">
           <p className="mt-2 flex items-center text-gray-200 gap-2 text-base font-semibold ">
             <span>
-              <img src="https://i.ibb.co/nsGSDBST/minigame.png" className="size-8" alt="icon" />
+              <img
+                src="	https://i.ibb.co/wFZqXRnG/MINI-GAME.png"
+                className="size-8"
+                alt="icon"
+              />
             </span>
             Mini Games
           </p>
@@ -87,15 +90,41 @@ const MiniGamesPage = () => {
               Detail
             </Link>
 
-            <button ref={prevRef} className="rounded-md blue-linear text-black font-bold p-1">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            <button
+              ref={prevRef}
+              className="rounded-md blue-linear text-black font-bold p-1"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
-            <button ref={nextRef} className="rounded-md blue-linear text-black font-bold p-1">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            <button
+              ref={nextRef}
+              className="rounded-md blue-linear text-black font-bold p-1"
+            >
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
@@ -161,10 +190,7 @@ const MiniGamesPage = () => {
         </div>
       </div>
     </>
-
   );
 };
 
 export default MiniGamesPage;
-
-

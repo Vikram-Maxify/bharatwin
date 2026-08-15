@@ -1,20 +1,20 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import debounce from 'lodash/debounce';
+import debounce from "lodash/debounce";
+import { useCallback, useEffect, useState } from "react";
 // import { BiCategory } from 'react-icons/bi';
-import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import JilliPopup from '../../components/JilliPopup';
-import { gameListByGameTypeAndProvider } from '../../store/reducer/spribeGameReducer';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
-import 'swiper/css';
-import 'swiper/css/navigation';
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Autoplay, Navigation } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
+import JilliPopup from "../../components/JilliPopup";
+import { gameListByGameTypeAndProvider } from "../../store/reducer/spribeGameReducer";
 
 const Fishgameslider = () => {
   const dispatch = useDispatch();
   const [gameId, setGameId] = useState();
   const [gameList, setGameList] = useState([]);
-  const [gameType] = useState('Fish Game');
+  const [gameType] = useState("Fish Game");
 
   const handleJilliOpen = (data) => {
     setGameId(data);
@@ -24,36 +24,36 @@ const Fishgameslider = () => {
     debounce(() => {
       dispatch(
         gameListByGameTypeAndProvider({
-          provider: 'jili',
+          provider: "jili",
           game_type: gameType,
           page: 1,
           size: 9,
-        })
+        }),
       ).then((res) => {
         if (res?.payload?.data?.data) {
           setGameList(res.payload.data.data);
         } else {
           setGameList([
             {
-              icon: 'https://i.ibb.co/QFKttSdM/3.png',
-              game_name: 'Mock Game 1',
-              game_uid: 'mock1',
+              icon: "https://i.ibb.co/QFKttSdM/3.png",
+              game_name: "Mock Game 1",
+              game_uid: "mock1",
             },
             {
-              icon: 'https://i.ibb.co/3YYzQs7b/1.png',
-              game_name: 'Mock Game 2',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/3YYzQs7b/1.png",
+              game_name: "Mock Game 2",
+              game_uid: "mock2",
             },
             {
-              icon: 'https://i.ibb.co/pTQBRdv/4.png',
-              game_name: 'Mock Game 3',
-              game_uid: 'mock2',
+              icon: "https://i.ibb.co/pTQBRdv/4.png",
+              game_name: "Mock Game 3",
+              game_uid: "mock2",
             },
           ]);
         }
       });
     }, 300),
-    [dispatch, gameType]
+    [dispatch, gameType],
   );
 
   useEffect(() => {
@@ -69,7 +69,11 @@ const Fishgameslider = () => {
         <div className="flex justify-between items-center mb-4">
           <p className="mt-2 flex items-center text-gray-200 gap-2 text-base font-semibold">
             <span>
-              <img src="https://i.ibb.co/B2XH234P/fishing.png" className="size-8" alt="icon" />
+              <img
+                src="https://i.ibb.co/JRnd4dfz/f.png"
+                className="size-8"
+                alt="icon"
+              />
             </span>
             Fishing Games
           </p>
@@ -83,14 +87,34 @@ const Fishgameslider = () => {
             </Link>
 
             <button className="fish-prev rounded-md blue-linear text-black p-1 transition">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15 19l-7-7 7-7"
+                />
               </svg>
             </button>
 
             <button className="fish-next rounded-md blue-linear text-black p-1 transition">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              <svg
+                className="h-4 w-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 5l7 7-7 7"
+                />
               </svg>
             </button>
           </div>
@@ -100,8 +124,8 @@ const Fishgameslider = () => {
           <Swiper
             modules={[Navigation, Autoplay]}
             navigation={{
-              nextEl: '.fish-next',
-              prevEl: '.fish-prev',
+              nextEl: ".fish-next",
+              prevEl: ".fish-prev",
             }}
             autoplay={{ delay: 3000 }}
             spaceBetween={12}
