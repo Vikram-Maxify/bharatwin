@@ -752,7 +752,9 @@ const Wingo = () => {
 
   return (
     <>
-      {/* <ServiceRotate /> */}
+      {/* <div>
+        <ServiceRotate />
+      </div> */}
       {!userInfo && <Loader />}
       <HeaderInfo
         handleRefersh={handleRefersh}

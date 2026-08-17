@@ -1740,3 +1740,380 @@
   "attempts": 0
 }
 
+{
+  "functionStartTime": "8/17/2026, 1:30:01 PM",
+  "functionEndTime": "8/17/2026, 1:30:04 PM",
+  "sqlPeriod": "20260817103010480",
+  "periodFromAPI": "20260817103010481",
+  "newPeriod": "20260817103010481",
+  "oldPeriod": "20260817103010480",
+  "adminControl": "-1",
+  "apiResponseTime": "260ms",
+  "resultAmount": "2",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:31:01 PM",
+  "functionEndTime": "8/17/2026, 1:31:02 PM",
+  "sqlPeriod": "20260817103010482",
+  "periodFromAPI": "20260817103010482",
+  "newPeriod": "20260817103010483",
+  "oldPeriod": "20260817103010482",
+  "adminControl": "-1",
+  "apiResponseTime": "383ms",
+  "resultAmount": "0",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:32:01 PM",
+  "functionEndTime": "8/17/2026, 1:32:02 PM",
+  "sqlPeriod": "20260817103010483",
+  "periodFromAPI": "20260817103010483",
+  "newPeriod": "20260817103010484",
+  "oldPeriod": "20260817103010483",
+  "adminControl": "-1",
+  "apiResponseTime": "266ms",
+  "resultAmount": "3",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:33:01 PM",
+  "functionEndTime": "8/17/2026, 1:33:04 PM",
+  "sqlPeriod": "20260817103010485",
+  "periodFromAPI": "20260817103010484",
+  "newPeriod": "20260817103010484",
+  "oldPeriod": "20260817103010485",
+  "adminControl": "-1",
+  "apiResponseTime": "499ms",
+  "resultAmount": "9",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:34:01 PM",
+  "functionEndTime": "8/17/2026, 1:34:02 PM",
+  "sqlPeriod": "20260817103010485",
+  "periodFromAPI": "20260817103010485",
+  "newPeriod": "20260817103010486",
+  "oldPeriod": "20260817103010485",
+  "adminControl": "-1",
+  "apiResponseTime": "385ms",
+  "resultAmount": "8",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:35:02 PM",
+  "functionEndTime": "8/17/2026, 1:35:10 PM",
+  "sqlPeriod": "20260817103010487",
+  "periodFromAPI": "20260817103010486",
+  "newPeriod": "20260817103010486",
+  "oldPeriod": "20260817103010487",
+  "adminControl": "-1",
+  "apiResponseTime": "4863ms",
+  "resultAmount": "9",
+  "attempts": 1
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:36:02 PM",
+  "functionEndTime": "8/17/2026, 1:36:03 PM",
+  "sqlPeriod": "20260817103010487",
+  "periodFromAPI": "20260817103010487",
+  "newPeriod": "20260817103010488",
+  "oldPeriod": "20260817103010487",
+  "adminControl": "-1",
+  "apiResponseTime": "369ms",
+  "resultAmount": "8",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:37:01 PM",
+  "functionEndTime": "8/17/2026, 1:37:04 PM",
+  "sqlPeriod": "20260817103010489",
+  "periodFromAPI": "20260817103010488",
+  "newPeriod": "20260817103010488",
+  "oldPeriod": "20260817103010489",
+  "adminControl": "-1",
+  "apiResponseTime": "369ms",
+  "resultAmount": "3",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:38:02 PM",
+  "functionEndTime": "8/17/2026, 1:38:28 PM",
+  "sqlPeriod": "20260817103010489",
+  "periodFromAPI": "20260817103010489",
+  "newPeriod": "20260817103010490",
+  "oldPeriod": "20260817103010489",
+  "adminControl": "-1",
+  "apiResponseTime": "15402ms",
+  "resultAmount": "5",
+  "attempts": 4
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:39:04 PM",
+  "functionEndTime": "8/17/2026, 1:39:06 PM",
+  "sqlPeriod": "20260817103010491",
+  "periodFromAPI": "20260817103010490",
+  "newPeriod": "20260817103010490",
+  "oldPeriod": "20260817103010491",
+  "adminControl": "-1",
+  "apiResponseTime": "455ms",
+  "resultAmount": "2",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:39:59 PM",
+  "functionEndTime": "8/17/2026, 1:40:00 PM",
+  "sqlPeriod": "20260817103010490",
+  "periodFromAPI": "20260817103010491",
+  "newPeriod": "20260817103010491",
+  "oldPeriod": "20260817103010490",
+  "adminControl": "-1",
+  "apiResponseTime": "465ms",
+  "resultAmount": "8",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:41:00 PM",
+  "functionEndTime": "8/17/2026, 1:41:02 PM",
+  "sqlPeriod": "20260817103010491",
+  "periodFromAPI": "20260817103010492",
+  "newPeriod": "20260817103010492",
+  "oldPeriod": "20260817103010491",
+  "adminControl": "-1",
+  "apiResponseTime": "363ms",
+  "resultAmount": "0",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:41:59 PM",
+  "functionEndTime": "8/17/2026, 1:42:01 PM",
+  "sqlPeriod": "20260817103010492",
+  "periodFromAPI": "20260817103010493",
+  "newPeriod": "20260817103010493",
+  "oldPeriod": "20260817103010492",
+  "adminControl": "-1",
+  "apiResponseTime": "399ms",
+  "resultAmount": "6",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:43:00 PM",
+  "functionEndTime": "8/17/2026, 1:43:05 PM",
+  "sqlPeriod": "20260817103010494",
+  "periodFromAPI": "20260817103010494",
+  "newPeriod": "20260817103010495",
+  "oldPeriod": "20260817103010494",
+  "adminControl": "-1",
+  "apiResponseTime": "3598ms",
+  "resultAmount": "5",
+  "attempts": 1
+}
+
+{
+  "functionStartTime": "8/17/2026, 1:44:00 PM",
+  "functionEndTime": "8/17/2026, 1:44:02 PM",
+  "sqlPeriod": "20260817103010495",
+  "periodFromAPI": "20260817103010495",
+  "newPeriod": "20260817103010496",
+  "oldPeriod": "20260817103010495",
+  "adminControl": "-1",
+  "apiResponseTime": "404ms",
+  "resultAmount": "4",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:17:02 PM",
+  "functionEndTime": "8/17/2026, 2:17:04 PM",
+  "sqlPeriod": "20260817103010528",
+  "periodFromAPI": "20260817103010528",
+  "newPeriod": "20260817103010529",
+  "oldPeriod": "20260817103010528",
+  "adminControl": "-1",
+  "apiResponseTime": "287ms",
+  "resultAmount": "6",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:18:01 PM",
+  "functionEndTime": "8/17/2026, 2:18:04 PM",
+  "sqlPeriod": "20260817103010529",
+  "periodFromAPI": "20260817103010529",
+  "newPeriod": "20260817103010530",
+  "oldPeriod": "20260817103010529",
+  "adminControl": "-1",
+  "apiResponseTime": "358ms",
+  "resultAmount": "1",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:18:59 PM",
+  "functionEndTime": "8/17/2026, 2:19:01 PM",
+  "sqlPeriod": "20260817103010530",
+  "periodFromAPI": "20260817103010530",
+  "newPeriod": "20260817103010531",
+  "oldPeriod": "20260817103010530",
+  "adminControl": "-1",
+  "apiResponseTime": "332ms",
+  "resultAmount": "2",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:19:59 PM",
+  "functionEndTime": "8/17/2026, 2:20:01 PM",
+  "sqlPeriod": "20260817103010530",
+  "periodFromAPI": "20260817103010531",
+  "newPeriod": "20260817103010531",
+  "oldPeriod": "20260817103010530",
+  "adminControl": "-1",
+  "apiResponseTime": "281ms",
+  "resultAmount": "1",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:20:59 PM",
+  "functionEndTime": "8/17/2026, 2:21:00 PM",
+  "sqlPeriod": "20260817103010532",
+  "periodFromAPI": "20260817103010532",
+  "newPeriod": "20260817103010533",
+  "oldPeriod": "20260817103010532",
+  "adminControl": "-1",
+  "apiResponseTime": "297ms",
+  "resultAmount": "0",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:21:59 PM",
+  "functionEndTime": "8/17/2026, 2:22:01 PM",
+  "sqlPeriod": "20260817103010532",
+  "periodFromAPI": "20260817103010533",
+  "newPeriod": "20260817103010533",
+  "oldPeriod": "20260817103010532",
+  "adminControl": "-1",
+  "apiResponseTime": "423ms",
+  "resultAmount": "0",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:23:00 PM",
+  "functionEndTime": "8/17/2026, 2:23:02 PM",
+  "sqlPeriod": "20260817103010534",
+  "periodFromAPI": "20260817103010534",
+  "newPeriod": "20260817103010535",
+  "oldPeriod": "20260817103010534",
+  "adminControl": "-1",
+  "apiResponseTime": "336ms",
+  "resultAmount": "0",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:24:01 PM",
+  "functionEndTime": "8/17/2026, 2:24:03 PM",
+  "sqlPeriod": "20260817103010534",
+  "periodFromAPI": "20260817103010535",
+  "newPeriod": "20260817103010535",
+  "oldPeriod": "20260817103010534",
+  "adminControl": "-1",
+  "apiResponseTime": "525ms",
+  "resultAmount": "8",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:24:59 PM",
+  "functionEndTime": "8/17/2026, 2:25:02 PM",
+  "sqlPeriod": "20260817103010535",
+  "periodFromAPI": "20260817103010536",
+  "newPeriod": "20260817103010536",
+  "oldPeriod": "20260817103010535",
+  "adminControl": "-1",
+  "apiResponseTime": "781ms",
+  "resultAmount": "7",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:26:00 PM",
+  "functionEndTime": "8/17/2026, 2:26:01 PM",
+  "sqlPeriod": "20260817103010536",
+  "periodFromAPI": "20260817103010537",
+  "newPeriod": "20260817103010537",
+  "oldPeriod": "20260817103010536",
+  "adminControl": "-1",
+  "apiResponseTime": "340ms",
+  "resultAmount": "6",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:27:01 PM",
+  "functionEndTime": "8/17/2026, 2:27:04 PM",
+  "sqlPeriod": "20260817103010539",
+  "periodFromAPI": "20260817103010538",
+  "newPeriod": "20260817103010538",
+  "oldPeriod": "20260817103010539",
+  "adminControl": "-1",
+  "apiResponseTime": "2076ms",
+  "resultAmount": "4",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:28:00 PM",
+  "functionEndTime": "8/17/2026, 2:28:35 PM",
+  "sqlPeriod": "20260817103010538",
+  "periodFromAPI": "20260817103010539",
+  "newPeriod": "20260817103010539",
+  "oldPeriod": "20260817103010538",
+  "adminControl": "-1",
+  "apiResponseTime": "30983ms",
+  "resultAmount": "4",
+  "attempts": 9
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:29:03 PM",
+  "functionEndTime": "8/17/2026, 2:29:04 PM",
+  "sqlPeriod": "20260817103010540",
+  "periodFromAPI": "20260817103010540",
+  "newPeriod": "20260817103010541",
+  "oldPeriod": "20260817103010540",
+  "adminControl": "-1",
+  "apiResponseTime": "334ms",
+  "resultAmount": "5",
+  "attempts": 0
+}
+
+{
+  "functionStartTime": "8/17/2026, 2:30:01 PM",
+  "functionEndTime": "8/17/2026, 2:30:03 PM",
+  "sqlPeriod": "20260817103010541",
+  "periodFromAPI": "20260817103010541",
+  "newPeriod": "20260817103010542",
+  "oldPeriod": "20260817103010541",
+  "adminControl": "-1",
+  "apiResponseTime": "330ms",
+  "resultAmount": "2",
+  "attempts": 0
+}
+
