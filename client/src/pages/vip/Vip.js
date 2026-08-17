@@ -1,24 +1,24 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
-import { IoDiamondSharp } from "react-icons/io5";
-import Rewards from "../../assets/rewards.png";
-import MRewards from "../../assets/coince.png";
-import Safe from "../../assets/safe.png";
-import Rate from "../../assets/rate.png";
-import Wallet from "../../assets/balance.png";
-import { RiVipDiamondFill } from "react-icons/ri";
 import { BsDatabaseFill } from "react-icons/bs";
+import { IoDiamondSharp } from "react-icons/io5";
+import { RiVipDiamondFill } from "react-icons/ri";
+import Wallet from "../../assets/balance.png";
+import MRewards from "../../assets/coince.png";
+import Rate from "../../assets/rate.png";
+import Rewards from "../../assets/rewards.png";
 
-import "./vip.css";
 import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "slick-carousel/slick/slick.css";
+import "./vip.css";
 
-// Import all VIP images and backgrounds 
+// Import all VIP images and backgrounds
 import vip1 from "../../assets/1-1fca7935.png";
 import vip11 from "../../assets/1-d951dc6d.png";
-import vip2 from "../../assets/2-fcf77958.png";
+import vip10 from "../../assets/10-0eaf39a0.png";
 import vip22 from "../../assets/2-5df32e87.png";
+import vip2 from "../../assets/2-fcf77958.png";
 import vip3 from "../../assets/3-9cf04b7e.png";
 import vip4 from "../../assets/4-a4cfd018.png";
 import vip5 from "../../assets/5-89e9b349.png";
@@ -26,8 +26,8 @@ import vip6 from "../../assets/6-05959c7c.png";
 import vip7 from "../../assets/7-a50aebe0.png";
 import vip8 from "../../assets/8-8cbed392.png";
 import vip9 from "../../assets/9-63365227.png";
-import vip10 from "../../assets/10-0eaf39a0.png";
 import vipBg1 from "../../assets/bg1-7ff97a99.png";
+import vipBg10 from "../../assets/bg10-76abb4b7.png";
 import vipBg2 from "../../assets/bg2-ee7fbf5e.png";
 import vipBg3 from "../../assets/bg3-96f1cdae.png";
 import vipBg4 from "../../assets/bg4-c3caf0f8.png";
@@ -36,20 +36,19 @@ import vipBg6 from "../../assets/bg6-8b5d1b4f.png";
 import vipBg7 from "../../assets/bg7-535312da.png";
 import vipBg8 from "../../assets/bg8-8bdc102c.png";
 import vipBg9 from "../../assets/bg9-74d6723d.png";
-import vipBg10 from "../../assets/bg10-76abb4b7.png";
 
-import VIPCard from "./VIPCard";
+import { Crown } from "lucide-react"; // Only Crown is used from lucide-react in the new welfare section
 import { useDispatch, useSelector } from "react-redux";
-import { AvatarData, VIPImg } from "../main/AvatarData"; // Assuming VIPImg is correctly mapped 0-indexed or 1-indexed as per VIP levels
+import { Link } from "react-router-dom";
+import CustomeNavbar from "../../components/CustomeNavbar";
+import ServiceRotate from "../../components/ServiceRotate";
 import {
   invitationBonus,
   vipLevel,
   vipsectionData,
 } from "../../store/reducer/activityReducer";
-import CustomeNavbar from "../../components/CustomeNavbar";
-import { Crown } from "lucide-react"; // Only Crown is used from lucide-react in the new welfare section
-import ServiceRotate from "../../components/ServiceRotate";
-import { Link } from "react-router-dom";
+import { AvatarData, VIPImg } from "../main/AvatarData"; // Assuming VIPImg is correctly mapped 0-indexed or 1-indexed as per VIP levels
+import VIPCard from "./VIPCard";
 
 const Vip = () => {
   const [activeRule, setActiveRule] = useState(1);
@@ -73,13 +72,13 @@ const Vip = () => {
     const lastDayOfMonth = new Date(
       currentDate.getFullYear(),
       currentDate.getMonth() + 1,
-      0 // Setting day to 0 gets the last day of the previous month, so Month+1 and Day 0 gets last day of current month
+      0, // Setting day to 0 gets the last day of the previous month, so Month+1 and Day 0 gets last day of current month
     );
 
     const timeDiff = lastDayOfMonth.getTime() - currentDate.getTime();
     const daysDiff = Math.floor(timeDiff / (1000 * 3600 * 24));
     const hoursDiff = Math.floor(
-      (timeDiff % (1000 * 3600 * 24)) / (1000 * 3600)
+      (timeDiff % (1000 * 3600 * 24)) / (1000 * 3600),
     );
 
     setDaysLeft(daysDiff);
@@ -214,13 +213,13 @@ const Vip = () => {
   // Calculate the current VIP level data for displaying benefits
   // Use currentVipIndex to get the correct VIP level's benefits
   const currentLevelBenefits = vipData?.find(
-    (item) => item.id === levels[currentVipIndex]?.level
+    (item) => item.id === levels[currentVipIndex]?.level,
   );
 
   return (
     <>
       <CustomeNavbar name="VIP" />
-      <ServiceRotate/>
+      <ServiceRotate />
       <div className="nav-bg py-5 pb-10">
         <div className="container-section">
           <div className="flex items-center">
@@ -244,21 +243,25 @@ const Vip = () => {
         </div>
       </div>
 
-     <div className="container-section relative top-[-20px]">
-  <div className="flex items-stretch justify-between gap-2">
-    <div className="w-[48%] bg-popup-nav flex flex-col justify-center items-center py-4 rounded-md">
-      <p className="text-sm font-bold color-blue">{Math.floor(exp)} EXP</p>
-      <p className="text-sm gray-text">My experience</p>
-    </div>
-    <div className="w-[48%] bg-popup-nav flex flex-col justify-center items-center py-4 rounded-md">
-      <p className="text-sm gray-text">
-        <span className="text-white text-xl font-bold">{daysLeft + 2}</span> Days
-      </p>
-      <p className="text-sm gray-text">Payout time</p>
-    </div>
-  </div>
-</div>
-
+      <div className="container-section relative top-[-20px]">
+        <div className="flex items-stretch justify-between gap-2">
+          <div className="w-[48%] bg-popup-nav flex flex-col justify-center items-center py-4 rounded-md">
+            <p className="text-sm font-bold color-blue">
+              {Math.floor(exp)} EXP
+            </p>
+            <p className="text-sm gray-text">My experience</p>
+          </div>
+          <div className="w-[48%] bg-popup-nav flex flex-col justify-center items-center py-4 rounded-md">
+            <p className="text-sm gray-text">
+              <span className="text-white text-xl font-bold">
+                {daysLeft + 2}
+              </span>{" "}
+              Days
+            </p>
+            <p className="text-sm gray-text">Payout time</p>
+          </div>
+        </div>
+      </div>
 
       <div className="container-section">
         <p className="border border-gray-400 py-1 rounded-md fs-sm gray-text text-center">
@@ -271,7 +274,7 @@ const Vip = () => {
               {levels.map((vip, i) => {
                 // Dynamically get maxProgress for the current VIP level
                 const currentVipLevelData = vipData.find(
-                  (data) => data.id === vip.level
+                  (data) => data.id === vip.level,
                 );
                 return (
                   <div key={i} className="px-2">
@@ -284,7 +287,6 @@ const Vip = () => {
                       iconImage={vip?.iconImage ?? ""}
                       bgImage={vip?.bgImage ?? ""}
                       track={vip?.track ?? ""}
-
                       userVipLevel={userInfo?.vip_level}
                       className="mx-auto h-[220px] w-[400px] rounded-xl shadow-md"
                       style={{
@@ -331,7 +333,8 @@ const Vip = () => {
                 </div>
                 <div className="border border-[#21D9CC] rounded-md color-l flex items-center px-4 text-sm mt-1">
                   <RiVipDiamondFill className="color-l mr-1" />
-                  <span>0</span> {/* Assuming this value is static or from another source */}
+                  <span>0</span>{" "}
+                  {/* Assuming this value is static or from another source */}
                 </div>
               </div>
             </div>
@@ -352,7 +355,8 @@ const Vip = () => {
                 </div>
                 <div className="border border-[#21D9CC] rounded-md color-l flex items-center px-4 text-sm mt-1">
                   <RiVipDiamondFill className="color-l mr-1" />
-                  <span>0</span> {/* Assuming this value is static or from another source */}
+                  <span>0</span>{" "}
+                  {/* Assuming this value is static or from another source */}
                 </div>
               </div>
             </div>
@@ -405,167 +409,201 @@ const Vip = () => {
 
               {/* Welfare content area  */}
               <div className="grid grid-cols-2 gap-2 p-2 nav-bg">
-  {/* Level up rewards */}
-  <div className="flex flex-col gap-1 w-full">
-    <div className="bg-[#28323E] rounded-lg overflow-hidden w-full shadow-lg flex flex-col h-full">
-      <div className="relative h-[120px] bg-gradient-to-r from-[#FAE59F] to-[#C4933F] flex-shrink-0 flex items-end justify-center">
-        {/* Adjusted image size and position */}
-        <img
-          src="https://bdg70.com/assets/png/welfare1-eee87ee1.png"
-          alt="Level Up Reward"
-          className="h-36 object-contain"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = "https://placehold.co/100x100/3B4A5C/FFFFFF?text=Img+Error";
-          }}
-        />
-        
-        <div className="absolute  w-full  flex items-center justify-between  bg-black bg-opacity-30">
-          <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
-            <img src={Wallet} alt="gold" className="h-4 w-4 mr-1" />
-            {userInfo?.vip_level && vipData[userInfo.vip_level - 1]?.onetime || 0}{" "}
-            {/* Dynamic value */}
-          </p>
-          <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
-            <img src={Rewards} alt="love" className="h-4 w-4 mr-1" />0 {/* This might need to be dynamic */}
-          </p>
-        </div>
-      </div>
-      <div className="p-2 flex-grow flex flex-col justify-between">
-        <div>
-          <h2 className="text-lg font-semibold mb-1 whitespace-nowrap">Level Up Rewards</h2>
-          <p className="text-xs text-gray-400 mb-4 overflow-hidden text-ellipsis line-clamp-2">
-            Each account can only receive 1 time
-          </p>
-        </div>
-      </div>
-    </div>
-    <button
-      className="w-full bg-gray-600 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded-full transition cursor-not-allowed mt-1"
-      disabled // This should be dynamic based on whether it's claimed
-    >
-      Received
-    </button>
-  </div>
+                {/* Level up rewards */}
+                <div className="flex flex-col gap-1 w-full">
+                  <div className="bg-[#28323E] rounded-lg overflow-hidden w-full shadow-lg flex flex-col h-full">
+                    <div className="relative h-[120px] bg-gradient-to-r from-[#FAE59F] to-[#C4933F] flex-shrink-0 flex items-end justify-center">
+                      {/* Adjusted image size and position */}
+                      <img
+                        src="https://bdg70.com/assets/png/welfare1-eee87ee1.png"
+                        alt="Level Up Reward"
+                        className="h-36 object-contain"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://i.ibb.co/spZ9gP5X/1-1fca7935.png";
+                        }}
+                      />
 
-  {/* Monthly reward */}
-  <div className="flex flex-col gap-1 w-full">
-    <div className="bg-[#28323E] rounded-lg overflow-hidden w-full shadow-lg flex flex-col h-full">
-      <div className="relative h-[120px] bg-gradient-to-r from-[#FAE59F] to-[#C4933F] flex-shrink-0 flex items-end justify-center">
-        {/* Adjusted image size and position */}
-        <img
-          src="https://bdg70.com/assets/png/welfare2-cf757d28.png"
-          alt="Monthly Reward"
-          className="h-36 object-contain"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = "https://placehold.co/100x100/3B4A5C/FFFFFF?text=Img+Error";
-          }}
-        />
-        <div className="absolute  w-full  flex items-center justify-between  bg-black bg-opacity-30">
-          <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
-            <img src={Wallet} alt="gold" className="h-4 w-4 mr-1" />
-            {userInfo?.vip_level && vipData[userInfo.vip_level - 1]?.monthstime || 0}{" "}
-            {/* Dynamic value */}
-          </p>
-          <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
-            <img src={Rewards} alt="love" className="h-4 w-4 mr-1" />0 {/* This might need to be dynamic */}
-          </p>
-        </div>
-      </div>
-      <div className="p-2 flex-grow flex flex-col justify-between">
-        <div>
-          <h2 className="text-lg font-semibold mb-1 whitespace-nowrap">Monthly Reward</h2>
-          <p className="text-xs text-gray-400 mb-4 overflow-hidden text-ellipsis line-clamp-2">
-            Each account can only receive 1 time per month
-          </p>
-        </div>
-      </div>
-    </div>
-    <button
-      className="w-full bg-gray-600 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded-full transition cursor-not-allowed mt-1"
-      disabled // This should be dynamic based on whether it's claimed
-    >
-      Received
-    </button>
-  </div>
+                      <div className="absolute  w-full  flex items-center justify-between  bg-black bg-opacity-30">
+                        <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
+                          <img
+                            src={Wallet}
+                            alt="gold"
+                            className="h-4 w-4 mr-1"
+                          />
+                          {(userInfo?.vip_level &&
+                            vipData[userInfo.vip_level - 1]?.onetime) ||
+                            0}{" "}
+                          {/* Dynamic value */}
+                        </p>
+                        <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
+                          <img
+                            src={Rewards}
+                            alt="love"
+                            className="h-4 w-4 mr-1"
+                          />
+                          0 {/* This might need to be dynamic */}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="p-2 flex-grow flex flex-col justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold mb-1 whitespace-nowrap">
+                          Level Up Rewards
+                        </h2>
+                        <p className="text-xs text-gray-400 mb-4 overflow-hidden text-ellipsis line-clamp-2">
+                          Each account can only receive 1 time
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    className="w-full bg-gray-600 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded-full transition cursor-not-allowed mt-1"
+                    disabled // This should be dynamic based on whether it's claimed
+                  >
+                    Received
+                  </button>
+                </div>
 
-  {/* Rebate rate */}
-  <div className="flex flex-col gap-1 w-full">
-    <div className="bg-[#28323E] rounded-lg overflow-hidden w-full shadow-lg flex flex-col h-full">
-      <div className="relative h-[120px] bg-gradient-to-r from-[#FAE59F] to-[#C4933F] flex-shrink-0 flex items-end justify-center">
-        {/* Adjusted image size and position */}
-        <img
-          src="https://bdg70.com/assets/png/welfare5-8b250748.png"
-          alt="Rebate Rate"
-          className="h-36 object-contain"
-          onError={(e) => {
-            e.target.onerror = null;
-            e.target.src = "https://placehold.co/100x100/3B4A5C/FFFFFF?text=Img+Error";
-          }}
-        />
-        <div className="absolute  w-full  flex items-center justify-between  bg-black bg-opacity-30">
-          <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
-            <img src={Wallet} alt="wallet" className="h-4 w-4 mr-1" />
-            {userInfo?.vip_level && vipData[userInfo.vip_level - 1]?.rebet || 0}% {/* Dynamic value */}
-          </p>
-        </div>
-      </div>
-      <div className="p-2 flex-grow flex flex-col justify-between">
-        <div>
-          <h2 className="text-lg font-semibold mb-1 whitespace-nowrap">Rebate Rate</h2>
-          <p className="text-xs text-gray-400 mb-4 overflow-hidden whitespace-nowrap text-ellipsis line-clamp-2">
-            Increase income of rebate
-          </p>
-        </div>
-        <button className="w-full text-xs whitespace-nowrap text-yellow-400 border border-yellow-400 hover:bg-yellow-400 hover:text-black font-medium py-2 px-2 rounded-full transition">
-          Check the Details
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+                {/* Monthly reward */}
+                <div className="flex flex-col gap-1 w-full">
+                  <div className="bg-[#28323E] rounded-lg overflow-hidden w-full shadow-lg flex flex-col h-full">
+                    <div className="relative h-[120px] bg-gradient-to-r from-[#FAE59F] to-[#C4933F] flex-shrink-0 flex items-end justify-center">
+                      {/* Adjusted image size and position */}
+                      <img
+                        src="https://bdg70.com/assets/png/welfare2-cf757d28.png"
+                        alt="Monthly Reward"
+                        className="h-36 object-contain"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://i.ibb.co/KcyTMHzK/monthly-reward-removebg-preview.png";
+                        }}
+                      />
+                      <div className="absolute  w-full  flex items-center justify-between  bg-black bg-opacity-30">
+                        <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
+                          <img
+                            src={Wallet}
+                            alt="gold"
+                            className="h-4 w-4 mr-1"
+                          />
+                          {(userInfo?.vip_level &&
+                            vipData[userInfo.vip_level - 1]?.monthstime) ||
+                            0}{" "}
+                          {/* Dynamic value */}
+                        </p>
+                        <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
+                          <img
+                            src={Rewards}
+                            alt="love"
+                            className="h-4 w-4 mr-1"
+                          />
+                          0 {/* This might need to be dynamic */}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="p-2 flex-grow flex flex-col justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold mb-1 whitespace-nowrap">
+                          Monthly Reward
+                        </h2>
+                        <p className="text-xs text-gray-400 mb-4 overflow-hidden text-ellipsis line-clamp-2">
+                          Each account can only receive 1 time per month
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    className="w-full bg-gray-600 hover:bg-gray-700 text-gray-300 font-medium py-2 px-4 rounded-full transition cursor-not-allowed mt-1"
+                    disabled // This should be dynamic based on whether it's claimed
+                  >
+                    Received
+                  </button>
+                </div>
+
+                {/* Rebate rate */}
+                <div className="flex flex-col gap-1 w-full">
+                  <div className="bg-[#28323E] rounded-lg overflow-hidden w-full shadow-lg flex flex-col h-full">
+                    <div className="relative h-[120px] bg-gradient-to-r from-[#FAE59F] to-[#C4933F] flex-shrink-0 flex items-end justify-center">
+                      {/* Adjusted image size and position */}
+                      <img
+                        src="https://bdg70.com/assets/png/welfare5-8b250748.png"
+                        alt="Rebate Rate"
+                        className="h-36 object-contain"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src =
+                            "https://i.ibb.co/ycGv5PSP/levelupreward-removebg-preview.png";
+                        }}
+                      />
+                      <div className="absolute  w-full  flex items-center justify-between  bg-black bg-opacity-30">
+                        <p className="flex items-center text-sm font-semibold p-1  rounded-full backdrop-blur-sm">
+                          <img
+                            src={Wallet}
+                            alt="wallet"
+                            className="h-4 w-4 mr-1"
+                          />
+                          {(userInfo?.vip_level &&
+                            vipData[userInfo.vip_level - 1]?.rebet) ||
+                            0}
+                          % {/* Dynamic value */}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="p-2 flex-grow flex flex-col justify-between">
+                      <div>
+                        <h2 className="text-lg font-semibold mb-1 whitespace-nowrap">
+                          Rebate Rate
+                        </h2>
+                        <p className="text-xs text-gray-400 mb-4 overflow-hidden whitespace-nowrap text-ellipsis line-clamp-2">
+                          Increase income of rebate
+                        </p>
+                      </div>
+                      <button className="w-full text-xs whitespace-nowrap text-yellow-400 border border-yellow-400 hover:bg-yellow-400 hover:text-black font-medium py-2 px-2 rounded-full transition">
+                        Check the Details
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
 
-
-        
-
         <div className="mt-5">
           <div className="flex items-center justify-between gap-2 relative">
             {/* History Button */}
-<button
-  className={`relative flex justify-center items-center nav-bg w-full py-2 rounded-md ${
-    activeRule === 1 ? "color-l" : "gray-50"
-  }`}
-  onClick={() => setActiveRule(1)}
->
-  History
-  {activeRule === 1 && (
-    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[60%] h-[2px] bg-[#21D9CC]"></div>
-  )}
-</button>
+            <button
+              className={`relative flex justify-center items-center nav-bg w-full py-2 rounded-md ${
+                activeRule === 1 ? "color-l" : "gray-50"
+              }`}
+              onClick={() => setActiveRule(1)}
+            >
+              History
+              {activeRule === 1 && (
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[60%] h-[2px] bg-[#21D9CC]"></div>
+              )}
+            </button>
 
-{/* Rules Button */}
-<button
-  className={`relative flex justify-center items-center nav-bg w-full py-2 rounded-md ${
-    activeRule === 2 ? "color-l" : "gray-50"
-  }`}
-  onClick={() => setActiveRule(2)}
->
-  Rules
-  {activeRule === 2 && (
-    <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[60%] h-[2px] bg-[#21D9CC]"></div>
-  )}
-</button>
-
+            {/* Rules Button */}
+            <button
+              className={`relative flex justify-center items-center nav-bg w-full py-2 rounded-md ${
+                activeRule === 2 ? "color-l" : "gray-50"
+              }`}
+              onClick={() => setActiveRule(2)}
+            >
+              Rules
+              {activeRule === 2 && (
+                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[60%] h-[2px] bg-[#21D9CC]"></div>
+              )}
+            </button>
           </div>
 
           {activeRule === 1 && (
             <div>
               {Array.isArray(vipLevelData) && vipLevelData.length > 0 ? (
-                vipLevelData?.slice(0,10)?.map((item, i) => (
+                vipLevelData?.slice(0, 10)?.map((item, i) => (
                   <div className="  border-b mt-2 border-gray-800 p-2" key={i}>
                     {item?.details === "Bet" ? (
                       <>
@@ -576,8 +614,8 @@ const Vip = () => {
                         <div className="flex items-center justify-between">
                           <span className="fs-sm gray-50">{item?.date}</span>
                           <p className="flex items-center text-green-500 p-[2px] w-auto justify-between px-2 fs-sm rounded-md text-gee">
-                             {Math.floor(item?.amount)} EXP
-                </p>
+                            {Math.floor(item?.amount)} EXP
+                          </p>
                         </div>
                       </>
                     ) : item?.details === "0" ? (
@@ -614,14 +652,15 @@ const Vip = () => {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-gray-500 mt-4">No history data available.</p>
+                <p className="text-center text-gray-500 mt-4">
+                  No history data available.
+                </p>
               )}
-               <Link to="/vip/allhistory">
-               <button className="blue-linear flex justify-center text-lg w-80 text-black m-auto font-semibold text-center rounded-full p-2 mt-5 tracking-widest">
-                View All
-              </button>
-               </Link>
-              
+              <Link to="/vip/allhistory">
+                <button className="blue-linear flex justify-center text-lg w-80 text-black m-auto font-semibold text-center rounded-full p-2 mt-5 tracking-widest">
+                  View All
+                </button>
+              </Link>
             </div>
           )}
 

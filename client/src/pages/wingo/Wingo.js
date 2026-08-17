@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useRef,
-  useCallback,
-
-} from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   IoIosArrowBack,
   IoIosArrowDropright,
@@ -12,43 +6,40 @@ import {
 } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import "./wingo.css";
+import { FaCircle, FaMinus, FaPlus } from "react-icons/fa";
 import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
-  MdSupportAgent,
 } from "react-icons/md";
-import { FaCircle, FaMinus, FaPlus } from "react-icons/fa";
-import io from "socket.io-client";
-import TimeImg from "../../assets/time.png";
-import TimeActiveImg from "../../assets/time_aactive.png";
-import ZeroImg from "../../assets/zero.png";
-import OneImg from "../../assets/one.png";
-import TwoImg from "../../assets/two.png";
-import ThreeImg from "../../assets/three.png";
-import FourImg from "../../assets/four.png";
-import FiveImg from "../../assets/five.png";
-import SixImg from "../../assets/six.png";
-import SevenImg from "../../assets/seven.png";
-import EightImg from "../../assets/eight.png";
-import NineImg from "../../assets/nine.png";
-import Audio1 from "../../assets/audio/di1.mp3";
-import Audio2 from "../../assets/audio/di2.mp3";
 import { PiCopySimpleBold } from "react-icons/pi";
 import { useDispatch, useSelector } from "react-redux";
-import { userDetail } from "../../store/reducer/authReducer";
+import io from "socket.io-client";
+import Audio1 from "../../assets/audio/di1.mp3";
+import Audio2 from "../../assets/audio/di2.mp3";
+import EightImg from "../../assets/eight.png";
+import FiveImg from "../../assets/five.png";
+import FourImg from "../../assets/four.png";
+import NineImg from "../../assets/nine.png";
+import OneImg from "../../assets/one.png";
+import SevenImg from "../../assets/seven.png";
+import SixImg from "../../assets/six.png";
+import ThreeImg from "../../assets/three.png";
+import TimeImg from "../../assets/time.png";
+import TimeActiveImg from "../../assets/time_aactive.png";
+import TwoImg from "../../assets/two.png";
+import ZeroImg from "../../assets/zero.png";
 import CopyCopmponent from "../../components/CopyCopmponent";
-import { wingoHistory, wingoPeriodList } from "../../store/reducer/gameReducer";
+import { userDetail } from "../../store/reducer/authReducer";
 import { wingoBet } from "../../store/reducer/betReducer";
+import { wingoHistory, wingoPeriodList } from "../../store/reducer/gameReducer";
 import HeaderInfo from "./HeaderInfo";
+import "./wingo.css";
 
-
-import { IoCloseCircleOutline } from "react-icons/io5";
 import debounce from "lodash/debounce";
+import { IoCloseCircleOutline } from "react-icons/io5";
+import Loader from "../../components/Loader";
 import { host } from "../../store/reducer/api";
 import EmptyData from "../activity/EmptyData";
-import ServiceRotate from "../../components/ServiceRotate";
-import Loader from "../../components/Loader";
 
 const WinImg = "https://i.ibb.co/ssJ2HLw/win-popup.png";
 const LoseImg = "https://i.ibb.co/8zTQQmx/loss-popup.png";
@@ -70,73 +61,68 @@ const xData = [1, 5, 10, 20, 50, 100];
 const socket = io(host);
 
 const Wingo = () => {
-  const { userInfo } = useSelector((state) => state.auth)
-  const { wingoPeriodListData, successMessage, wingoHistoryData } = useSelector((state) => state.game)
-  const { loader } = useSelector((state) => state.bet)
-  const [messages, setMessage] = useState("")
-  const [activeTime, setActiveTime] = useState()
-  const [activeX, setActiveX] = useState(0)
-  const [gameHistory, setGameHistory] = useState("ghistory")
-  const [openPopup, setOpenPopup] = useState(false)
-  const [openTime, setOpenTime] = useState(false)
+  const { userInfo } = useSelector((state) => state.auth);
+  const { wingoPeriodListData, successMessage, wingoHistoryData } = useSelector(
+    (state) => state.game,
+  );
+  const { loader } = useSelector((state) => state.bet);
+  const [messages, setMessage] = useState("");
+  const [activeTime, setActiveTime] = useState();
+  const [activeX, setActiveX] = useState(0);
+  const [gameHistory, setGameHistory] = useState("ghistory");
+  const [openPopup, setOpenPopup] = useState(false);
+  const [openTime, setOpenTime] = useState(false);
 
-  const [openHowtoPlay, setHowtoPlay] = useState(false)
-  const [details, setDetails] = useState(null)
-  const [refershPopup, setRefeshPopup] = useState(false)
-  const [pageno, setPage] = useState(1)
-  const [pageto, setPageto] = useState(10)
-  const [typeid1, setTypeid1] = useState(10)
+  const [openHowtoPlay, setHowtoPlay] = useState(false);
+  const [details, setDetails] = useState(null);
+  const [refershPopup, setRefeshPopup] = useState(false);
+  const [pageno, setPage] = useState(1);
+  const [pageto, setPageto] = useState(10);
+  const [typeid1, setTypeid1] = useState(10);
   const [minutetime1, setMinutetime1] = useState(0);
   const [minutetime2, setMinutetime2] = useState(0);
   const [secondtime1, setSecondtime1] = useState(0);
   const [secondtime2, setSecondtime2] = useState(0);
   const intervalRef = useRef(null);
-  const [betAlert, setBetAlert] = useState(false)
-  const [historyPage, setHistoryPage] = useState(0)
-  const [activeVoice, setActiveVoice] = useState(true)
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
-  const [winResult, setWinResult] = useState(null)
-  const [resultPopup, setResultPopup] = useState(false)
-  const [copyPopup, setCopyPopup] = useState(false)
+  const [betAlert, setBetAlert] = useState(false);
+  const [historyPage, setHistoryPage] = useState(0);
+  const [activeVoice, setActiveVoice] = useState(true);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [winResult, setWinResult] = useState(null);
+  const [resultPopup, setResultPopup] = useState(false);
+  const [copyPopup, setCopyPopup] = useState(false);
   const calledRef = useRef(false);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const Game = queryParams.get("Game");
 
-  const [selectBet, setSelectBet] = useState("")
+  const [selectBet, setSelectBet] = useState("");
   const selectBetHandle = async (data) => {
-    setSelectBet(data)
+    setSelectBet(data);
     setTimeout(() => {
-      setOpenPopup(true)
+      setOpenPopup(true);
     }, 100);
-  }
+  };
   const [animate, setAnimate] = useState(false);
   const generateRandomNumber = () => {
     const number = Math.floor(Math.random() * 10);
-    setTimeout(() => selectBetHandle(number), 5000)
+    setTimeout(() => selectBetHandle(number), 5000);
     setAnimate(true);
     setTimeout(() => setAnimate(false), 5000);
   };
 
-
-
   const handleWingoMinut = async (data) => {
-    setActiveTime(data)
-    localStorage.setItem('wingominute', data);
+    setActiveTime(data);
+    localStorage.setItem("wingominute", data);
 
-    setTypeid1(data)
-    setPage(1)
+    setTypeid1(data);
+    setPage(1);
 
-    setPageto(10)
+    setPageto(10);
     debouncedDispatch(dispatch, data, pageno, pageto);
     navigate(`/wingo?Game=${data}`);
-
-  }
-
-
-
-
+  };
 
   const [isChecked, setIsChecked] = useState(true);
 
@@ -156,23 +142,19 @@ const Wingo = () => {
     const newVoiceState = !activeVoice;
     setActiveVoice(newVoiceState);
     localStorage.setItem("voice", newVoiceState);
-  }
-
-
+  };
 
   useEffect(() => {
     // const wingominutes = localStorage?.getItem('wingominute');
     // if (wingominutes !== null) {
-    setActiveTime(Number(Game))
-    setTypeid1(Number(Game))
+    setActiveTime(Number(Game));
+    setTypeid1(Number(Game));
     // }
 
     if (typeid1 !== null) {
-      updateNumbers()
-      openAudio()
+      updateNumbers();
+      openAudio();
     }
-
-
 
     const voiceState = localStorage.getItem("voice");
     if (voiceState !== null) {
@@ -180,70 +162,67 @@ const Wingo = () => {
     }
 
     if (openPopup) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     }
 
     return () => {
-      document.body.style.overflow = 'auto'; // or 'visible' depending on your default
+      document.body.style.overflow = "auto"; // or 'visible' depending on your default
     };
   }, [activeTime, openPopup]);
 
   const audio1Ref = useRef(new Audio(Audio1));
   const audio2Ref = useRef(new Audio(Audio2));
 
-
   const openAudio = () => {
     audio1Ref.current.muted = true;
-    audio1Ref.current.play().catch(error => {
+    audio1Ref.current.play().catch((error) => {
       console.error("Error playing audio1:", error);
     });
     audio2Ref.current.muted = true;
-    audio2Ref.current.play().catch(error => {
+    audio2Ref.current.play().catch((error) => {
       console.error("Error playing audio2:", error);
     });
-
   };
 
   const playAudio1 = () => {
     audio1Ref.current.muted = false;
-    audio1Ref.current.play().catch(error => {
+    audio1Ref.current.play().catch((error) => {
       console.error("Error playing audio1:", error);
     });
   };
 
   const playAudio2 = () => {
     audio2Ref.current.muted = false;
-    audio2Ref.current.play().catch(error => {
+    audio2Ref.current.play().catch((error) => {
       console.error("Error playing audio2:", error);
     });
   };
 
-
   const handleDetail = (i) => {
     if (details === i) {
-      return setDetails(null)
+      return setDetails(null);
     }
-    setDetails(i)
-  }
+    setDetails(i);
+  };
 
   const handleRefersh = () => {
     dispatch(userDetail()).then((res) => {
       if (res.payload.status) {
-        setRefeshPopup(true)
+        setRefeshPopup(true);
       }
-    })
+    });
     setTimeout(() => {
-      setRefeshPopup(false)
+      setRefeshPopup(false);
     }, 2000);
-  }
+  };
 
   const fetchNewData = async (pageno, pageto) => {
     await dispatch(wingoPeriodList({ typeid1, pageno, pageto })).then((res) => {
       if (res.payload.status) {
-        chartFunction()
+        chartFunction();
       }
-    })
-    await dispatch(wingoHistory({ typeid1, pageno, pageto }))
+    });
+    await dispatch(wingoHistory({ typeid1, pageno, pageto }));
   };
   const handleIncrease = async () => {
     const newPageNo = pageno + 10;
@@ -251,8 +230,7 @@ const Wingo = () => {
     setPage(newPageNo);
     setPageto(newPageTo);
     await fetchNewData(newPageNo, newPageTo);
-    dispatch(wingoHistory({ typeid1, pageno, pageto }))
-
+    dispatch(wingoHistory({ typeid1, pageno, pageto }));
   };
 
   const handleDecrease = async () => {
@@ -263,78 +241,73 @@ const Wingo = () => {
       setPageto(newPageTo);
       await fetchNewData2(newPageNo, newPageTo);
     }
-
-  }
+  };
 
   const fetchNewData2 = async (pageno, pageto) => {
     await dispatch(wingoPeriodList({ typeid1, pageno, pageto })).then((res) => {
       if (res.payload.status) {
-        chartFunction()
+        chartFunction();
       }
-    })
-    await dispatch(wingoHistory({ typeid1, pageno, pageto }))
-
+    });
+    await dispatch(wingoHistory({ typeid1, pageno, pageto }));
   };
 
   const handleBet = async () => {
-    setOpenPopup(false)
-    dispatch(wingoBet({ typeid1, selectBet, balance, multiplier })).then((res) => {
-      setBetAlert(true)
-      dispatch(userDetail())
-      // setOpenPopup(false)
-      setMessage(res.payload.message)
-      setBalance(1)
-      setMultiplier(1)
-      setActiveX(0)
-      localStorage.setItem("bet", true)
+    setOpenPopup(false);
+    dispatch(wingoBet({ typeid1, selectBet, balance, multiplier })).then(
+      (res) => {
+        setBetAlert(true);
+        dispatch(userDetail());
+        // setOpenPopup(false)
+        setMessage(res.payload.message);
+        setBalance(1);
+        setMultiplier(1);
+        setActiveX(0);
+        localStorage.setItem("bet", true);
 
-      setTimeout(() => {
-        setMessage("")
-      }, 3000);
+        setTimeout(() => {
+          setMessage("");
+        }, 3000);
 
-      if (res.payload.status) {
-        dispatch(wingoHistory({ typeid1, pageno, pageto }))
-      }
-
-    })
-  }
+        if (res.payload.status) {
+          dispatch(wingoHistory({ typeid1, pageno, pageto }));
+        }
+      },
+    );
+  };
 
   useEffect(() => {
-
     debouncedDispatch(dispatch, Number(Game), pageno, pageto);
-  }, [dispatch])
-
+  }, [dispatch]);
 
   const debouncedDispatch = useCallback(
     debounce((dispatch, typeid1, pageno, pageto) => {
-
       dispatch(wingoPeriodList({ typeid1, pageno, pageto })).then((res) => {
         if (res.payload.status) {
-          chartFunction()
+          chartFunction();
         }
-      })
+      });
       dispatch(wingoHistory({ typeid1, pageno, pageto })).then((res) => {
-        setHistoryPage(res?.payload?.page)
-      })
-      updateNumbers()
-
+        setHistoryPage(res?.payload?.page);
+      });
+      updateNumbers();
     }, 500),
-    [dispatch, typeid1]
+    [dispatch, typeid1],
   );
 
   const debouncedDispatchResult = useCallback(
     debounce((dispatch, typeid1, pageno, pageto) => {
       dispatch(wingoHistory({ typeid1, pageno, pageto })).then((res) => {
-        console.log(res?.payload.data?.gameslist[0]?.status)
+        console.log(res?.payload.data?.gameslist[0]?.status);
         if (res?.payload.data?.gameslist[0]?.status == 1) {
-          dispatch(userDetail())
-          setWinResult(true)
+          dispatch(userDetail());
+          setWinResult(true);
         } else if (res?.payload.data?.gameslist[0]?.status == 2) {
-          setWinResult(false)
+          setWinResult(false);
         }
       });
     }, 500),
-    [dispatch, typeid1]
+    [dispatch, typeid1],
   );
 
   useEffect(() => {
@@ -344,14 +317,11 @@ const Wingo = () => {
     // Empty dependency array ensures it runs only once
   }, []);
 
-
-
   useEffect(() => {
     setTimeout(() => {
       setRefeshPopup(false);
-      setBetAlert(false)
+      setBetAlert(false);
     }, 2000);
-
 
     const handler = (msg) => {
       setPage(1);
@@ -359,9 +329,13 @@ const Wingo = () => {
       // Realtime data
       // console.log("msg?.data",msg?.data,"wingoHistoryData?.",wingoHistoryData?.gameslist[0]?.stage)
 
-      if (msg?.data[1]?.period == wingoHistoryData?.gameslist[0]?.stage && wingoHistoryData?.gameslist[0]?.stage !== undefined && !calledRef.current) {
-        debouncedDispatchResult(dispatch, typeid1, pageno, pageto)
-        setResultPopup(true)
+      if (
+        msg?.data[1]?.period == wingoHistoryData?.gameslist[0]?.stage &&
+        wingoHistoryData?.gameslist[0]?.stage !== undefined &&
+        !calledRef.current
+      ) {
+        debouncedDispatchResult(dispatch, typeid1, pageno, pageto);
+        setResultPopup(true);
 
         setTimeout(() => {
           calledRef.current = false; // Reset after some time if needed
@@ -373,7 +347,12 @@ const Wingo = () => {
       //   console.log("fff",resultPopup)
       // }
 
-      if (typeid1 == 1 && Array.isArray(msg?.data) && msg?.data[0]?.game == "wingo" && !calledRef.current) {
+      if (
+        typeid1 == 1 &&
+        Array.isArray(msg?.data) &&
+        msg?.data[0]?.game == "wingo" &&
+        !calledRef.current
+      ) {
         calledRef.current = true;
         debouncedDispatch(dispatch, typeid1, pageno, pageto);
         setTimeout(() => {
@@ -381,40 +360,59 @@ const Wingo = () => {
         }, 2000);
       }
 
-      if (typeid1 == 3 && Array.isArray(msg?.data) && msg.data[0].game == "wingo3") {
+      if (
+        typeid1 == 3 &&
+        Array.isArray(msg?.data) &&
+        msg.data[0].game == "wingo3"
+      ) {
         debouncedDispatch(dispatch, typeid1, pageno, pageto);
       }
-      if (typeid1 == 5 && Array.isArray(msg?.data) && msg.data[0].game == "wingo5") {
+      if (
+        typeid1 == 5 &&
+        Array.isArray(msg?.data) &&
+        msg.data[0].game == "wingo5"
+      ) {
         debouncedDispatch(dispatch, typeid1, pageno, pageto);
       }
 
-      if (typeid1 === 10 && Array.isArray(msg?.data) && msg?.data[0]?.game === "wingo10" && !calledRef.current) {
+      if (
+        typeid1 === 10 &&
+        Array.isArray(msg?.data) &&
+        msg?.data[0]?.game === "wingo10" &&
+        !calledRef.current
+      ) {
         calledRef.current = true;
         debouncedDispatch(dispatch, typeid1, pageno, pageto);
         setTimeout(() => {
           calledRef.current = false; // Reset after some time if needed
         }, 2000);
       }
-
     };
 
-    socket.on('data-server', handler);
+    socket.on("data-server", handler);
     return () => {
-      socket.off('data-server', handler);
+      socket.off("data-server", handler);
     };
-  }, [pageno, pageto, dispatch, betAlert, messages, debouncedDispatchResult, winResult]);
-
+  }, [
+    pageno,
+    pageto,
+    dispatch,
+    betAlert,
+    messages,
+    debouncedDispatchResult,
+    winResult,
+  ]);
 
   const chartFunction = () => {
-    const trendList = document.getElementById('trendList');
+    const trendList = document.getElementById("trendList");
 
     // Clear any existing SVG lines
-    const existingSvg = document.querySelector('.svg-line');
+    const existingSvg = document.querySelector(".svg-line");
     if (existingSvg) {
       existingSvg.remove();
     }
 
-    const activeElements = document.querySelectorAll('.active');
+    const activeElements = document.querySelectorAll(".active");
     const svgns = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgns, "svg");
     svg.setAttribute("width", "100%");
@@ -426,10 +424,22 @@ const Wingo = () => {
       const secondActive = activeElements[i + 1];
 
       const line = document.createElementNS(svgns, "line");
-      line.setAttribute("x1", `${firstActive.offsetLeft + firstActive.offsetWidth / 2}px`);
-      line.setAttribute("y1", `${firstActive.offsetTop + firstActive.offsetHeight / 2}px`);
-      line.setAttribute("x2", `${secondActive.offsetLeft + secondActive.offsetWidth / 2}px`);
-      line.setAttribute("y2", `${secondActive.offsetTop + secondActive.offsetHeight / 2}px`);
+      line.setAttribute(
+        "x1",
+        `${firstActive.offsetLeft + firstActive.offsetWidth / 2}px`,
+      );
+      line.setAttribute(
+        "y1",
+        `${firstActive.offsetTop + firstActive.offsetHeight / 2}px`,
+      );
+      line.setAttribute(
+        "x2",
+        `${secondActive.offsetLeft + secondActive.offsetWidth / 2}px`,
+      );
+      line.setAttribute(
+        "y2",
+        `${secondActive.offsetTop + secondActive.offsetHeight / 2}px`,
+      );
       line.setAttribute("stroke", "red");
       line.setAttribute("stroke-width", "0.6");
 
@@ -438,23 +448,16 @@ const Wingo = () => {
     trendList?.appendChild(svg);
   };
 
-
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   // chart js
   useEffect(() => {
-
     if (typeid1 !== null) {
-      chartFunction()
+      chartFunction();
     }
-
-
-
   }, [gameHistory, openTime, successMessage, wingoPeriodListData?.length]);
-
-
 
   // const socket = useRef(null);
   const isConnectedRef = useRef(false);
@@ -479,7 +482,12 @@ const Wingo = () => {
       setSecondtime2(secondtime2);
 
       // Handle open time logic based on received data
-      if (minute === 0 && secondtime1 === 0 && secondtime2 <= 5 && secondtime2 >= 1) {
+      if (
+        minute === 0 &&
+        secondtime1 === 0 &&
+        secondtime2 <= 5 &&
+        secondtime2 >= 1
+      ) {
         setOpenTime(true);
         setOpenPopup(false);
         if (activeVoice) playAudio1();
@@ -488,10 +496,22 @@ const Wingo = () => {
       }
 
       if (
-        (typeid === 5 && minute === 4 && secondtime1 === 5 && secondtime2 === 9) ||
-        (typeid === 3 && minute === 2 && secondtime1 === 5 && secondtime2 === 9) ||
-        (typeid === 1 && minute === 0 && secondtime1 === 5 && secondtime2 === 9) ||
-        (typeid === 10 && minute === 0 && secondtime1 === 5 && secondtime2 === 9)
+        (typeid === 5 &&
+          minute === 4 &&
+          secondtime1 === 5 &&
+          secondtime2 === 9) ||
+        (typeid === 3 &&
+          minute === 2 &&
+          secondtime1 === 5 &&
+          secondtime2 === 9) ||
+        (typeid === 1 &&
+          minute === 0 &&
+          secondtime1 === 5 &&
+          secondtime2 === 9) ||
+        (typeid === 10 &&
+          minute === 0 &&
+          secondtime1 === 5 &&
+          secondtime2 === 9)
       ) {
         if (activeVoice) playAudio2();
       }
@@ -527,11 +547,11 @@ const Wingo = () => {
     };
   }, []);
 
-
   // end
 
   const copyToClipboard = (number) => {
-    navigator.clipboard.writeText(String(number))
+    navigator.clipboard
+      .writeText(String(number))
       .then(() => {
         setCopyPopup(true);
         console.log("Copied to clipboard");
@@ -539,8 +559,8 @@ const Wingo = () => {
           setCopyPopup(false);
         }, 1500);
       })
-      .catch(err => {
-        console.error('Failed to copy the text: ', err);
+      .catch((err) => {
+        console.error("Failed to copy the text: ", err);
       });
   };
 
@@ -569,13 +589,8 @@ const Wingo = () => {
   };
   const handleClose = () => {
     setWinResult(null);
-    setResultPopup(false)
-  }
-
-
-
-
-
+    setResultPopup(false);
+  };
 
   // Add a function to get the appropriate content based on activeTime
   const getHowToPlayContent = () => {
@@ -584,32 +599,36 @@ const Wingo = () => {
         return (
           <>
             <p className="font-bold">
-              30 seconds 1 issue, 25 seconds to order, 5 seconds waiting for the draw.
-              It opens all day. The total number of trade is 2880 issues.
+              30 seconds 1 issue, 25 seconds to order, 5 seconds waiting for the
+              draw. It opens all day. The total number of trade is 2880 issues.
             </p>
             <p className="font-bold">
-              If you spend 100 to trade, after deducting 2 service fee, your contract amount is 98:
+              If you spend 100 to trade, after deducting 2 service fee, your
+              contract amount is 98:
             </p>
             <p>
-              1. Select green: if the result shows 1,3,7,9 you will get (98*2)=196;
-              If the result shows 5, you will get (98*1.5) 147
+              1. Select green: if the result shows 1,3,7,9 you will get
+              (98*2)=196; If the result shows 5, you will get (98*1.5) 147
             </p>
             <p>
-              2. Select red: if the result shows 2,4,6,8 you will get (98*2)=196;
-              If the result shows 0, you will get (98*1.5) 147
+              2. Select red: if the result shows 2,4,6,8 you will get
+              (98*2)=196; If the result shows 0, you will get (98*1.5) 147
             </p>
             <p>
-              3. Select violet: if the result shows 0 or 5, you will get (98*4.5) 441
+              3. Select violet: if the result shows 0 or 5, you will get
+              (98*4.5) 441
             </p>
             <p>
-              4. Select number: if the result is the same as the number you selected,
-              you will get (98*9)=882
+              4. Select number: if the result is the same as the number you
+              selected, you will get (98*9)=882
             </p>
             <p>
-              5. Select big: if the result shows 5,6,7,8,9 you will get (98*2)=196
+              5. Select big: if the result shows 5,6,7,8,9 you will get
+              (98*2)=196
             </p>
             <p>
-              6. Select small: if the result shows 0,1,2,3,4 you will get (98*2)=196
+              6. Select small: if the result shows 0,1,2,3,4 you will get
+              (98*2)=196
             </p>
           </>
         );
@@ -617,32 +636,36 @@ const Wingo = () => {
         return (
           <>
             <p className="font-bold">
-              1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the draw.
-              It opens all day. The total number of trades is 1440 issues.
+              1 minute 1 issue, 45 seconds to order, 15 seconds waiting for the
+              draw. It opens all day. The total number of trades is 1440 issues.
             </p>
             <p className="font-bold">
-              If you spend 100 to trade, after deducting a 2 service fee, your contract amount is 98:
+              If you spend 100 to trade, after deducting a 2 service fee, your
+              contract amount is 98:
             </p>
             <p>
-              1. Select green: If the result shows 1, 3, 7, 9, you will get (98 * 2) 196;
-              If the result shows 5, you will get (98 * 1.5) 147.
+              1. Select green: If the result shows 1, 3, 7, 9, you will get (98
+              * 2) 196; If the result shows 5, you will get (98 * 1.5) 147.
             </p>
             <p>
-              2. Select red: If the result shows 2, 4, 6, 8, you will get (98 * 2) 196;
-              If the result shows 0, you will get (98 * 1.5) 147.
+              2. Select red: If the result shows 2, 4, 6, 8, you will get (98 *
+              2) 196; If the result shows 0, you will get (98 * 1.5) 147.
             </p>
             <p>
-              3. Select violet: If the result shows 0 or 5, you will get (98 * 4.5) 441.
+              3. Select violet: If the result shows 0 or 5, you will get (98 *
+              4.5) 441.
             </p>
             <p>
-              4. Select number: If the result is the same as the number you selected,
-              you will get (98 * 9) 882.
+              4. Select number: If the result is the same as the number you
+              selected, you will get (98 * 9) 882.
             </p>
             <p>
-              5. Select big: If the result shows 5, 6, 7, 8, 9, you will get (98 * 2) 196.
+              5. Select big: If the result shows 5, 6, 7, 8, 9, you will get (98
+              * 2) 196.
             </p>
             <p>
-              6. Select small: If the result shows 0, 1, 2, 3, 4, you will get (98 * 2) 196.
+              6. Select small: If the result shows 0, 1, 2, 3, 4, you will get
+              (98 * 2) 196.
             </p>
           </>
         );
@@ -650,32 +673,37 @@ const Wingo = () => {
         return (
           <>
             <p className="font-bold">
-              3 minutes 1 issue, 2 minutes and 45 seconds to order, 15 seconds waiting for the draw.
-              It opens all day. The total number of trade is 480 issues.
+              3 minutes 1 issue, 2 minutes and 45 seconds to order, 15 seconds
+              waiting for the draw. It opens all day. The total number of trade
+              is 480 issues.
             </p>
             <p className="font-bold">
-              If you spend 100 to trade, after deducting 2 service fee, your contract amount is 98:
+              If you spend 100 to trade, after deducting 2 service fee, your
+              contract amount is 98:
             </p>
             <p>
-              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 * 2) 196;
-              If the result shows 5, you will get (98 * 1.5) 147
+              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 *
+              2) 196; If the result shows 5, you will get (98 * 1.5) 147
             </p>
             <p>
-              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 * 2) 196;
-              If the result shows 0, you will get (98 * 1.5) 147
+              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 *
+              2) 196; If the result shows 0, you will get (98 * 1.5) 147
             </p>
             <p>
-              3. Select violet: if the result shows 0 or 5, you will get (98 * 4.5) 441
+              3. Select violet: if the result shows 0 or 5, you will get (98 *
+              4.5) 441
             </p>
             <p>
-              4. Select number: if the result is the same as the number you selected,
-              you will get (98 * 9) 882
+              4. Select number: if the result is the same as the number you
+              selected, you will get (98 * 9) 882
             </p>
             <p>
-              5. Select big: if the result shows 5, 6, 7, 8, 9 you will get (98 * 2) 196
+              5. Select big: if the result shows 5, 6, 7, 8, 9 you will get (98
+              * 2) 196
             </p>
             <p>
-              6. Select small: if the result shows 0, 1, 2, 3, 4 you will get (98 * 2) 196
+              6. Select small: if the result shows 0, 1, 2, 3, 4 you will get
+              (98 * 2) 196
             </p>
           </>
         );
@@ -683,32 +711,37 @@ const Wingo = () => {
         return (
           <>
             <p className="font-bold">
-              5 minutes 1 issue, 4 minutes and 45 seconds to order, 15 seconds waiting for the draw.
-              It opens all day. The total number of trade is 288 issues.
+              5 minutes 1 issue, 4 minutes and 45 seconds to order, 15 seconds
+              waiting for the draw. It opens all day. The total number of trade
+              is 288 issues.
             </p>
             <p className="font-bold">
-              If you spend 100 to trade, after deducting 2 service fee, your contract amount is 98:
+              If you spend 100 to trade, after deducting 2 service fee, your
+              contract amount is 98:
             </p>
             <p>
-              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 * 2) 196;
-              If the result shows 5, you will get (98 * 1.5) 147
+              1. Select green: if the result shows 1, 3, 7, 9 you will get (98 *
+              2) 196; If the result shows 5, you will get (98 * 1.5) 147
             </p>
             <p>
-              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 * 2) 196;
-              If the result shows 0, you will get (98 * 1.5) 147
+              2. Select red: if the result shows 2, 4, 6, 8 you will get (98 *
+              2) 196; If the result shows 0, you will get (98 * 1.5) 147
             </p>
             <p>
-              3. Select violet: if the result shows 0 or 5, you will get (98 * 4.5) 441
+              3. Select violet: if the result shows 0 or 5, you will get (98 *
+              4.5) 441
             </p>
             <p>
-              4. Select number: if the result is the same as the number you selected,
-              you will get (98 * 9) 882
+              4. Select number: if the result is the same as the number you
+              selected, you will get (98 * 9) 882
             </p>
             <p>
-              5. Select big: if the result shows 5, 6, 7, 8, 9 you will get (98 * 2) 196
+              5. Select big: if the result shows 5, 6, 7, 8, 9 you will get (98
+              * 2) 196
             </p>
             <p>
-              6. Select small: if the result shows 0, 1, 2, 3, 4 you will get (98 * 2) 196
+              6. Select small: if the result shows 0, 1, 2, 3, 4 you will get
+              (98 * 2) 196
             </p>
           </>
         );
@@ -717,20 +750,9 @@ const Wingo = () => {
     }
   };
 
-
-
-
-
-
-
-
   return (
     <>
-
-
-
-
-      <ServiceRotate />
+      {/* <ServiceRotate /> */}
       {!userInfo && <Loader />}
       <HeaderInfo
         handleRefersh={handleRefersh}
@@ -744,8 +766,9 @@ const Wingo = () => {
         {/* Time tabs */}
         <div className="grid grid-cols-12 bg-popup-nav rounded-xl">
           <div
-            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${activeTime == "10" ? "blue-linear2" : ""
-              }`}
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${
+              activeTime == "10" ? "blue-linear2" : ""
+            }`}
             onClick={() => handleWingoMinut(10)}
           >
             <img
@@ -754,16 +777,18 @@ const Wingo = () => {
               className={`w-10 ${activeTime == "10" ? "hue-rotate-45" : ""}`}
             />
             <p
-              className={`text-center fs-sm font-sans leading-4 ${activeTime == "10" ? "text-black" : "gray-text"
-                }`}
+              className={`text-center fs-sm font-sans leading-4 ${
+                activeTime == "10" ? "text-black" : "gray-text"
+              }`}
             >
               Win Go <br /> 30s
             </p>
           </div>
 
           <div
-            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 ${activeTime == "1" ? "blue-linear2" : ""
-              } rounded-xl`}
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 ${
+              activeTime == "1" ? "blue-linear2" : ""
+            } rounded-xl`}
             onClick={() => handleWingoMinut(1)}
           >
             <img
@@ -772,16 +797,18 @@ const Wingo = () => {
               className={`w-10 ${activeTime == "1" ? "hue-rotate-45" : ""}`}
             />
             <p
-              className={`text-center fs-sm font-sans leading-4 ${activeTime == "1" ? "text-black" : "gray-text"
-                }`}
+              className={`text-center fs-sm font-sans leading-4 ${
+                activeTime == "1" ? "text-black" : "gray-text"
+              }`}
             >
               Win Go <br /> 1Min
             </p>
           </div>
 
           <div
-            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${activeTime == "3" ? "blue-linear2" : ""
-              }`}
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${
+              activeTime == "3" ? "blue-linear2" : ""
+            }`}
             onClick={() => handleWingoMinut(3)}
           >
             <img
@@ -790,16 +817,18 @@ const Wingo = () => {
               className={`w-10 ${activeTime == "3" ? "hue-rotate-45" : ""}`}
             />
             <p
-              className={`text-center fs-sm font-sans leading-4 ${activeTime == "3" ? "text-black" : "gray-text"
-                }`}
+              className={`text-center fs-sm font-sans leading-4 ${
+                activeTime == "3" ? "text-black" : "gray-text"
+              }`}
             >
               Win Go <br /> 3Min
             </p>
           </div>
 
           <div
-            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${activeTime == "5" ? "blue-linear2" : ""
-              }`}
+            className={`col-span-3 cursor-pointer flex items-center flex-col justify-center py-2 rounded-xl ${
+              activeTime == "5" ? "blue-linear2" : ""
+            }`}
             onClick={() => handleWingoMinut(5)}
           >
             <img
@@ -808,8 +837,9 @@ const Wingo = () => {
               className={`w-10 ${activeTime == "5" ? "hue-rotate-45" : ""}`}
             />
             <p
-              className={`text-center fs-sm font-sans leading-4 ${activeTime == "5" ? "text-black" : "gray-text"
-                }`}
+              className={`text-center fs-sm font-sans leading-4 ${
+                activeTime == "5" ? "text-black" : "gray-text"
+              }`}
             >
               Win Go <br /> 5Min
             </p>
@@ -884,7 +914,6 @@ const Wingo = () => {
           </div>
         </div>
 
-
         {/* bet period section */}
 
         <div className="relative">
@@ -925,7 +954,6 @@ const Wingo = () => {
               </div>
             </div>
 
-
             <div className="flex items-center  justify-between mt-2">
               <button
                 className="rounded-md border color-red-200 px-2 text-base border-[--red-color-200] mr-2 py-1"
@@ -936,8 +964,9 @@ const Wingo = () => {
               <div className="flex items-center ">
                 {xData.map((item, i) => (
                   <button
-                    className={`bgs-body text-whites text-sm mr-1 px-[6px] py-[5px] rounded-md ${activeX === i ? "bgs-green text-white" : ""
-                      }`}
+                    className={`bgs-body text-whites text-sm mr-1 px-[6px] py-[5px] rounded-md ${
+                      activeX === i ? "bgs-green text-white" : ""
+                    }`}
                     key={i}
                     onClick={() => {
                       setActiveX(i);
@@ -983,10 +1012,11 @@ const Wingo = () => {
         <div className="grid mt-5 grid-cols-12 gap-3">
           <div className="col-span-4 ">
             <button
-              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${gameHistory == "ghistory"
-                ? " text-base blue-linear text-black font-medium "
-                : "nav-bg text-sm text-whites"
-                }`}
+              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${
+                gameHistory == "ghistory"
+                  ? " text-base blue-linear text-black font-medium "
+                  : "nav-bg text-sm text-whites"
+              }`}
               onClick={() => setGameHistory("ghistory")}
             >
               Game history
@@ -994,10 +1024,11 @@ const Wingo = () => {
           </div>
           <div className="col-span-4 ">
             <button
-              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${gameHistory == "chart"
-                ? "text-base blue-linear text-black font-medium "
-                : "nav-bg text-sm whites"
-                }`}
+              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${
+                gameHistory == "chart"
+                  ? "text-base blue-linear text-black font-medium "
+                  : "nav-bg text-sm whites"
+              }`}
               onClick={() => {
                 setGameHistory("chart");
                 chartFunction();
@@ -1008,10 +1039,11 @@ const Wingo = () => {
           </div>
           <div className="col-span-4 ">
             <button
-              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${gameHistory == "mhistory"
-                ? " text-base blue-linear text-black font-medium "
-                : "nav-bg text-sm text-whites"
-                }`}
+              className={` flex justify-center items-center h-full w-full py-2 border-none rounded-lg ${
+                gameHistory == "mhistory"
+                  ? " text-base blue-linear text-black font-medium "
+                  : "nav-bg text-sm text-whites"
+              }`}
               onClick={() => setGameHistory("mhistory")}
             >
               My history
@@ -1047,17 +1079,18 @@ const Wingo = () => {
                   </div>
                   <div className="col-span-2 pl-4 text-center justify-center  items-center">
                     <span
-                      className={`text-2xl gray-50 font-bold color-red-200 ${item.amount === 0
-                        ? "color-red-voilet"
-                        : item.amount === 5
-                          ? "color-green-voilet"
-                          : item.amount === 1 ||
-                            item.amount === 3 ||
-                            item.amount === 7 ||
-                            item.amount === 9
-                            ? "color-green"
-                            : "color-red-200"
-                        }`}
+                      className={`text-2xl gray-50 font-bold color-red-200 ${
+                        item.amount === 0
+                          ? "color-red-voilet"
+                          : item.amount === 5
+                            ? "color-green-voilet"
+                            : item.amount === 1 ||
+                                item.amount === 3 ||
+                                item.amount === 7 ||
+                                item.amount === 9
+                              ? "color-green"
+                              : "color-red-200"
+                      }`}
                     >
                       {item.amount}
                     </span>
@@ -1072,22 +1105,24 @@ const Wingo = () => {
                       {item.amount === 0 || item.amount === 5 ? (
                         <span className="flex justify-center items-center">
                           <FaCircle
-                            className={`${item.amount === 0
-                              ? "color-red-200 "
-                              : "color-green"
-                              }`}
+                            className={`${
+                              item.amount === 0
+                                ? "color-red-200 "
+                                : "color-green"
+                            }`}
                           />
                           <FaCircle className={`ms-2 color-violet`} />
                         </span>
                       ) : (
                         <FaCircle
-                          className={`${item.amount === 1 ||
+                          className={`${
+                            item.amount === 1 ||
                             item.amount === 3 ||
                             item.amount === 7 ||
                             item.amount === 9
-                            ? "color-green"
-                            : "color-red-200"
-                            } `}
+                              ? "color-green"
+                              : "color-red-200"
+                          } `}
                         />
                       )}
                     </span>
@@ -1096,8 +1131,9 @@ const Wingo = () => {
               ))}
             <div className="nav-bg p-6 flex items-center justify-center mt-5">
               <button
-                className={`rounded-md p-2 mr-4 ${pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-popup-nav"
-                  } `}
+                className={`rounded-md p-2 mr-4 ${
+                  pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-popup-nav"
+                } `}
                 disabled={pageto / 10 > 1 ? false : true}
                 onClick={handleDecrease}
               >
@@ -1110,10 +1146,11 @@ const Wingo = () => {
                 {pageto / 10}/{wingoPeriodListData?.page}
               </span>
               <button
-                className={`rounded-md p-2 ms-4 ${wingoPeriodListData?.page
-                  ? "bg-color-l2 text-black"
-                  : "bg-popup-nav text-whites"
-                  } `}
+                className={`rounded-md p-2 ms-4 ${
+                  wingoPeriodListData?.page
+                    ? "bg-color-l2 text-black"
+                    : "bg-popup-nav text-whites"
+                } `}
                 disabled={
                   wingoPeriodListData?.page > pageto / 10 ? false : true
                 }
@@ -1221,64 +1258,74 @@ const Wingo = () => {
                           </div>
                           <div className="sec ">
                             <span
-                              className={`${item.amount === 0 ? "active bg-red-voilet" : ""
-                                } `}
+                              className={`${
+                                item.amount === 0 ? "active bg-red-voilet" : ""
+                              } `}
                             >
                               0
                             </span>
                             <span
-                              className={`${item.amount === 1 ? "active bgs-green" : ""
-                                }`}
+                              className={`${
+                                item.amount === 1 ? "active bgs-green" : ""
+                              }`}
                             >
                               1
                             </span>
                             <span
-                              className={`${item.amount === 2 ? "active bgs-red-200" : ""
-                                }`}
+                              className={`${
+                                item.amount === 2 ? "active bgs-red-200" : ""
+                              }`}
                             >
                               2
                             </span>
                             <span
-                              className={`${item.amount === 3 ? "active bgs-green" : ""
-                                }`}
+                              className={`${
+                                item.amount === 3 ? "active bgs-green" : ""
+                              }`}
                             >
                               3
                             </span>
                             <span
-                              className={`${item.amount === 4 ? "active bgs-red-200" : ""
-                                }`}
+                              className={`${
+                                item.amount === 4 ? "active bgs-red-200" : ""
+                              }`}
                             >
                               4
                             </span>
                             <span
-                              className={`${item.amount === 5
-                                ? "active  bg-green-voilet"
-                                : ""
-                                }`}
+                              className={`${
+                                item.amount === 5
+                                  ? "active  bg-green-voilet"
+                                  : ""
+                              }`}
                             >
                               5
                             </span>
                             <span
-                              className={`${item.amount === 6 ? "active bgs-red-200" : ""
-                                }`}
+                              className={`${
+                                item.amount === 6 ? "active bgs-red-200" : ""
+                              }`}
                             >
                               6
                             </span>
                             <span
-                              className={`${item.amount === 7 ? "active bgs-green" : ""
-                                }`}
+                              className={`${
+                                item.amount === 7 ? "active bgs-green" : ""
+                              }`}
                             >
                               7
                             </span>
                             <span
-                              className={`${item.amount === 8 ? "active bgs-red-200" : ""
-                                }`}
+                              className={`${
+                                item.amount === 8 ? "active bgs-red-200" : ""
+                              }`}
                             >
                               8
                             </span>
                             <span
-                              className={`${item.amount === 9 ? "active bgs-green" : ""
-                                }`}
+                              className={`${
+                                item.amount === 9 ? "active bgs-green" : ""
+                              }`}
                             >
                               9
                             </span>
@@ -1297,8 +1344,9 @@ const Wingo = () => {
 
             <div className="nav-bg p-6 flex items-center justify-center mt-5">
               <button
-                className={`rounded-md p-2 mr-4 ${pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-text-whites"
-                  } `}
+                className={`rounded-md p-2 mr-4 ${
+                  pageto / 10 >= 2 ? "bg-color-l2 text-black" : "bg-text-whites"
+                } `}
                 disabled={pageto / 10 > 1 ? false : true}
                 onClick={handleDecrease}
               >
@@ -1311,10 +1359,11 @@ const Wingo = () => {
                 {pageto / 10}/{wingoPeriodListData?.page}
               </span>
               <button
-                className={`rounded-md p-2 ms-4 ${wingoPeriodListData?.page
-                  ? "bg-color-l2 text-black"
-                  : "bg-text-whites"
-                  } `}
+                className={`rounded-md p-2 ms-4 ${
+                  wingoPeriodListData?.page
+                    ? "bg-color-l2 text-black"
+                    : "bg-text-whites"
+                } `}
                 disabled={
                   wingoPeriodListData?.page > pageto / 10 ? false : true
                 }
@@ -1332,7 +1381,8 @@ const Wingo = () => {
           <div className="nav-bg p-2 py-3 mt-5">
             <div className="flex items-end justify-end mb-3">
               <Link className="fs-sm text-[#21D9CC] border rounded-lg border-[#21D9CC] px-3 py-1 flex item-center items-end ">
-                Details<IoIosArrowDropright className="mb-[2px] " />
+                Details
+                <IoIosArrowDropright className="mb-[2px] " />
               </Link>
             </div>
 
@@ -1352,27 +1402,28 @@ const Wingo = () => {
                     <div className="flex items-center">
                       <div
                         className={`flex justify-center h-9 w-9 items-center fs-sm rounded-lg mr-2 
-                     ${item.bet == "x"
-                            ? "bgs-green"
-                            : item.bet == "d"
-                              ? "bgs-red-200"
-                              : item.bet == "t"
-                                ? "bgs-violet"
-                                : item.bet == "l"
-                                  ? "color-yellow-bg-200"
-                                  : item.bet == "n"
-                                    ? "bgs-blue-500"
-                                    : item.bet == "0"
-                                      ? "bg-red-voilet"
-                                      : item.bet == "5"
-                                        ? "bg-green-voilet"
-                                        : item.bet == 1 ||
-                                          item.bet == 3 ||
-                                          item.bet == 7 ||
-                                          item.bet == 9
-                                          ? "bgs-green"
-                                          : "bgs-red-200"
-                          }
+                     ${
+                       item.bet == "x"
+                         ? "bgs-green"
+                         : item.bet == "d"
+                           ? "bgs-red-200"
+                           : item.bet == "t"
+                             ? "bgs-violet"
+                             : item.bet == "l"
+                               ? "color-yellow-bg-200"
+                               : item.bet == "n"
+                                 ? "bgs-blue-500"
+                                 : item.bet == "0"
+                                   ? "bg-red-voilet"
+                                   : item.bet == "5"
+                                     ? "bg-green-voilet"
+                                     : item.bet == 1 ||
+                                         item.bet == 3 ||
+                                         item.bet == 7 ||
+                                         item.bet == 9
+                                       ? "bgs-green"
+                                       : "bgs-red-200"
+                     }
                       `}
                       >
                         {item.bet == "x"
@@ -1384,7 +1435,7 @@ const Wingo = () => {
                               : item.bet == "n"
                                 ? "Small"
                                 : item.bet == "d"
-                                  ? ""  //Red
+                                  ? "" //Red
                                   : item.bet}
                       </div>
                       <div>
@@ -1398,34 +1449,39 @@ const Wingo = () => {
                     {item.status !== 0 && (
                       <div className="flex flex-col items-end">
                         <div
-                          className={`border  px-5 py-[2px] rounded-md fs-sm  ${item.status === 1
-                            ? "color-green border-color-green"
-                            : "color-red-200 border-color-red"
-                            }`}
+                          className={`border  px-5 py-[2px] rounded-md fs-sm  ${
+                            item.status === 1
+                              ? "color-green border-color-green"
+                              : "color-red-200 border-color-red"
+                          }`}
                         >
                           {item.status === 1 ? "Succeed" : " Failed"}
                         </div>
 
                         <p
-                          className={`color-red-200 fs-sm mt-2 ${item.status === 1 ? "color-green " : "color-red-200"
-                            }`}
+                          className={`color-red-200 fs-sm mt-2 ${
+                            item.status === 1 ? "color-green " : "color-red-200"
+                          }`}
                         >
                           {item.status === 1
-                            ? "+₹" + Number(item.get).toLocaleString("en-IN", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                            : "-₹" + Number(item.money).toLocaleString("en-IN", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
+                            ? "+₹" +
+                              Number(item.get).toLocaleString("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
+                            : "-₹" +
+                              Number(item.money).toLocaleString("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
                         </p>
                       </div>
                     )}
                   </div>
                   <div
-                    className={`mt-3 history-details ${details === i ? "active mb-5" : ""
-                      }`}
+                    className={`mt-3 history-details ${
+                      details === i ? "active mb-5" : ""
+                    }`}
                   >
                     <h2 className="heading-h2 gray-50 text-lg">Details</h2>
                     <div className="flex bg-popup-nav items-center justify-between text-sm p-1 mb-2 rounded-md">
@@ -1454,10 +1510,13 @@ const Wingo = () => {
                     </div>
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className="text-whites ">Amount after tax</span>
-                      <span className="color-red-200 ">₹{Number(item.money).toLocaleString("en-IN", {
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      })}</span>
+                      <span className="color-red-200 ">
+                        ₹
+                        {Number(item.money).toLocaleString("en-IN", {
+                          minimumFractionDigits: 2,
+                          maximumFractionDigits: 2,
+                        })}
+                      </span>
                     </div>
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className="text-whites ">Tax</span>
@@ -1468,20 +1527,21 @@ const Wingo = () => {
                       {item.status !== 0 && (
                         <div className=" flex text-center justify-center  items-center">
                           <span
-                            className={`color-red-200 text-base  ${item.result === 0
-                              ? "color-red-voilet"
-                              : item.result === 5
-                                ? "color-green-voilet"
-                                : item.result === 1 ||
-                                  item.result === 3 ||
-                                  item.result === 7 ||
-                                  item.result === 9 ||
-                                  item.result == "x"
-                                  ? "color-green"
-                                  : item.result == "t"
-                                    ? "color-voilet"
-                                    : "color-red-200"
-                              }`}
+                            className={`color-red-200 text-base  ${
+                              item.result === 0
+                                ? "color-red-voilet"
+                                : item.result === 5
+                                  ? "color-green-voilet"
+                                  : item.result === 1 ||
+                                      item.result === 3 ||
+                                      item.result === 7 ||
+                                      item.result === 9 ||
+                                      item.result == "x"
+                                    ? "color-green"
+                                    : item.result == "t"
+                                      ? "color-voilet"
+                                      : "color-red-200"
+                            }`}
                           >
                             {item.result}
                           </span>
@@ -1509,31 +1569,34 @@ const Wingo = () => {
                       <span className=" text-whites ">Status</span>
                       {item.status !== 0 && (
                         <span
-                          className={` color-red-200 ${item.status == 1 ? "color-green" : "color-red-200"
-                            }`}
+                          className={` color-red-200 ${
+                            item.status == 1 ? "color-green" : "color-red-200"
+                          }`}
                         >
                           {" "}
                           {item.status === 1 ? "Succeed" : " Failed"}
                         </span>
                       )}
-
                     </div>
                     <div className="flex items-center justify-between bg-popup-nav text-sm p-1 mb-2  rounded-md">
                       <span className=" text-whites ">Win/loss</span>
                       {item.status !== 0 && (
                         <span
-                          className={` ${item.status === 1 ? "color-green " : "color-red-200"
-                            }`}
+                          className={` ${
+                            item.status === 1 ? "color-green " : "color-red-200"
+                          }`}
                         >
                           {item.status === 1
-                            ? "+₹" + Number(item.get).toLocaleString("en-IN", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })
-                            : "-₹" + Number(item.money).toLocaleString("en-IN", {
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            })}
+                            ? "+₹" +
+                              Number(item.get).toLocaleString("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })
+                            : "-₹" +
+                              Number(item.money).toLocaleString("en-IN", {
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              })}
                         </span>
                       )}
                     </div>
@@ -1546,8 +1609,9 @@ const Wingo = () => {
               ))}
             <div className="nav-bg p-6 flex items-center justify-center mt-5">
               <button
-                className={`rounded-md p-2 mr-4 ${pageto / 10 >= 2 ? "bg-popup-nav text-black" : "bg-popup-nav"
-                  } `}
+                className={`rounded-md p-2 mr-4 ${
+                  pageto / 10 >= 2 ? "bg-popup-nav text-black" : "bg-popup-nav"
+                } `}
                 disabled={pageto / 10 > 1 ? false : true}
                 onClick={handleDecrease}
               >
@@ -1560,8 +1624,9 @@ const Wingo = () => {
                 {pageto / 10}/{historyPage}
               </span>
               <button
-                className={`rounded-md p-2 ms-4 ${historyPage ? "bg-popup-nav text-black" : "bg-popup-nav"
-                  } `}
+                className={`rounded-md p-2 ms-4 ${
+                  historyPage ? "bg-popup-nav text-black" : "bg-popup-nav"
+                } `}
                 disabled={historyPage > pageto / 10 ? false : true}
                 onClick={handleIncrease}
               >
@@ -1579,32 +1644,34 @@ const Wingo = () => {
 
       {/* popups */}
       <div
-        className={`nav-bg z-[12] items-center transition ease-in-out delay-150 justify-center fixed bottom-0 rounded-t-2xl filter-section w-[24.7rem] ${openPopup ? "flex" : "hidden"
-          }`}
+        className={`nav-bg z-[12] items-center transition ease-in-out delay-150 justify-center fixed bottom-0 rounded-t-2xl filter-section w-[24.7rem] ${
+          openPopup ? "flex" : "hidden"
+        }`}
       >
         <div className=" rounded-t-2xl  overflow-hidden w-full ">
           <div
-            className={`text-center p-2 pb-6 mb-5 popup-select-effect    ${selectBet == "x"
-              ? "bgs-green"
-              : selectBet == "d"
-                ? "bgs-red-200"
-                : selectBet == "t"
-                  ? "bgs-violet"
-                  : selectBet == "l"
-                    ? "color-yellow-bg-200"
-                    : selectBet == "n"
-                      ? "bgs-blue-500"
-                      : selectBet == "0"
-                        ? "bg-red-voilet"
-                        : selectBet == "5"
-                          ? "bg-green-voilet"
-                          : selectBet == 1 ||
-                            selectBet == 3 ||
-                            selectBet == 7 ||
-                            selectBet == 9
-                            ? "bgs-green"
-                            : "bgs-red-200"
-              }`}
+            className={`text-center p-2 pb-6 mb-5 popup-select-effect    ${
+              selectBet == "x"
+                ? "bgs-green"
+                : selectBet == "d"
+                  ? "bgs-red-200"
+                  : selectBet == "t"
+                    ? "bgs-violet"
+                    : selectBet == "l"
+                      ? "color-yellow-bg-200"
+                      : selectBet == "n"
+                        ? "bgs-blue-500"
+                        : selectBet == "0"
+                          ? "bg-red-voilet"
+                          : selectBet == "5"
+                            ? "bg-green-voilet"
+                            : selectBet == 1 ||
+                                selectBet == 3 ||
+                                selectBet == 7 ||
+                                selectBet == 9
+                              ? "bgs-green"
+                              : "bgs-red-200"
+            }`}
           >
             <h2 className="text-md font-semibold">
               Win Go {activeTime == "10" ? "30s" : activeTime + "Min"}
@@ -1634,26 +1701,27 @@ const Wingo = () => {
                   <button
                     key={value}
                     onClick={() => setBalance(value)}
-                    className={`text-whites text-base mx-1 px-2 py-[3px]  rounded-md ${balance === value
-                      ? selectBet == "x"
-                        ? "bgs-green text-black"
-                        : selectBet == "d"
-                          ? "bgs-red-200 text-black"
-                          : selectBet == "t"
-                            ? "bgs-violet text-black"
-                            : selectBet == "l"
-                              ? "color-yellow-bg-200 text-black"
-                              : selectBet == "n"
-                                ? "bgs-blue-500 text-black"
-                                : selectBet == 1 ||
-                                  selectBet == 3 ||
-                                  selectBet == 5 ||
-                                  selectBet == 7 ||
-                                  selectBet == 9
-                                  ? "bgs-green text-black"
-                                  : "bgs-red-200 text-black"
-                      : "bg-popup-nav "
-                      }`}
+                    className={`text-whites text-base mx-1 px-2 py-[3px]  rounded-md ${
+                      balance === value
+                        ? selectBet == "x"
+                          ? "bgs-green text-black"
+                          : selectBet == "d"
+                            ? "bgs-red-200 text-black"
+                            : selectBet == "t"
+                              ? "bgs-violet text-black"
+                              : selectBet == "l"
+                                ? "color-yellow-bg-200 text-black"
+                                : selectBet == "n"
+                                  ? "bgs-blue-500 text-black"
+                                  : selectBet == 1 ||
+                                      selectBet == 3 ||
+                                      selectBet == 5 ||
+                                      selectBet == 7 ||
+                                      selectBet == 9
+                                    ? "bgs-green text-black"
+                                    : "bgs-red-200 text-black"
+                        : "bg-popup-nav "
+                    }`}
                   >
                     {value}
                   </button>
@@ -1668,23 +1736,24 @@ const Wingo = () => {
                     setMultiplier(multiplier > 1 ? multiplier - 1 : 1)
                   }
                   className={` text-lg p-[3px] font-bold mx-1 text-black flex items-center justify-center rounded-md 
-                    ${selectBet == "x"
-                      ? "bgs-green"
-                      : selectBet == "d"
-                        ? "bgs-red-200"
-                        : selectBet == "t"
-                          ? "bgs-violet"
-                          : selectBet == "l"
-                            ? "color-yellow-bg-200"
-                            : selectBet == "n"
-                              ? "bgs-blue-500"
-                              : selectBet == 1 ||
-                                selectBet == 3 ||
-                                selectBet == 5 ||
-                                selectBet == 7 ||
-                                selectBet == 9
-                                ? "bgs-green"
-                                : "bgs-red-200"
+                    ${
+                      selectBet == "x"
+                        ? "bgs-green"
+                        : selectBet == "d"
+                          ? "bgs-red-200"
+                          : selectBet == "t"
+                            ? "bgs-violet"
+                            : selectBet == "l"
+                              ? "color-yellow-bg-200"
+                              : selectBet == "n"
+                                ? "bgs-blue-500"
+                                : selectBet == 1 ||
+                                    selectBet == 3 ||
+                                    selectBet == 5 ||
+                                    selectBet == 7 ||
+                                    selectBet == 9
+                                  ? "bgs-green"
+                                  : "bgs-red-200"
                     }
                     `}
                 >
@@ -1701,23 +1770,24 @@ const Wingo = () => {
                 <button
                   onClick={() => setMultiplier(multiplier + 1)}
                   className={` text-lg  p-[3px] font-bold mx-1 text-black flex items-center justify-center rounded-md  
-                    ${selectBet == "x"
-                      ? "bgs-green"
-                      : selectBet == "d"
-                        ? "bgs-red-200"
-                        : selectBet == "t"
-                          ? "bgs-violet"
-                          : selectBet == "l"
-                            ? "color-yellow-bg-200"
-                            : selectBet == "n"
-                              ? "bgs-blue-500"
-                              : selectBet == 1 ||
-                                selectBet == 3 ||
-                                selectBet == 5 ||
-                                selectBet == 7 ||
-                                selectBet == 9
-                                ? "bgs-green"
-                                : "bgs-red-200"
+                    ${
+                      selectBet == "x"
+                        ? "bgs-green"
+                        : selectBet == "d"
+                          ? "bgs-red-200"
+                          : selectBet == "t"
+                            ? "bgs-violet"
+                            : selectBet == "l"
+                              ? "color-yellow-bg-200"
+                              : selectBet == "n"
+                                ? "bgs-blue-500"
+                                : selectBet == 1 ||
+                                    selectBet == 3 ||
+                                    selectBet == 5 ||
+                                    selectBet == 7 ||
+                                    selectBet == 9
+                                  ? "bgs-green"
+                                  : "bgs-red-200"
                     }
                     `}
                 >
@@ -1729,26 +1799,27 @@ const Wingo = () => {
             <div className=" items-center flex justify-end mb-5 ">
               {xData.map((item, i) => (
                 <button
-                  className={`text-base mx-1 px-2 py-[3px]  rounded-md ${activeX === i
-                    ? selectBet == "x"
-                      ? "bgs-green text-black"
-                      : selectBet == "d"
-                        ? "bgs-red-200 text-black"
-                        : selectBet == "t"
-                          ? "bgs-violet text-black"
-                          : selectBet == "l"
-                            ? "color-yellow-bg-200 text-black"
-                            : selectBet == "n"
-                              ? "bgs-blue-500 text-black"
-                              : selectBet == 1 ||
-                                selectBet == 3 ||
-                                selectBet == 7 ||
-                                selectBet == 5 ||
-                                selectBet == 9
-                                ? "bgs-green text-black"
-                                : "bgs-red-200 text-black"
-                    : "bg-popup-nav text-whites"
-                    }`}
+                  className={`text-base mx-1 px-2 py-[3px]  rounded-md ${
+                    activeX === i
+                      ? selectBet == "x"
+                        ? "bgs-green text-black"
+                        : selectBet == "d"
+                          ? "bgs-red-200 text-black"
+                          : selectBet == "t"
+                            ? "bgs-violet text-black"
+                            : selectBet == "l"
+                              ? "color-yellow-bg-200 text-black"
+                              : selectBet == "n"
+                                ? "bgs-blue-500 text-black"
+                                : selectBet == 1 ||
+                                    selectBet == 3 ||
+                                    selectBet == 7 ||
+                                    selectBet == 5 ||
+                                    selectBet == 9
+                                  ? "bgs-green text-black"
+                                  : "bgs-red-200 text-black"
+                      : "bg-popup-nav text-whites"
+                  }`}
                   key={i}
                   onClick={() => {
                     setActiveX(i);
@@ -1770,8 +1841,9 @@ const Wingo = () => {
                 />
                 <div className="w-6 h-6 rounded-full border-2 border-black flex items-center justify-center peer-checked:bg-cyan-400">
                   <svg
-                    className={`w-4 h-4 text-black ${isChecked ? "block" : "hidden"
-                      }`}
+                    className={`w-4 h-4 text-black ${
+                      isChecked ? "block" : "hidden"
+                    }`}
                     viewBox="0 0 20 20"
                     fill="currentColor"
                   >
@@ -1801,7 +1873,8 @@ const Wingo = () => {
             </button>
             <button
               className={` w-[60%] p-2 text-sm font-medium
-              ${selectBet == "x"
+              ${
+                selectBet == "x"
                   ? "bgs-green"
                   : selectBet == "d"
                     ? "bgs-red-200"
@@ -1812,13 +1885,13 @@ const Wingo = () => {
                         : selectBet == "n"
                           ? "bgs-blue-500"
                           : selectBet == 1 ||
-                            selectBet == 3 ||
-                            selectBet == 5 ||
-                            selectBet == 7 ||
-                            selectBet == 9
+                              selectBet == 3 ||
+                              selectBet == 5 ||
+                              selectBet == 7 ||
+                              selectBet == 9
                             ? "bgs-green"
                             : "bgs-red-200"
-                }
+              }
               `}
               disabled={loader ? true : false}
               onClick={handleBet}
@@ -1830,7 +1903,6 @@ const Wingo = () => {
       </div>
 
       <div className={openHowtoPlay ? "overlay-section block" : "hidden"}></div>
-
 
       <div
         className={resultPopup ? "overlay-section block" : "hidden"}
@@ -1850,24 +1922,27 @@ const Wingo = () => {
             style={{ position: "absolute", top: "38%" }}
           >
             <p
-              className={` text-[2rem] text-center font-bold ${winResult ? "text-white" : "color-slate-500"
-                }`}
+              className={` text-[2rem] text-center font-bold ${
+                winResult ? "text-white" : "color-slate-500"
+              }`}
             >
               {winResult ? "Congratulations" : "Sorry"}
             </p>
 
             <div className="flex justify-center items-center mt-8">
               <span
-                className={`text-sm  mr-1 ${winResult ? "text-white" : "color-slate-500"
-                  }`}
+                className={`text-sm  mr-1 ${
+                  winResult ? "text-white" : "color-slate-500"
+                }`}
               >
                 Lottery Result:
               </span>
               <span
-                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${winResult
-                  ? "color-yellow-bg-200"
-                  : "bgs-slate-500 border border-white"
-                  }`}
+                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${
+                  winResult
+                    ? "color-yellow-bg-200"
+                    : "bgs-slate-500 border border-white"
+                }`}
               >
                 {wingoHistoryData?.gameslist[0]?.result == "0"
                   ? "Violet"
@@ -1879,19 +1954,21 @@ const Wingo = () => {
               </span>
 
               <span
-                className={`text-sm w-7 h-7 text-center mx-2  text-white rounded-full flex justify-center items-center ${winResult
-                  ? "color-yellow-bg-200"
-                  : "bgs-slate-500 border border-white"
-                  }`}
+                className={`text-sm w-7 h-7 text-center mx-2  text-white rounded-full flex justify-center items-center ${
+                  winResult
+                    ? "color-yellow-bg-200"
+                    : "bgs-slate-500 border border-white"
+                }`}
               >
                 {Array.isArray(wingoHistoryData?.gameslist) &&
                   wingoHistoryData?.gameslist[0]?.result}
               </span>
               <span
-                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${winResult
-                  ? "color-yellow-bg-200"
-                  : "bgs-slate-500 border border-white"
-                  }`}
+                className={`text-sm w-14 text-center py-[1px] text-white rounded-md ${
+                  winResult
+                    ? "color-yellow-bg-200"
+                    : "bgs-slate-500 border border-white"
+                }`}
               >
                 {wingoHistoryData?.gameslist[0]?.result > 4 ? "Big" : "Small"}
               </span>
@@ -1903,7 +1980,9 @@ const Wingo = () => {
                   <p className="text-[1.5rem] relative top-[-3px] font-bold">
                     ₹
                     {Array.isArray(wingoHistoryData?.gameslist) &&
-                      Number(wingoHistoryData?.gameslist[0]?.get).toLocaleString("en-IN", {
+                      Number(
+                        wingoHistoryData?.gameslist[0]?.get,
+                      ).toLocaleString("en-IN", {
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,
                       })}
@@ -1916,8 +1995,9 @@ const Wingo = () => {
               )}
             </div>
             <p
-              className={`text-[10px] text-black text-center font-semibold ${winResult ? "mt-1" : "mt-3"
-                }`}
+              className={`text-[10px] text-black text-center font-semibold ${
+                winResult ? "mt-1" : "mt-3"
+              }`}
             >
               Period: Wingo {activeTime == "10" ? "30s" : activeTime + "Min"}
               {Array.isArray(wingoPeriodListData?.data?.gameslist) &&
@@ -1925,12 +2005,14 @@ const Wingo = () => {
             </p>
 
             <p
-              className={`fs-sm mt-14 cursor-pointer flex items-center  ${winResult ? "ml-[0px]" : "ml-[-10px] color-slate-500"
-                }`}
+              className={`fs-sm mt-14 cursor-pointer flex items-center  ${
+                winResult ? "ml-[0px]" : "ml-[-10px] color-slate-500"
+              }`}
             >
               <span
-                className={`w-5 mr-2 flex h-5 border border-white rounded-full ${winResult ? "" : ""
-                  }`}
+                className={`w-5 mr-2 flex h-5 border border-white rounded-full ${
+                  winResult ? "" : ""
+                }`}
               ></span>{" "}
               3 Seconds auto close
             </p>
@@ -1944,12 +2026,12 @@ const Wingo = () => {
         </div>
       )}
 
-
       {openHowtoPlay && (
         <>
           <div className="fixed top-32 nav-bg w-[270px] flex flex-col justify-center items-center m-auto left-0 right-0 rounded-t-2xl rounded-b-2xl z-30">
             <div className="blue-linear w-full text-center text-black text-xl py-2 rounded-t-2xl">
-              How to play Win Go {activeTime === "10" ? "30s" : activeTime + "Min"}
+              How to play Win Go{" "}
+              {activeTime === "10" ? "30s" : activeTime + "Min"}
             </div>
             <div className="h-[300px] overflow-auto p-2 fs-sm leading-6 text-white">
               {getHowToPlayContent()}
