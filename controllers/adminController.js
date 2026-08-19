@@ -1,7 +1,6 @@
-import connection from "../config/connectDB";
 import jwt from "jsonwebtoken";
 import md5 from "md5";
-import { exit } from "process";
+import connection from "../config/connectDB";
 const ExcelJS = require("exceljs");
 const fs = require("fs");
 
@@ -2184,6 +2183,7 @@ const settingBank = async (req, res) => {
     let info3 = req.body.upi_id3;
     let usdt = req.body.usdt_wallet_address;
     let typer = req.body.typer;
+    console.log("upi check:", name_bank, name, info, info2, info3, typer);
     if (!auth || !typer) {
       return res.status(200).json({
         message: "Failed",
@@ -2193,13 +2193,13 @@ const settingBank = async (req, res) => {
     }
     if (typer == "bank") {
       await connection.query(
-        `UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ?,upi2=?,upi3=?,usdt=? WHERE type = 'momo'`,
+        `UPDATE bank_recharge SET name_bank = ?, name_user = ?, stk = ? , upi2 = ? , upi3 = ? , usdt = ? WHERE type = 'momo'`,
         [name_bank, name, info, info2, info3, usdt],
       );
       return res.status(200).json({
         message: "Successful change",
         status: true,
-        datas: recharge,
+        // datas: recharge,
       });
     }
 
