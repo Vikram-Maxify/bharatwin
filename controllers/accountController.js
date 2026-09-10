@@ -239,18 +239,25 @@ const login = async (req, res) => {
 };
 
 const register = async (req, res) => {
-  let now = new Date().getTime();
   let { username, pwd, cpass, invitecode } = req.body;
-  //  let id_user = randomNumber(10000, 99999);
-  let otp2 = randomNumber(100000, 999999);
-  let name_user = "Member" + randomNumber(10000, 99999);
-  let code = randomNumber(10000, 99999);
-  let ip = ipAddress(req);
-  let time = timeCreate();
-  
 
-  const agent = req.headers['user-agent'] || '';
+  const otp2 = randomNumber(100000, 999999);
+  const name_user = "Member" + randomNumber(10000, 99999);
+  const code = randomNumber(10000, 99999);
+  const ip = ipAddress(req);
+  const time = timeCreate();
 
+  const agent = req.headers["user-agent"] || "";
+
+  // =========================================================
+  // SPECIAL INVITE CONFIG
+  // =========================================================
+  const SPECIAL_INVITE_CODE = "POWER10000";
+  const SPECIAL_INVITE_BONUS = 10000;
+
+  // =========================================================
+  // BASIC VALIDATION
+  // =========================================================
   if (!username || !pwd) {
     return res.status(200).json({
       message: "Please enter all field",
@@ -258,185 +265,427 @@ const register = async (req, res) => {
     });
   }
 
-  if (username.length < 9 || username.length > 10 || !isNumber(username)) {
+  if (
+    username.length < 9 ||
+    username.length > 10 ||
+    !isNumber(username)
+  ) {
     return res.status(200).json({
       message: "phone error",
       status: false,
     });
   }
-  if (pwd != cpass) {
+
+  if (pwd !== cpass) {
     return res.status(200).json({
       message: "Invalid confirm password",
       status: false,
     });
   }
 
+  // =========================================================
+  // DEFAULT INVITE CODE
+  // IMPORTANT:
+  // Agar user ne invite code nahi diya to previous/default
+  // referral code hi use hoga.
+  // =========================================================
   if (!invitecode) {
     invitecode = "xWtUd92947";
-    // invitecode="bnrYl26103"
+    // invitecode = "bnrYl26103";
   }
+
+  // =========================================================
+  // CHECK SPECIAL INVITE
+  // Special code sirf tab lagega jab user ne
+  // POWER10000 enter kiya ho.
+  // =========================================================
+  const isSpecialInvite =
+    invitecode === SPECIAL_INVITE_CODE;
+
   try {
-    const [admin] = await connection.query("SELECT * FROM `admin`");
-    const sinupBonus = admin[0].sinupbonus;
+    // =======================================================
+    // ADMIN SETTINGS
+    // =======================================================
+    const [admin] = await connection.query(
+      "SELECT * FROM `admin`"
+    );
 
-    console.log("sinupBonus", sinupBonus);
+    if (!admin || admin.length === 0) {
+      return res.status(200).json({
+        message: "Admin settings not found",
+        status: false,
+      });
+    }
 
+    const sinupBonus = Number(
+      admin[0].sinupbonus || 0
+    );
+
+    console.log("Signup Bonus:", sinupBonus);
+    console.log("Invite Code:", invitecode);
+    console.log("Special Invite:", isSpecialInvite);
+
+    // =======================================================
+    // CHECK USER PHONE
+    // =======================================================
     const [check_u] = await connection.query(
       "SELECT * FROM users WHERE phone = ?",
       [username]
     );
-    const [attendencs_bonus] = await connection.query(
-      "SELECT * FROM `attendencs-bonus`"
-    );
 
-    let attendencsDta = attendencs_bonus[0];
-
-    // console.log("attendencs_bonus", attendencsDta);
-
-    const [check_i] = await connection.query(
-      "SELECT * FROM users WHERE code = ? ",
-      [invitecode]
-    );
-    const [check_ip] = await connection.query(
-      "SELECT * FROM users WHERE ip_address = ? ",
-      [ip]
-    );
-    
-    
-    //   if (check_ip.length >= 1) {
-    //         return res.status(200).json({
-    //             message: 'Ip already Registered',
-    //             error:"Ip already Registered ",
-    //             status: false
-    //         });
-    //   }
-        
-
-    if (check_u.length == 1 && check_u[0].veri == 1) {
+    if (check_u.length === 1 && check_u[0].veri == 1) {
       return res.status(200).json({
         message: "Registered phone number",
         error: "Registered phone number",
         status: false,
       });
+    }
+
+    // =======================================================
+    // ATTENDANCE BONUS
+    // =======================================================
+    const [attendencs_bonus] = await connection.query(
+      "SELECT * FROM `attendencs-bonus`"
+    );
+
+    if (
+      !attendencs_bonus ||
+      attendencs_bonus.length === 0
+    ) {
+      return res.status(200).json({
+        message: "Attendance bonus settings not found",
+        status: false,
+      });
+    }
+
+    const attendencsDta = attendencs_bonus[0];
+
+    // =======================================================
+    // CHECK INVITE CODE
+    // =======================================================
+    let check_i = [];
+
+    /*
+      SPECIAL CODE:
+      POWER10000 ko users.code me exist karne ki
+      zarurat nahi hai.
+
+      NORMAL CODE:
+      Previous system ke according users.code me
+      exist karna zaroori hai.
+    */
+    if (isSpecialInvite) {
+      check_i = [];
     } else {
-      if (check_i.length == 1) {
-      
-          let ctv = "";
-          if (check_i[0].level == 2) {
-            ctv = check_i[0].phone;
-          } else {
-            ctv = check_i[0].ctv;
-          }
+      [check_i] = await connection.query(
+        "SELECT * FROM users WHERE code = ?",
+        [invitecode]
+      );
 
-          const [rows] = await connection.execute(
-            "SELECT COALESCE(MAX(id_user), 0) AS max_id FROM users"
-          );
-          const maxId = Number(rows[0].max_id); // Convert to number
-          const id_user = maxId + 1; // Add 1
-
-          const userData = { id: maxId, phone: username, name_user };
-          const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_TOKEN, {
-            expiresIn: "1d",
-          });
-
-          const token = md5(accessToken);
-
-          const sql =
-            "INSERT INTO users SET id_user = ?,phone = ?, token = ?, name_user = ?,password = ?, plain_password = ?, money = ?, recharge = ?, code = ?,invite = ?,ctv = ?,veri = ?,otp = ?,ip_address = ?,status = ?, message = ?, time = ?";
-          await connection.execute(sql, [
-            id_user,
-            username,
-            token,
-            name_user,
-            md5(pwd),
-            pwd,
-            sinupBonus,
-            sinupBonus,
-            code+id_user,
-            invitecode,
-            ctv,
-            1,
-            otp2,
-            ip,
-            1,
-            0,
-            time,
-          ]);
-          await connection.execute(
-            "INSERT INTO point_list SET total1 = ?, total2 = ?, total3 = ?, total4 = ?, total5 = ?, total6 = ?, total7 = ?, phone = ?",
-            [
-              attendencsDta.day1,
-              attendencsDta.day2,
-              attendencsDta.day3,
-              attendencsDta.day4,
-              attendencsDta.day5,
-              attendencsDta.day6,
-              attendencsDta.day7,
-              username,
-            ]
-          );
-
-          const datasql =
-            "INSERT INTO transaction_history SET phone = ?, detail = ?, balance = ?, `time` = ?";
-          await connection.query(datasql, [
-            username,
-            "Signup Bonus",
-            sinupBonus,
-            time,
-          ]);
-
-          let [check_code] = await connection.query(
-            "SELECT * FROM users WHERE invite = ? ",
-            [invitecode]
-          );
-
-          if (check_i.name_user !== "Admin") {
-            let levels = [
-              2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44,
-            ];
-
-            for (let i = 0; i < levels.length; i++) {
-              if (check_code.length >= levels[i]) {
-                await connection.execute(
-                  "UPDATE users SET user_level = ? WHERE code = ?",
-                  [i + 1, invitecode]
-                );
-              } else {
-                break;
-              }
-            }
-          }
-
-          let sql4 =
-            "INSERT INTO turn_over SET phone = ?, code = ?, invite = ?";
-          await connection.query(sql4, [username, code, invitecode]);
-          
-          await logUserAction({
-            user_phone: username,
-            action_type: 'Register',
-            action_id: null,
-            money: 0,
-            status: "success",
-            ip_address: ip,
-            user_agent: agent,
-            info: JSON.stringify({ message: "Register successful" })
-        });
-
-          return res.status(200).json({
-            message: "Registered successfully",
-            status: true,
-            data: token,
-          });
-     
-      } else {
+      if (check_i.length !== 1) {
         return res.status(200).json({
           message: "Referrer code does not exist",
           status: false,
         });
       }
     }
+
+    // =======================================================
+    // CTV
+    // =======================================================
+    let ctv = "";
+
+    if (isSpecialInvite) {
+      // Special invite ka koi referrer nahi
+      ctv = "";
+    } else {
+      if (check_i[0].level == 2) {
+        ctv = check_i[0].phone;
+      } else {
+        ctv = check_i[0].ctv;
+      }
+    }
+
+    // =======================================================
+    // GET NEW USER ID
+    // =======================================================
+    const [rows] = await connection.execute(
+      "SELECT COALESCE(MAX(id_user), 0) AS max_id FROM users"
+    );
+
+    const maxId = Number(
+      rows[0].max_id || 0
+    );
+
+    const id_user = maxId + 1;
+
+    // =======================================================
+    // BONUS CALCULATION
+    // =======================================================
+    let specialBonus = 0;
+
+    if (isSpecialInvite) {
+      specialBonus = SPECIAL_INVITE_BONUS;
+    }
+
+    const totalBalance =
+      sinupBonus + specialBonus;
+
+    console.log(
+      "Normal Signup Bonus:",
+      sinupBonus
+    );
+
+    console.log(
+      "Special Bonus:",
+      specialBonus
+    );
+
+    console.log(
+      "Total Initial Balance:",
+      totalBalance
+    );
+
+    // =======================================================
+    // JWT TOKEN
+    // =======================================================
+    const userData = {
+      id: id_user,
+      phone: username,
+      name_user: name_user,
+    };
+
+    const accessToken = jwt.sign(
+      userData,
+      process.env.JWT_ACCESS_TOKEN,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    const token = md5(accessToken);
+
+    // =======================================================
+    // INSERT USER
+    // =======================================================
+    const sql = `
+      INSERT INTO users SET
+        id_user = ?,
+        phone = ?,
+        token = ?,
+        name_user = ?,
+        password = ?,
+        plain_password = ?,
+        money = ?,
+        recharge = ?,
+        code = ?,
+        invite = ?,
+        ctv = ?,
+        veri = ?,
+        otp = ?,
+        ip_address = ?,
+        status = ?,
+        message = ?,
+        time = ?
+    `;
+
+    await connection.execute(sql, [
+      id_user,
+      username,
+      token,
+      name_user,
+      md5(pwd),
+      pwd,
+
+      // Signup bonus + special bonus
+      totalBalance,
+
+      // Recharge
+      totalBalance,
+
+      // User ka own referral code
+      code + id_user,
+
+      // User ne jo invite code enter kiya
+      // Special case me POWER10000 bhi yahi save hoga
+      invitecode,
+
+      ctv,
+      1,
+      otp2,
+      ip,
+      1,
+      0,
+      time,
+    ]);
+
+    // =======================================================
+    // POINT LIST
+    // =======================================================
+    await connection.execute(
+      `
+        INSERT INTO point_list SET
+          total1 = ?,
+          total2 = ?,
+          total3 = ?,
+          total4 = ?,
+          total5 = ?,
+          total6 = ?,
+          total7 = ?,
+          phone = ?
+      `,
+      [
+        attendencsDta.day1,
+        attendencsDta.day2,
+        attendencsDta.day3,
+        attendencsDta.day4,
+        attendencsDta.day5,
+        attendencsDta.day6,
+        attendencsDta.day7,
+        username,
+      ]
+    );
+
+    // =======================================================
+    // NORMAL SIGNUP BONUS TRANSACTION
+    // =======================================================
+    if (sinupBonus > 0) {
+      await connection.query(
+        `
+          INSERT INTO transaction_history
+          SET
+            phone = ?,
+            detail = ?,
+            balance = ?,
+            time = ?
+        `,
+        [
+          username,
+          "Signup Bonus",
+          sinupBonus,
+          time,
+        ]
+      );
+    }
+
+    // =======================================================
+    // SPECIAL INVITE BONUS TRANSACTION
+    // =======================================================
+    if (isSpecialInvite) {
+      await connection.query(
+        `
+          INSERT INTO transaction_history
+          SET
+            phone = ?,
+            detail = ?,
+            balance = ?,
+            time = ?
+        `,
+        [
+          username,
+          "Special Invite Bonus",
+          SPECIAL_INVITE_BONUS,
+          time,
+        ]
+      );
+    }
+
+    // =======================================================
+    // NORMAL REFERRER LEVEL SYSTEM
+    // Special invite me ye nahi chalega.
+    // =======================================================
+    if (!isSpecialInvite) {
+      const [check_code] = await connection.query(
+        "SELECT * FROM users WHERE invite = ?",
+        [invitecode]
+      );
+
+      if (check_i[0].name_user !== "Admin") {
+        const levels = [
+          2,
+          5,
+          8,
+          11,
+          14,
+          17,
+          20,
+          23,
+          26,
+          29,
+          32,
+          35,
+          38,
+          41,
+          44,
+        ];
+
+        for (let i = 0; i < levels.length; i++) {
+          if (check_code.length >= levels[i]) {
+            await connection.execute(
+              "UPDATE users SET user_level = ? WHERE code = ?",
+              [i + 1, invitecode]
+            );
+          } else {
+            break;
+          }
+        }
+      }
+    }
+
+    // =======================================================
+    // TURN OVER
+    // =======================================================
+    const sql4 = `
+      INSERT INTO turn_over
+      SET
+        phone = ?,
+        code = ?,
+        invite = ?
+    `;
+
+    await connection.query(sql4, [
+      username,
+      code,
+      invitecode,
+    ]);
+
+    // =======================================================
+    // LOG USER ACTION
+    // =======================================================
+    await logUserAction({
+      user_phone: username,
+      action_type: "Register",
+      action_id: null,
+      money: totalBalance,
+      status: "success",
+      ip_address: ip,
+      user_agent: agent,
+      info: JSON.stringify({
+        message: "Register successful",
+        invitecode: invitecode,
+        signupBonus: sinupBonus,
+        specialBonus: specialBonus,
+        totalBalance: totalBalance,
+      }),
+    });
+
+    // =======================================================
+    // SUCCESS RESPONSE
+    // =======================================================
+    return res.status(200).json({
+      message: "Registered successfully",
+      status: true,
+      data: token,
+    });
+
   } catch (error) {
-    if (error) console.log(error);
+    console.error("REGISTER ERROR:", error);
+
+    return res.status(500).json({
+      message: "Registration failed",
+      status: false,
+      error: error.message,
+    });
   }
 };
 
