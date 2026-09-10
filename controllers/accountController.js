@@ -1,10 +1,9 @@
-import connection from "../config/connectDB";
+import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import md5 from "md5";
-import crypto from "crypto";
 import nodemailer from "nodemailer";
 import request from "request";
-import e from "express";
+import connection from "../config/connectDB";
 require("dotenv").config();
 
 let timeNow = Date.now();
@@ -89,7 +88,7 @@ function timerJoin2(params = "", addHours = 0) {
   const getPart = (type) => parts.find((part) => part.type === type).value;
 
   const formattedDate = `${getPart("year")}-${getPart("month")}-${getPart(
-    "day"
+    "day",
   )} ${getPart("hour")}:${getPart("minute")}:${getPart("second")}`;
 
   return formattedDate;
@@ -97,29 +96,45 @@ function timerJoin2(params = "", addHours = 0) {
 
 // timerJoin2(Date.now())
 
-async function logUserAction({ user_phone, action_type, action_id, money, status, ip_address, user_agent, info }) {
-    // Replace all undefined with null (safe for DB)
-    user_phone = typeof user_phone === "undefined" ? null : user_phone;
-    action_type = typeof action_type === "undefined" ? null : action_type;
-    action_id = typeof action_id === "undefined" ? null : action_id;
-    money = typeof money === "undefined" ? null : money;
-    status = typeof status === "undefined" ? null : status;
-    ip_address = typeof ip_address === "undefined" ? null : ip_address;
-    user_agent = typeof user_agent === "undefined" ? null : user_agent;
-    info = typeof info === "undefined" ? null : info;
+async function logUserAction({
+  user_phone,
+  action_type,
+  action_id,
+  money,
+  status,
+  ip_address,
+  user_agent,
+  info,
+}) {
+  // Replace all undefined with null (safe for DB)
+  user_phone = typeof user_phone === "undefined" ? null : user_phone;
+  action_type = typeof action_type === "undefined" ? null : action_type;
+  action_id = typeof action_id === "undefined" ? null : action_id;
+  money = typeof money === "undefined" ? null : money;
+  status = typeof status === "undefined" ? null : status;
+  ip_address = typeof ip_address === "undefined" ? null : ip_address;
+  user_agent = typeof user_agent === "undefined" ? null : user_agent;
+  info = typeof info === "undefined" ? null : info;
 
-    try {
-        await connection.execute(
-            `INSERT INTO user_action_log (user_phone, action_type, action_id, money, status, ip_address, user_agent, info)
+  try {
+    await connection.execute(
+      `INSERT INTO user_action_log (user_phone, action_type, action_id, money, status, ip_address, user_agent, info)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-            [user_phone, action_type, action_id, money, status, ip_address, user_agent, info]
-        );
-    } catch (err) {
-        console.error("Log user action error:", err.message);
-    }
+      [
+        user_phone,
+        action_type,
+        action_id,
+        money,
+        status,
+        ip_address,
+        user_agent,
+        info,
+      ],
+    );
+  } catch (err) {
+    console.error("Log user action error:", err.message);
+  }
 }
-
-
 
 const login = async (req, res) => {
   function formateT(params) {
@@ -130,7 +145,7 @@ const login = async (req, res) => {
   let checkTime = timerJoin2(Date.now());
   let { username, pwd } = req.body;
   let ipass = ipAddress(req);
-  const agent = req.headers['user-agent'] || '';
+  const agent = req.headers["user-agent"] || "";
 
   if (!username || !pwd) {
     //!isNumber(username)
@@ -143,7 +158,7 @@ const login = async (req, res) => {
   try {
     const [rows] = await connection.query(
       "SELECT * FROM users WHERE phone = ? AND password = ? ",
-      [username, md5(pwd)]
+      [username, md5(pwd)],
     );
     if (rows.length == 1) {
       if (rows[0].status == 1) {
@@ -163,13 +178,13 @@ const login = async (req, res) => {
             timeNow: timeNow,
           },
           process.env.JWT_ACCESS_TOKEN,
-          { expiresIn: "1d" }
+          { expiresIn: "1d" },
         );
         const sql_login = `INSERT INTO login SET phone = ?`;
         await connection.execute(sql_login, [rows[0].phone]);
         await connection.execute(
           "UPDATE `users` SET `token` = ?,`login_at`=CURRENT_TIMESTAMP WHERE `phone` = ? ",
-          [md5(accessToken), username]
+          [md5(accessToken), username],
         );
         if (rows[0].bonus_gain == 0) {
           let bonusstep = [0, 5, 10, 15, 20, 20, 20, 20];
@@ -198,22 +213,21 @@ const login = async (req, res) => {
           // console.log('Amount: ' + amount + '| ' + mm[i] + '% | ' + ' || ' + refferal + ' || ' + mainUser[0][0].phone + ' || ₹' + money);
           await connection.query(
             "UPDATE users SET money = money + ?,bonus_gain = ?, total_money = total_money + ? WHERE phone = ? ",
-            [money, money, money, rows[0].phone]
+            [money, money, money, rows[0].phone],
           );
         }
         req.session.token = rows[0].token;
-        
-        await logUserAction({
-            user_phone: username,
-            action_type: 'login',
-            action_id: null,
-            money: 0,
-            status: "success",
-            ip_address: ipass,
-            user_agent: agent,
-            info: JSON.stringify({ message: "Login successful" })
-        });
 
+        await logUserAction({
+          user_phone: username,
+          action_type: "login",
+          action_id: null,
+          money: 0,
+          status: "success",
+          ip_address: ipass,
+          user_agent: agent,
+          info: JSON.stringify({ message: "Login successful" }),
+        });
 
         return res.status(200).json({
           message: "Login Successful",
@@ -253,7 +267,7 @@ const register = async (req, res) => {
   // SPECIAL INVITE CONFIG
   // =========================================================
   const SPECIAL_INVITE_CODE = "POWER10000";
-  const SPECIAL_INVITE_BONUS = 10000;
+  const SPECIAL_INVITE_BONUS = 9042;
 
   // =========================================================
   // BASIC VALIDATION
@@ -265,11 +279,7 @@ const register = async (req, res) => {
     });
   }
 
-  if (
-    username.length < 9 ||
-    username.length > 10 ||
-    !isNumber(username)
-  ) {
+  if (username.length < 9 || username.length > 10 || !isNumber(username)) {
     return res.status(200).json({
       message: "phone error",
       status: false,
@@ -299,16 +309,13 @@ const register = async (req, res) => {
   // Special code sirf tab lagega jab user ne
   // POWER10000 enter kiya ho.
   // =========================================================
-  const isSpecialInvite =
-    invitecode === SPECIAL_INVITE_CODE;
+  const isSpecialInvite = invitecode === SPECIAL_INVITE_CODE;
 
   try {
     // =======================================================
     // ADMIN SETTINGS
     // =======================================================
-    const [admin] = await connection.query(
-      "SELECT * FROM `admin`"
-    );
+    const [admin] = await connection.query("SELECT * FROM `admin`");
 
     if (!admin || admin.length === 0) {
       return res.status(200).json({
@@ -317,9 +324,7 @@ const register = async (req, res) => {
       });
     }
 
-    const sinupBonus = Number(
-      admin[0].sinupbonus || 0
-    );
+    const sinupBonus = Number(admin[0].sinupbonus || 0);
 
     console.log("Signup Bonus:", sinupBonus);
     console.log("Invite Code:", invitecode);
@@ -330,7 +335,7 @@ const register = async (req, res) => {
     // =======================================================
     const [check_u] = await connection.query(
       "SELECT * FROM users WHERE phone = ?",
-      [username]
+      [username],
     );
 
     if (check_u.length === 1 && check_u[0].veri == 1) {
@@ -345,13 +350,10 @@ const register = async (req, res) => {
     // ATTENDANCE BONUS
     // =======================================================
     const [attendencs_bonus] = await connection.query(
-      "SELECT * FROM `attendencs-bonus`"
+      "SELECT * FROM `attendencs-bonus`",
     );
 
-    if (
-      !attendencs_bonus ||
-      attendencs_bonus.length === 0
-    ) {
+    if (!attendencs_bonus || attendencs_bonus.length === 0) {
       return res.status(200).json({
         message: "Attendance bonus settings not found",
         status: false,
@@ -377,10 +379,9 @@ const register = async (req, res) => {
     if (isSpecialInvite) {
       check_i = [];
     } else {
-      [check_i] = await connection.query(
-        "SELECT * FROM users WHERE code = ?",
-        [invitecode]
-      );
+      [check_i] = await connection.query("SELECT * FROM users WHERE code = ?", [
+        invitecode,
+      ]);
 
       if (check_i.length !== 1) {
         return res.status(200).json({
@@ -410,12 +411,10 @@ const register = async (req, res) => {
     // GET NEW USER ID
     // =======================================================
     const [rows] = await connection.execute(
-      "SELECT COALESCE(MAX(id_user), 0) AS max_id FROM users"
+      "SELECT COALESCE(MAX(id_user), 0) AS max_id FROM users",
     );
 
-    const maxId = Number(
-      rows[0].max_id || 0
-    );
+    const maxId = Number(rows[0].max_id || 0);
 
     const id_user = maxId + 1;
 
@@ -428,23 +427,13 @@ const register = async (req, res) => {
       specialBonus = SPECIAL_INVITE_BONUS;
     }
 
-    const totalBalance =
-      sinupBonus + specialBonus;
+    const totalBalance = sinupBonus + specialBonus;
 
-    console.log(
-      "Normal Signup Bonus:",
-      sinupBonus
-    );
+    console.log("Normal Signup Bonus:", sinupBonus);
 
-    console.log(
-      "Special Bonus:",
-      specialBonus
-    );
+    console.log("Special Bonus:", specialBonus);
 
-    console.log(
-      "Total Initial Balance:",
-      totalBalance
-    );
+    console.log("Total Initial Balance:", totalBalance);
 
     // =======================================================
     // JWT TOKEN
@@ -455,13 +444,9 @@ const register = async (req, res) => {
       name_user: name_user,
     };
 
-    const accessToken = jwt.sign(
-      userData,
-      process.env.JWT_ACCESS_TOKEN,
-      {
-        expiresIn: "1d",
-      }
-    );
+    const accessToken = jwt.sign(userData, process.env.JWT_ACCESS_TOKEN, {
+      expiresIn: "1d",
+    });
 
     const token = md5(accessToken);
 
@@ -543,7 +528,7 @@ const register = async (req, res) => {
         attendencsDta.day6,
         attendencsDta.day7,
         username,
-      ]
+      ],
     );
 
     // =======================================================
@@ -559,12 +544,7 @@ const register = async (req, res) => {
             balance = ?,
             time = ?
         `,
-        [
-          username,
-          "Signup Bonus",
-          sinupBonus,
-          time,
-        ]
+        [username, "Signup Bonus", sinupBonus, time],
       );
     }
 
@@ -581,12 +561,7 @@ const register = async (req, res) => {
             balance = ?,
             time = ?
         `,
-        [
-          username,
-          "Special Invite Bonus",
-          SPECIAL_INVITE_BONUS,
-          time,
-        ]
+        [username, "Special Invite Bonus", SPECIAL_INVITE_BONUS, time],
       );
     }
 
@@ -597,33 +572,19 @@ const register = async (req, res) => {
     if (!isSpecialInvite) {
       const [check_code] = await connection.query(
         "SELECT * FROM users WHERE invite = ?",
-        [invitecode]
+        [invitecode],
       );
 
       if (check_i[0].name_user !== "Admin") {
         const levels = [
-          2,
-          5,
-          8,
-          11,
-          14,
-          17,
-          20,
-          23,
-          26,
-          29,
-          32,
-          35,
-          38,
-          41,
-          44,
+          2, 5, 8, 11, 14, 17, 20, 23, 26, 29, 32, 35, 38, 41, 44,
         ];
 
         for (let i = 0; i < levels.length; i++) {
           if (check_code.length >= levels[i]) {
             await connection.execute(
               "UPDATE users SET user_level = ? WHERE code = ?",
-              [i + 1, invitecode]
+              [i + 1, invitecode],
             );
           } else {
             break;
@@ -643,11 +604,7 @@ const register = async (req, res) => {
         invite = ?
     `;
 
-    await connection.query(sql4, [
-      username,
-      code,
-      invitecode,
-    ]);
+    await connection.query(sql4, [username, code, invitecode]);
 
     // =======================================================
     // LOG USER ACTION
@@ -677,7 +634,6 @@ const register = async (req, res) => {
       status: true,
       data: token,
     });
-
   } catch (error) {
     console.error("REGISTER ERROR:", error);
 
@@ -702,7 +658,7 @@ const loginAdmin = async (req, res) => {
   try {
     const [rows] = await connection.query(
       "SELECT * FROM users WHERE phone = ? AND password = ? AND level=1 ",
-      [username, md5(pwd)]
+      [username, md5(pwd)],
     );
     if (rows.length == 1) {
       if (rows[0].status == 1) {
@@ -722,12 +678,12 @@ const loginAdmin = async (req, res) => {
             timeNow: timeNow,
           },
           process.env.JWT_ACCESS_TOKEN,
-          { expiresIn: "1d" }
+          { expiresIn: "1d" },
         );
 
         await connection.execute(
           "UPDATE `users` SET `token` = ?,`login_at`=CURRENT_TIMESTAMP WHERE `phone` = ? ",
-          [md5(accessToken), username]
+          [md5(accessToken), username],
         );
         if (rows[0].bonus_gain == 0) {
         }
@@ -767,7 +723,7 @@ const verifyCodeforregister = async (req, res) => {
       if (data.return) {
         await connection.execute(
           "UPDATE users SET otp = ?, time_otp = ? WHERE phone = ? ",
-          [otp, timeEnd, phone]
+          [otp, timeEnd, phone],
         );
         return res.status(200).json({
           message: "OTP Send Successfully",
@@ -776,60 +732,37 @@ const verifyCodeforregister = async (req, res) => {
           timeEnd: timeEnd,
         });
       }
-    }
+    },
   );
 };
 
-
-
 const verifyCode = async (req, res) => {
-    try{
-  let phone = req.body.phone;
-  let now = new Date().getTime();
-  let timeEnd = +new Date() + 1000 * (60 * 2 + 0) + 500;
-  let otp = randomNumber(100000, 999999);
-  const lastDigit = String(phone).slice(-1);
-  if (phone.length < 9 || phone.length > 10 || !isNumber(phone)) {
-    return res.status(200).json({
-      message: "phone error",
-      status: false,
-    });
-  }
+  try {
+    let phone = req.body.phone;
+    let now = new Date().getTime();
+    let timeEnd = +new Date() + 1000 * (60 * 2 + 0) + 500;
+    let otp = randomNumber(100000, 999999);
+    const lastDigit = String(phone).slice(-1);
+    if (phone.length < 9 || phone.length > 10 || !isNumber(phone)) {
+      return res.status(200).json({
+        message: "phone error",
+        status: false,
+      });
+    }
 
-  const [rows] = await connection.query(
-    "SELECT * FROM users WHERE `phone` = ?",
-    [phone]
-  );
-  if (rows.length == 0) {
-    await request(
-      `https://www.fast2sms.com/dev/bulkV2?authorization=Cl8g0hU2NaGfsKdRexa2kH5Z3ObWMIN7fObXsLRW7IJFmDST9bbcU6cO7wMQ&variables_values=${otp}&route=otp&numbers=${phone}`,
-      async (error, response, body) => {
-        let data = JSON.parse(body);
-        if (data.code == "00000") {
-          await connection.execute(
-            "INSERT INTO users SET userPhoto=?, phone = ?, otp = ?, veri = 0, time_otp = ? ",
-            [lastDigit, phone, otp, timeEnd]
-          );
-          return res.status(200).json({
-            message: "Submitted successfully",
-            status: true,
-            timeStamp: timeNow,
-            timeEnd: timeEnd,
-          });
-        }
-      }
+    const [rows] = await connection.query(
+      "SELECT * FROM users WHERE `phone` = ?",
+      [phone],
     );
-  } else {
-    let user = rows[0];
-    if (user.time_otp - now <= 0) {
-      request(
+    if (rows.length == 0) {
+      await request(
         `https://www.fast2sms.com/dev/bulkV2?authorization=Cl8g0hU2NaGfsKdRexa2kH5Z3ObWMIN7fObXsLRW7IJFmDST9bbcU6cO7wMQ&variables_values=${otp}&route=otp&numbers=${phone}`,
         async (error, response, body) => {
           let data = JSON.parse(body);
           if (data.code == "00000") {
             await connection.execute(
-              "UPDATE users SET otp = ?, time_otp = ? WHERE phone = ? ",
-              [otp, timeEnd, phone]
+              "INSERT INTO users SET userPhoto=?, phone = ?, otp = ?, veri = 0, time_otp = ? ",
+              [lastDigit, phone, otp, timeEnd],
             );
             return res.status(200).json({
               message: "Submitted successfully",
@@ -838,22 +771,42 @@ const verifyCode = async (req, res) => {
               timeEnd: timeEnd,
             });
           }
-        }
+        },
       );
     } else {
-      return res.status(200).json({
-        message: "Send SMS regularly",
-        status: false,
-        timeStamp: timeNow,
-      });
+      let user = rows[0];
+      if (user.time_otp - now <= 0) {
+        request(
+          `https://www.fast2sms.com/dev/bulkV2?authorization=Cl8g0hU2NaGfsKdRexa2kH5Z3ObWMIN7fObXsLRW7IJFmDST9bbcU6cO7wMQ&variables_values=${otp}&route=otp&numbers=${phone}`,
+          async (error, response, body) => {
+            let data = JSON.parse(body);
+            if (data.code == "00000") {
+              await connection.execute(
+                "UPDATE users SET otp = ?, time_otp = ? WHERE phone = ? ",
+                [otp, timeEnd, phone],
+              );
+              return res.status(200).json({
+                message: "Submitted successfully",
+                status: true,
+                timeStamp: timeNow,
+                timeEnd: timeEnd,
+              });
+            }
+          },
+        );
+      } else {
+        return res.status(200).json({
+          message: "Send SMS regularly",
+          status: false,
+          timeStamp: timeNow,
+        });
+      }
     }
-  }
- 
-    }catch (error) {
+  } catch (error) {
     console.error("Error :", error.message);
     res.status(500).json({ message: "Internal server error", status: false });
   }
-    };
+};
 const getLoginDetail = async (req, res) => {
   try {
     let auth = req.cookies.auth;
@@ -861,7 +814,7 @@ const getLoginDetail = async (req, res) => {
     // Fetch user details using the token
     const [user] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ?",
-      [auth]
+      [auth],
     );
 
     // Check if user exists
@@ -875,7 +828,7 @@ const getLoginDetail = async (req, res) => {
     // Fetch login details using the phone number
     const [loginDetails] = await connection.execute(
       "SELECT * FROM `login` WHERE `phone` = ? ORDER BY `id` DESC ",
-      [user[0].phone]
+      [user[0].phone],
     );
 
     // Check if login details exist
@@ -909,7 +862,7 @@ const deleteLoginDetail = async (req, res) => {
     // Fetch user details using the token
     const [user] = await connection.execute(
       "SELECT `phone` FROM `users` WHERE `token` = ?",
-      [auth]
+      [auth],
     );
 
     // Check if user exists
@@ -923,7 +876,7 @@ const deleteLoginDetail = async (req, res) => {
     // Delete login detail using the ID
     const [result] = await connection.execute(
       "DELETE FROM `login` WHERE `id` = ? AND `phone` = ?",
-      [id, user[0].phone]
+      [id, user[0].phone],
     );
 
     // Check if any rows were affected
@@ -949,169 +902,166 @@ const deleteLoginDetail = async (req, res) => {
 };
 
 const verifyCodePass = async (req, res) => {
-    try{
-  let phone = req.body.phone;
-  let now = new Date().getTime();
-  let timeEnd = +new Date() + 1000 * (60 * 2 + 0) + 500;
-  let otp = randomNumber(100000, 999999);
+  try {
+    let phone = req.body.phone;
+    let now = new Date().getTime();
+    let timeEnd = +new Date() + 1000 * (60 * 2 + 0) + 500;
+    let otp = randomNumber(100000, 999999);
 
-  if (phone.length < 9 || phone.length > 10 || !isNumber(phone)) {
-    return res.status(200).json({
-      message: "phone error",
-      status: false,
-    });
-  }
-
-  const [rows] = await connection.query(
-    "SELECT * FROM users WHERE `phone` = ? AND veri = 1",
-    [phone]
-  );
-  if (rows.length == 0) {
-    return res.status(200).json({
-      message: "Account does not exist",
-      status: false,
-      timeStamp: timeNow,
-    });
-  } else {
-    let user = rows[0];
-    if (user.time_otp - now <= 0) {
-      request(
-        `https://www.fast2sms.com/dev/bulkV2?authorization=Cl8g0hU2NaGfsKdRexa2kH5Z3ObWMIN7fObXsLRW7IJFmDST9bbcU6cO7wMQ&variables_values=${otp}&route=otp&numbers=${phone}`,
-        async (error, response, body) => {
-          let data = JSON.parse(body);
-          // if (data.code == '00000') {
-          await connection.execute(
-            "UPDATE users SET otp = ?, time_otp = ? WHERE phone = ? ",
-            [otp, timeEnd, phone]
-          );
-          return res.status(200).json({
-            message: "Submitted successfully",
-            status: true,
-            timeStamp: timeNow,
-            timeEnd: timeEnd,
-          });
-          //}
-        }
-      );
-    } else {
+    if (phone.length < 9 || phone.length > 10 || !isNumber(phone)) {
       return res.status(200).json({
-        message: "Send SMS regularly",
+        message: "phone error",
+        status: false,
+      });
+    }
+
+    const [rows] = await connection.query(
+      "SELECT * FROM users WHERE `phone` = ? AND veri = 1",
+      [phone],
+    );
+    if (rows.length == 0) {
+      return res.status(200).json({
+        message: "Account does not exist",
         status: false,
         timeStamp: timeNow,
       });
-    }
-  }
- 
-    }catch (error) {
-    console.error("Error :", error.message);
-    res.status(500).json({ message: "Internal server error", status: false });
-  }
-    };
-
-const forGotPassword = async (req, res) => {
-    try{
-  let username = req.body.username;
-  let otp = req.body.otp;
-  let pwd = req.body.pwd;
-  let now = new Date().getTime();
-  let timeEnd = +new Date() + 1000 * (60 * 2 + 0) + 500;
-  let otp2 = randomNumber(100000, 999999);
-
-  if (username.length < 9 || username.length > 10 || !isNumber(username)) {
-    return res.status(200).json({
-      message: "phone error",
-      status: false,
-    });
-  }
-
-  const [rows] = await connection.query(
-    "SELECT * FROM users WHERE `phone` = ? AND veri = 1",
-    [username]
-  );
-  if (rows.length == 0) {
-    return res.status(200).json({
-      message: "Account does not exist",
-      status: false,
-      timeStamp: timeNow,
-    });
-  } else {
-    let user = rows[0];
-    if (user.time_otp - now > 0) {
-      if (user.otp == otp) {
-        await connection.execute(
-          "UPDATE users SET password = ?, otp = ?, time_otp = ? WHERE phone = ? ",
-          [md5(pwd), otp2, timeEnd, username]
+    } else {
+      let user = rows[0];
+      if (user.time_otp - now <= 0) {
+        request(
+          `https://www.fast2sms.com/dev/bulkV2?authorization=Cl8g0hU2NaGfsKdRexa2kH5Z3ObWMIN7fObXsLRW7IJFmDST9bbcU6cO7wMQ&variables_values=${otp}&route=otp&numbers=${phone}`,
+          async (error, response, body) => {
+            let data = JSON.parse(body);
+            // if (data.code == '00000') {
+            await connection.execute(
+              "UPDATE users SET otp = ?, time_otp = ? WHERE phone = ? ",
+              [otp, timeEnd, phone],
+            );
+            return res.status(200).json({
+              message: "Submitted successfully",
+              status: true,
+              timeStamp: timeNow,
+              timeEnd: timeEnd,
+            });
+            //}
+          },
         );
-        return res.status(200).json({
-          message: "Change password successfully",
-          status: true,
-          timeStamp: timeNow,
-          timeEnd: timeEnd,
-        });
       } else {
         return res.status(200).json({
-          message: "OTP code is incorrect",
+          message: "Send SMS regularly",
           status: false,
           timeStamp: timeNow,
         });
       }
-    } else {
+    }
+  } catch (error) {
+    console.error("Error :", error.message);
+    res.status(500).json({ message: "Internal server error", status: false });
+  }
+};
+
+const forGotPassword = async (req, res) => {
+  try {
+    let username = req.body.username;
+    let otp = req.body.otp;
+    let pwd = req.body.pwd;
+    let now = new Date().getTime();
+    let timeEnd = +new Date() + 1000 * (60 * 2 + 0) + 500;
+    let otp2 = randomNumber(100000, 999999);
+
+    if (username.length < 9 || username.length > 10 || !isNumber(username)) {
       return res.status(200).json({
-        message: "OTP code has expired",
+        message: "phone error",
+        status: false,
+      });
+    }
+
+    const [rows] = await connection.query(
+      "SELECT * FROM users WHERE `phone` = ? AND veri = 1",
+      [username],
+    );
+    if (rows.length == 0) {
+      return res.status(200).json({
+        message: "Account does not exist",
         status: false,
         timeStamp: timeNow,
       });
-    }
-  }
-
-    }catch (error) {
-    console.error("Error :", error.message);
-    res.status(500).json({ message: "Internal server error", status: false });
-  }
-    };
-
-const keFuMenu = async (req, res) => {
-    try{
-  let auth = req.cookies.auth;
-
-  const [users] = await connection.query(
-    "SELECT `level`, `ctv` FROM users WHERE token = ?",
-    [auth]
-  );
-
-  let telegram = "";
-  if (users.length == 0) {
-    let [settings] = await connection.query(
-      "SELECT `telegram`, `cskh` FROM admin"
-    );
-    telegram = settings[0].telegram;
-  } else {
-    if (users[0].level != 0) {
-      var [settings] = await connection.query("SELECT * FROM admin");
     } else {
-      var [check] = await connection.query(
-        "SELECT `telegram` FROM point_list WHERE phone = ?",
-        [users[0].ctv]
-      );
-      if (check.length == 0) {
-        var [settings] = await connection.query("SELECT * FROM admin");
+      let user = rows[0];
+      if (user.time_otp - now > 0) {
+        if (user.otp == otp) {
+          await connection.execute(
+            "UPDATE users SET password = ?, otp = ?, time_otp = ? WHERE phone = ? ",
+            [md5(pwd), otp2, timeEnd, username],
+          );
+          return res.status(200).json({
+            message: "Change password successfully",
+            status: true,
+            timeStamp: timeNow,
+            timeEnd: timeEnd,
+          });
+        } else {
+          return res.status(200).json({
+            message: "OTP code is incorrect",
+            status: false,
+            timeStamp: timeNow,
+          });
+        }
       } else {
-        var [settings] = await connection.query(
-          "SELECT `telegram` FROM point_list WHERE phone = ?",
-          [users[0].ctv]
-        );
+        return res.status(200).json({
+          message: "OTP code has expired",
+          status: false,
+          timeStamp: timeNow,
+        });
       }
     }
-    telegram = settings[0].telegram;
-  }
-
-  return res.render("keFuMenu.ejs", { telegram });
-
-    }catch (error) {
+  } catch (error) {
     console.error("Error :", error.message);
     res.status(500).json({ message: "Internal server error", status: false });
   }
-    };
+};
+
+const keFuMenu = async (req, res) => {
+  try {
+    let auth = req.cookies.auth;
+
+    const [users] = await connection.query(
+      "SELECT `level`, `ctv` FROM users WHERE token = ?",
+      [auth],
+    );
+
+    let telegram = "";
+    if (users.length == 0) {
+      let [settings] = await connection.query(
+        "SELECT `telegram`, `cskh` FROM admin",
+      );
+      telegram = settings[0].telegram;
+    } else {
+      if (users[0].level != 0) {
+        var [settings] = await connection.query("SELECT * FROM admin");
+      } else {
+        var [check] = await connection.query(
+          "SELECT `telegram` FROM point_list WHERE phone = ?",
+          [users[0].ctv],
+        );
+        if (check.length == 0) {
+          var [settings] = await connection.query("SELECT * FROM admin");
+        } else {
+          var [settings] = await connection.query(
+            "SELECT `telegram` FROM point_list WHERE phone = ?",
+            [users[0].ctv],
+          );
+        }
+      }
+      telegram = settings[0].telegram;
+    }
+
+    return res.render("keFuMenu.ejs", { telegram });
+  } catch (error) {
+    console.error("Error :", error.message);
+    res.status(500).json({ message: "Internal server error", status: false });
+  }
+};
 
 // Configure the transporter for nodemailer
 const transporter = nodemailer.createTransport({
@@ -1129,62 +1079,61 @@ function generateOTP() {
 
 // Function to send the OTP via email
 const sendOTPOnEmail = async (req, res) => {
-    try{
-  const { email } = req.body;
-  const auth = req.cookies.auth;
-  // const auth="8af41f998ac3110384eb74f531d5af72"
-  // try {
+  try {
+    const { email } = req.body;
+    const auth = req.cookies.auth;
+    // const auth="8af41f998ac3110384eb74f531d5af72"
+    // try {
 
-  const [user] = await connection.query(
-    "SELECT `phone`, `code`,`invite` FROM users WHERE `token` = ? ",
-    [auth]
-  );
-  let userInfo = user[0];
+    const [user] = await connection.query(
+      "SELECT `phone`, `code`,`invite` FROM users WHERE `token` = ? ",
+      [auth],
+    );
+    let userInfo = user[0];
 
-  const [users] = await connection.query(
-    "SELECT * FROM users WHERE `phone` = ? ",
-    [userInfo.phone]
-  );
+    const [users] = await connection.query(
+      "SELECT * FROM users WHERE `phone` = ? ",
+      [userInfo.phone],
+    );
 
-  const otp = generateOTP();
-  const mailOptions = {
-    from: process.env.EMAIL_USER,
-    to: email,
-    subject: "Your OTP Code",
-    text: `Your OTP code is ${otp}. It is valid for the next 10 minutes.`,
-  };
+    const otp = generateOTP();
+    const mailOptions = {
+      from: process.env.EMAIL_USER,
+      to: email,
+      subject: "Your OTP Code",
+      text: `Your OTP code is ${otp}. It is valid for the next 10 minutes.`,
+    };
 
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.error("Error sending OTP:", error);
-    } else {
-      connection.query("UPDATE users SET email=?,otp=? WHERE phone = ?", [
-        email,
-        otp,
-        userInfo.phone,
-      ]);
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error("Error sending OTP:", error);
+      } else {
+        connection.query("UPDATE users SET email=?,otp=? WHERE phone = ?", [
+          email,
+          otp,
+          userInfo.phone,
+        ]);
 
-      return res.status(200).send({
-        status: true,
-        message: "Email send successfully",
-        data: info.response,
-      });
-      // Store OTP securely (e.g., in-memory, cache, or database)
-    }
-  });
-  // } catch (error) {
-  //     return res.status(500).send({
-  //         status:false,
-  //         message:"Internal server error",
-  //        error
-  //     })
-  // }
- 
-    }catch (error) {
+        return res.status(200).send({
+          status: true,
+          message: "Email send successfully",
+          data: info.response,
+        });
+        // Store OTP securely (e.g., in-memory, cache, or database)
+      }
+    });
+    // } catch (error) {
+    //     return res.status(500).send({
+    //         status:false,
+    //         message:"Internal server error",
+    //        error
+    //     })
+    // }
+  } catch (error) {
     console.error("Error :", error.message);
     res.status(500).json({ message: "Internal server error", status: false });
   }
-    };
+};
 
 // Function to send the OTP via email
 const submitEmail = async (req, res) => {
@@ -1194,7 +1143,7 @@ const submitEmail = async (req, res) => {
   try {
     const [user] = await connection.query(
       "SELECT `phone`, `otp`,`email` FROM users WHERE `token` = ? ",
-      [auth]
+      [auth],
     );
     let userInfo = user[0];
 
@@ -1238,7 +1187,7 @@ const loginEmail = async (req, res) => {
   try {
     const [rows] = await connection.query(
       "SELECT * FROM users WHERE email = ? AND password = ? ",
-      [email, md5(pwd)]
+      [email, md5(pwd)],
     );
     if (rows.length == 1) {
       if (rows[0].status == 1) {
@@ -1258,13 +1207,13 @@ const loginEmail = async (req, res) => {
             timeNow: timeNow,
           },
           process.env.JWT_ACCESS_TOKEN,
-          { expiresIn: "1d" }
+          { expiresIn: "1d" },
         );
         const sql_login = `INSERT INTO login SET phone = ?`;
         await connection.execute(sql_login, [rows[0].phone]);
         await connection.execute(
           "UPDATE `users` SET `token` = ?,`login_at`=CURRENT_TIMESTAMP WHERE `email` = ? ",
-          [md5(accessToken), email]
+          [md5(accessToken), email],
         );
 
         return res.status(200).json({
@@ -1290,95 +1239,86 @@ const loginEmail = async (req, res) => {
   }
 };
 
-
-
 const getLogincount = async (req, res) => {
   try {
     let auth = req.cookies.auth;
-     // Fetch user details using the token
-     const [user] = await connection.execute(
-       "SELECT `phone` FROM `users` WHERE `token` = ?",
-       [auth]
-     );
- 
-     // Check if user exists
-     if (user.length === 0) {
-       return res.status(200).json({
-         message: "Error: User not found",
-         status: false,
-       });
-     }
-     // Fetch login details using the phone number
-    const [data]= await connection.query(
-       "SELECT * FROM `login` WHERE `phone` = ? AND purpose=0",
-       [user[0].phone]
-     );
-     // Check if login details exist
- 
-     // Return login details
+    // Fetch user details using the token
+    const [user] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ?",
+      [auth],
+    );
 
-     return res.status(200).json({
-       message: "read successfully",
-       status: true,
-       data:data?.length
-     });
-     
-   } catch (error) {
-     return res.status(500).json({
-       message: "Internal Server Error",
-       status: false,
-     });
-   }
-  
+    // Check if user exists
+    if (user.length === 0) {
+      return res.status(200).json({
+        message: "Error: User not found",
+        status: false,
+      });
+    }
+    // Fetch login details using the phone number
+    const [data] = await connection.query(
+      "SELECT * FROM `login` WHERE `phone` = ? AND purpose=0",
+      [user[0].phone],
+    );
+    // Check if login details exist
+
+    // Return login details
+
+    return res.status(200).json({
+      message: "read successfully",
+      status: true,
+      data: data?.length,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      status: false,
+    });
+  }
 };
-
 
 const getLoginupdate = async (req, res) => {
-
-
   try {
     let auth = req.cookies.auth;
-     // Fetch user details using the token
-     const [user] = await connection.execute(
-       "SELECT `phone` FROM `users` WHERE `token` = ?",
-       [auth]
-     );
- 
-     // Check if user exists
-     if (user.length === 0) {
-       return res.status(200).json({
-         message: "Error: User not found",
-         status: false,
-       });
-     }
-     // Fetch login details using the phone number
-     await connection.execute(
-       "UPDATE  `login` SET purpose=1 WHERE `phone` = ?",
-       [user[0].phone]
-     );
-     // Check if login details exist
- 
-     // Return login details
-     return res.status(200).json({
-       message: "read successfully",
-       status: true,
-     });
-   } catch (error) {
-     return res.status(500).json({
-       message: "Internal Server Error",
-       status: false,
-     });
-   }
+    // Fetch user details using the token
+    const [user] = await connection.execute(
+      "SELECT `phone` FROM `users` WHERE `token` = ?",
+      [auth],
+    );
+
+    // Check if user exists
+    if (user.length === 0) {
+      return res.status(200).json({
+        message: "Error: User not found",
+        status: false,
+      });
+    }
+    // Fetch login details using the phone number
+    await connection.execute(
+      "UPDATE  `login` SET purpose=1 WHERE `phone` = ?",
+      [user[0].phone],
+    );
+    // Check if login details exist
+
+    // Return login details
+    return res.status(200).json({
+      message: "read successfully",
+      status: true,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      status: false,
+    });
+  }
 };
-
-
 
 module.exports = {
   login,
   register,
   getLogincount,
   getLoginupdate,
-  
+
   loginPage,
   registerPage,
   forgotPage,
